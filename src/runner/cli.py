@@ -19,11 +19,12 @@ def run_module(module: str):
 
 @app.command()
 def aspirador():
-    """Run the aspirador.main task."""
+    """ Executa la tasca aspirador"""
     run_module("aspirador")
 
 @app.command()
 def prova():
+    """ Test per si tot ha funcionat correctament"""
     print("Tot ha funcionat")
 
 if __name__ == "__main__":
