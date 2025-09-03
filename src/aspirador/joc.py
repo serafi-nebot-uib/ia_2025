@@ -1,11 +1,11 @@
 from iaLib import agent, joc
 
-class AspiradorNoG(joc.JocNoGrafic):
+class Aspirador(joc.JocNoGrafic):
 
     def __init__(self, agents: list[agent.Agent] | None = None):
         if agents is None:
             agents = []
-        super(AspiradorNoG, self).__init__(agents=agents)
+        super(Aspirador, self).__init__(agents=agents)
         # TODO
 
 

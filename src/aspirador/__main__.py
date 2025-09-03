@@ -1,7 +1,7 @@
-from aspirador import joc_gui, agent
+from aspirador import joc
 
 
-agents = [agent.AspiradorTaula()]
+agents = []
 
-hab = joc_gui.Aspirador(agents)
+hab = joc.Aspirador(agents)
 hab.comencar()

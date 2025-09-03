@@ -43,7 +43,7 @@ requires-dist = [
 [[package]]
 name = "ialib"
 version = "0.1.0"
-source = { git = "https://github.com/miquelmn/iaLib#0f9bb8039027d3532f20bc44b7178e22da81372e" }
+source = { git = "https://github.com/miquelmn/iaLib#1cfe0dcc870574ca4f9e110566d01320bd9dbcf0" }
 dependencies = [
     { name = "pygame" },
 ]

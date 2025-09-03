@@ -20,9 +20,19 @@ Instal·lar [``uv``](https://docs.astral.sh/uv/), el gestor de paquets que empra
 
 ### 3. Crear i activar l'entorn
 
+Crear l'entorn (només s'ha de fer el primer pic):
 ```
 uv venv .venv
+```
+
+Activar l'entorn:
+```
 source .venv/bin/activate
+```
+
+Instal·lar llibreries (només s'ha de fer el primer pic):
+
+```
 uv pip install --editable .
 ```
 
