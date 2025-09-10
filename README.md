@@ -6,6 +6,9 @@ En aquest repositori trobareu tots els exemples pràctics treballats durant les 
 Per poder emprar aquests exemples necessitem primerament tenir un entorn de ``Python`` amb les 
 llibreries instal·lades. Per fer-ho s'han de seguir les següents passes. Emprarem ``uv``: 
 
+Per poder dur a terme aquest tutorial s'ha de tenir instal·lat `git` al vostre dispositiu. Aquí teniu l'[enllaç](https://git-scm.com/)
+per fer-ho.
+
 ### 1. Clonar el repositori 
 
 Descarregar el repositori.
@@ -25,9 +28,14 @@ Crear l'entorn (només s'ha de fer el primer pic):
 uv venv .venv
 ```
 
-Activar l'entorn:
+Activar l'entorn (Linux i MacOS):
 ```
 source .venv/bin/activate
+```
+
+Windows:
+```
+.venv\Scripts\activate
 ```
 
 Instal·lar llibreries (només s'ha de fer el primer pic):
