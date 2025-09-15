@@ -23,6 +23,9 @@ Instal·lar [``uv``](https://docs.astral.sh/uv/), el gestor de paquets que empra
 
 ### 3. Crear i activar l'entorn
 
+**IMPORTANT:** Les següents instruccións s'han de fer dins la carpeta del repositori, descarregada al primer pas.
+
+
 Crear l'entorn (només s'ha de fer el primer pic):
 ```
 uv venv .venv
@@ -64,14 +67,34 @@ Un cop l'entorn està activat, podeu executar qualsevol pràctica amb una de les
 
 ### Opció 1: Emprant `run-task`
 
+Activar l'entorn (Linux i MacOS):
 ```
 source .venv/bin/activate
+```
+
+Windows:
+```
+.venv\Scripts\activate
+```
+
+Executa una tasca
+```
 run-task <nom de la pràctica>
 ```
 
 ### Opció 2: Executar el mòdul directament
 
+Activar l'entorn (Linux i MacOS):
 ```
 source .venv/bin/activate
+```
+
+Windows:
+```
+.venv\Scripts\activate
+```
+
+Executa una tasca
+```
 PYTHONPATH=src python -m <nom de la pràctica> 
 ```
