@@ -23,6 +23,18 @@ def aspirador():
     run_module("aspirador")
 
 @app.command()
+def quiques():
+    """ Executa la tasca aspirador"""
+    run_module("quiques")
+
+
+@app.command()
+def monedes():
+    """ Executa la tasca aspirador"""
+    run_module("monedes")
+
+
+@app.command()
 def prova():
     """ Test per si tot ha funcionat correctament"""
     print("Tot ha funcionat")

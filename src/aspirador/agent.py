@@ -41,7 +41,7 @@ class AspiradorTaula(Aspirador):
         (0, True): "D",
         (0, False): "A",
         (1, True): "E",
-        (1, False): "S",
+        (1, False): "A",
     }
 
     def actua(self, percepcio: dict):
