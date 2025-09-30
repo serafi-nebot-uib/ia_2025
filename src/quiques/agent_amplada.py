@@ -13,6 +13,7 @@ class BarcaAmplada(Barca):
         self.__frontera = None
         self.__tancats = None
         self.__cami_exit = None
+        self.nom = ""
 
     def cerca(self, estat_inicial: Estat) -> bool:
         self.__frontera = []
