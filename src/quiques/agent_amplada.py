@@ -41,7 +41,7 @@ class BarcaAmplada(Barca):
 
         return exit
 
-    def actua(self, percepcio: dict) -> tuple[str, (int, int)]:
+    def actua(self, percepcio: dict) -> tuple[str, tuple[int, int] | None]:
         if self.__cami_exit is None:
             estat_inicial = Estat(
                 local_barca=percepcio["Lloc"],
