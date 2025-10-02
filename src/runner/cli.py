@@ -33,6 +33,11 @@ def monedes():
     """ Executa la tasca aspirador"""
     run_module("monedes")
 
+@app.command()
+def monedes():
+    """ Executa la tasca aspirador"""
+    run_module("practica")
+
 
 @app.command()
 def prova():
