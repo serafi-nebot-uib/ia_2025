@@ -30,6 +30,8 @@ class Estat:
     def p(self) -> int: return self.__p
     @property
     def h(self) -> int: return self.__h
+    @property
+    def c(self) -> int: return len(self.cami)
 
     def desp(self, id_moneda: int) -> Self | None:
         m = deepcopy(self.monedes)
@@ -61,11 +63,18 @@ class Estat:
         accions = [("D", i) for i in (self.p - 1, self.p + 1)] + [("G", i) for i in range(len(self.monedes))] + [("B", i) for i in (self.p - 2, self.p + 2)]
         return list(filter(None, (self.transicio(*args) for args in accions)))
 
+    def __eq__(self, other) -> bool:
+        if not isinstance(other, Estat): return NotImplemented
+        return self.monedes == other.monedes
+
+    def __lt__(self, other) -> bool:
+        if not isinstance(other, Estat): return NotImplemented
+        sval, oval = self.h + self.c, other.h + other.c
+        return self.h < other.h if sval == oval else sval < oval
+
     def __str__(self) -> str: return f"{''.join(self.monedes)} ({self.__p0} + {self.__v})"
     def __repr__(self) -> str: return str(self)
     def __hash__(self) -> int: return hash(tuple(self.monedes))
-    def __eq__(self, other) -> bool: return self.monedes == other.monedes if isinstance(other, Estat) else NotImplemented
-    def __lt__(self, other) -> bool: return self.h < other.h if isinstance(other, Estat) else NotImplemented
 
 class AgentMoneda(agent.Agent):
     def __init__(self):

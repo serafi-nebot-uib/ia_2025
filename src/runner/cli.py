@@ -34,10 +34,9 @@ def monedes():
     run_module("monedes")
 
 @app.command()
-def monedes():
+def practica():
     """ Executa la tasca aspirador"""
     run_module("practica")
-
 
 @app.command()
 def prova():
