@@ -1,7 +1,10 @@
 from practica import agent, joc
 
+import random
 
 def main():
+    # random.seed(1337)
+
     mida = (10, 10)
 
     agents = [
