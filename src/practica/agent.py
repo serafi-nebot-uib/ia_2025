@@ -53,6 +53,9 @@ class Viatger(joc.Viatger):
 
         return exit
 
+    #def minimax(self, estat; Estat, alpha, beta, torn_max=True)
+
+
     def actua(self, percepcio) -> tuple[str, str]:
         if self.__accions is None:
             dim = percepcio["MIDA"]

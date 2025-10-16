@@ -6,13 +6,8 @@ class Pos(NamedTuple):
     x: int
     y: int
 
-    def within(self, a: Iterable[int], b: Iterable[int] | None = None) -> bool:
-        """
-        Comprovar si Pos compleix `a <= pos < b` element per element.
-        Si no es passa l'argument `b` es comprova `(0, 0) <= pos < a`
-        """
-        if b is None: b, a = a, (0,) * len(self)
-        return a <= self < b
+    def __hash__(self): return hash(tuple(self))
+    def __str__(self): return str(tuple(self))
 
     # conjunt d'operacions aritmètiques i lògiques amb altres objectes Pos, int o qualsevol Iterable
     # les operacións aritmètiques retornen un objecte Pos nou amb el resultat
@@ -46,9 +41,6 @@ class Pos(NamedTuple):
     def __ge__(self, other):       return all(self._op_binary(other, ops.ge))
     def __gt__(self, other):       return all(self._op_binary(other, ops.gt))
 
-    def __hash__(self): return hash(tuple(self))
-    def __str__(self): return str(tuple(self))
-
 class Estat:
     # totes les accions possibles amb el seu cost associat
     ACCIO = { "MOURE": 1, "BOTAR": 2, "POSAR_PARET": 3 }
@@ -71,7 +63,7 @@ class Estat:
             case "BOTAR":       pos += self.DESP[desp] * 2
             case "POSAR_PARET": parets = self.parets.union({pos})
             case _:             raise KeyError(f"accio invalida: {accio}")
-        if pos.within(self.dim) and pos not in self.parets:
+        if (0, 0) <= pos < self.dim and pos not in self.parets:
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     def fills(self) -> list[Self]:
@@ -90,6 +82,6 @@ class Estat:
         return self.h < other.h if sval == oval else sval < oval
 
     def __hash__(self):
-        # parets s'ordena abans per a assegurar que hash sempre suigui el mateix per al mateix conjunt de parets
+        # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(self.pos + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))
