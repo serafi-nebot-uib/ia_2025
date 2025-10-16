@@ -56,7 +56,7 @@ class Viatger(joc.Viatger):
     def actua(self, percepcio) -> tuple[str, str]:
         if self.__accions is None:
             dim = percepcio["MIDA"]
-            pos = Pos(*percepcio["AGENTS"]["Agent 1"])
+            pos = Pos(*percepcio["AGENTS"][percepcio["TORN"]])
             parets = {Pos(*p) for p in percepcio["PARETS"]}
             desti = Pos(*percepcio["DESTI"])
             self.astar(Estat(pos, desti, parets, dim))
