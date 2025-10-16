@@ -90,6 +90,6 @@ class Estat:
         return self.h < other.h if sval == oval else sval < oval
 
     def __hash__(self):
-        # parets s'ordena abans per a assegurar que hash sempre suigui el mateix per al mateix conjunt de parets
+        # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(self.pos + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))

@@ -17,7 +17,7 @@ class Viatger(agent_lib.Agent):
 		super().__init__(long_memoria=1)
 		if nom is None:
 			Viatger.N_VIATGERS += 1
-			nom = f"Agent {Viatger.N_VIATGERS}"
+			nom = f"Agent {Viatger.N_VIATGERS}" # Dona nom als agents (a.nom)
 
 		self.__nom = nom
 
@@ -166,6 +166,32 @@ class Laberint(joc.Joc):
 		Args:
 			parets (llista d'enters): Posicions a on hi ha una paret.
 		"""
+
+		# L'objecte tauler té un atribut Tuple[int, int] anomenat self.mida
+		# On self.mida[0] és l'amplada i self.mida[1] és la altura (en caselles)
+		# 
+		# Per a treballar de forma més còmode, a l'argument parets passat per paràmetre
+		# es tracten les caselles com si fos un vector (array unidimensional) 
+		# 	sigui un tauler de mida 3x3 on totes les caselles són parets:
+		# 		parets = [c1, c2, c3, c4, c5, c6, c7, c8, c9]
+		#
+		# Cada element guarda la seva posició de forma lineal
+		#  Una paret a la casella (2,1) s'emmagatzemarà al vector de parets com el nombre 7
+		#  Això es calcula de la següent forma:
+		#	  posX * mida[0] + posY   (POS_X * AMPLADA_TAULER + POS_Y)
+		#    ex: 2 * 3 + 1 = 7
+
+		# Es pot convertir un element qualsevol d'aquest vector a les seves coordenades x,y
+		# mitjançant les operacions:
+		# 	posX = parets[1] // self.mida[0] 
+		# 	posY = parets[1] %  self.mida[0]
+		#
+		# Notar que parets != self.__parets
+		# parets: paràmetre que es passa que conte un vector amb els valors lineals
+		# self.__parets: conjunt de tuples (x,y) amb les coordenades del tauler on hi ha parets
+
+
+		# Si el conjunt de parets és buit, es generen les parets aleatòriament
 		if parets is None:
 			parets = [i for i in range(self.size) if random.randint(0, 2) == 0]
 
@@ -261,12 +287,14 @@ class Laberint(joc.Joc):
 				cas.draw(window, x, y)
 
 	def percepcio(self):
-		torn = self.__agents[self.turn % len(self.__agents)].nom
+		# turn està Definit a joc.py de iaLib, inicialitza a 0 i a cada iteracio suma +1
+		# obte el num de l'agent self.turn % len(self.__agents)
+		torn = self.__agents[self.turn % len(self.__agents)].nom 
 
 		return {
-			"PARETS": self.__parets,
-			"DESTI": self.__desti,
-			"AGENTS": self.pos_agents,
-			"MIDA": self.__mida_taulell,
-			"TORN": torn
+			"PARETS": self.__parets, # Conjunt de tuples, posicions de les parets [(p1_posX, p1_posY), (p2_posX, p2_posY), ...]
+			"DESTI": self.__desti, # Tupla amb les coordenades del destí (posX, posY)
+			"AGENTS": self.pos_agents, # Diccionari {"nomAgent" : (posX, posY)}
+			"MIDA": self.__mida_taulell, # Tupla mida tauler (Ample, Alçada)
+			"TORN": torn # String amb el nom de l'agent a qui li toca
 		}

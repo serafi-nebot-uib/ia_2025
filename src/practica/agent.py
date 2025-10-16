@@ -53,12 +53,15 @@ class Viatger(joc.Viatger):
 
         return exit
 
+    #def minimax(self, estat; Estat, alpha, beta, torn_max=True)
+
+
     def actua(self, percepcio) -> tuple[str, str]:
         if self.__accions is None:
             dim = percepcio["MIDA"]
             pos = Pos(*percepcio["AGENTS"]["Agent 1"])
-            parets = {Pos(*p) for p in percepcio["PARETS"]}
-            desti = Pos(*percepcio["DESTI"])
+            parets = {Pos(*p) for p in percepcio["PARETS"]} # Crea un conjunt (set) de objectes Pos
+            desti = Pos(*percepcio["DESTI"]) # Objecte pos amb les coordenades de destí
             self.astar(Estat(pos, desti, parets, dim))
             # self.dfs(Estat(pos, desti, parets, dim))
             print(f"n steps: {len(self.__accions if self.__accions else [])}")
