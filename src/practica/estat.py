@@ -49,7 +49,7 @@ class Estat:
 
     def __init__(self, pos: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], cami: list[tuple[str, str]] | None = None, pos_adv: Pos = None):
         self.pos, self.desti, self.parets, self.dim, self.pos_adv = pos, desti, parets, dim, pos_adv
-        self.cami = cami if cami is not None else []        
+        self.cami = cami if cami is not None else []
         # cost: suma de totes les accions que s'han fet per a arribar a l'estat actual
         self.c = sum(self.ACCIO[a] for a, _ in self.cami)
         # heurística: distància manhattan entre la posició actual i el destí
