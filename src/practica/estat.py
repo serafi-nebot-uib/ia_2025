@@ -13,7 +13,7 @@ class Pos(NamedTuple):
     # les operacións aritmètiques retornen un objecte Pos nou amb el resultat
     # les operacións lògiques retornen un booleà (en concret comproven que tots els elements de Pos compleixen la condició lògica)
     def _op_unary(self, op): return (op(a) for a in self)
-    def _op_binary(self, other, op):
+    def _op_binary(self, op, other):
         match other:
             case int():      return (op(c, other) for c in self)
             case Iterable(): return (op(a, b) for a, b in zip(self, other))
@@ -22,18 +22,18 @@ class Pos(NamedTuple):
     def __pos__(self):             return Pos(*self._op_unary(ops.pos))
     def __neg__(self):             return Pos(*self._op_unary(ops.neg))
     def __abs__(self):             return Pos(*self._op_unary(ops.abs))
-    def __add__(self, other):      return Pos(*self._op_binary(other, ops.add))
-    def __sub__(self, other):      return Pos(*self._op_binary(other, ops.sub))
-    def __mul__(self, other):      return Pos(*self._op_binary(other, ops.mul))
-    def __mod__(self, other):      return Pos(*self._op_binary(other, ops.mod))
-    def __pow__(self, other):      return Pos(*self._op_binary(other, ops.pow))
-    def __truediv__(self, other):  return Pos(*self._op_binary(other, ops.truediv))
-    def __lt__(self, other):       return all(self._op_binary(other, ops.lt))
-    def __le__(self, other):       return all(self._op_binary(other, ops.le))
-    def __eq__(self, other):       return all(self._op_binary(other, ops.eq))
-    def __ne__(self, other):       return all(self._op_binary(other, ops.ne))
-    def __ge__(self, other):       return all(self._op_binary(other, ops.ge))
-    def __gt__(self, other):       return all(self._op_binary(other, ops.gt))
+    def __add__(self, other):      return Pos(*self._op_binary(ops.add, other))
+    def __sub__(self, other):      return Pos(*self._op_binary(ops.sub, other))
+    def __mul__(self, other):      return Pos(*self._op_binary(ops.mul, other))
+    def __mod__(self, other):      return Pos(*self._op_binary(ops.mod, other))
+    def __pow__(self, other):      return Pos(*self._op_binary(ops.pow, other))
+    def __truediv__(self, other):  return Pos(*self._op_binary(ops.truediv, other))
+    def __lt__(self, other):       return all(self._op_binary(ops.lt, other))
+    def __le__(self, other):       return all(self._op_binary(ops.le, other))
+    def __eq__(self, other):       return all(self._op_binary(ops.eq, other))
+    def __ne__(self, other):       return all(self._op_binary(ops.ne, other))
+    def __ge__(self, other):       return all(self._op_binary(ops.ge, other))
+    def __gt__(self, other):       return all(self._op_binary(ops.gt, other))
 
 class Estat:
     # totes les accions possibles amb el seu cost associat
@@ -50,14 +50,13 @@ class Estat:
         self.h = sum(abs(pos - desti))
 
     def accio(self, accio: str, desp: str) -> Self | None:
-        if desp not in self.DESP: raise KeyError(f"desplaçament invalid: {desp}")
-        pos, parets = self.pos, self.parets
-        match accio:
-            case "MOURE":       pos += self.DESP[desp]
-            case "BOTAR":       pos += self.DESP[desp] * 2
-            case "POSAR_PARET": parets = self.parets.union({pos})
-            case _:             raise KeyError(f"accio invalida: {accio}")
-        if (0, 0) <= pos < self.dim and pos not in self.parets:
+        if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
+        desti = self.pos + self.DESP[desp] * (1 + (accio == "BOTAR"))
+        if (0, 0) <= desti < self.dim and desti not in self.parets:
+            pos, parets = self.pos, self.parets
+            match accio:
+                case "MOURE" | "BOTAR": pos, parets = desti, parets | {self.pos}
+                case "POSAR_PARET":     parets |= {desti}
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     def fills(self) -> list[Self]:
@@ -67,8 +66,7 @@ class Estat:
 
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
-        g = ops.attrgetter("pos", "desti", "parets", "dim")
-        return g(self) == g(other)
+        return hash(self) == hash(other)
 
     def __lt__(self, other):
         if not isinstance(other, Estat): return NotImplemented

@@ -66,4 +66,4 @@ class Viatger(joc.Viatger):
             accio = self.__accions.pop(0)
             print(accio)
             return accio
-        return ("ESPERAR", "")
+        return "ESPERAR", ""
