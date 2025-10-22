@@ -37,44 +37,57 @@ class Pos(NamedTuple):
     def __lt__(self, other):       return all(self._op_binary(other, ops.lt))
     def __le__(self, other):       return all(self._op_binary(other, ops.le))
     def __eq__(self, other):       return all(self._op_binary(other, ops.eq))
-    def __ne__(self, other):       return all(self._op_binary(other, ops.ne))
+    #def __ne__(self, other):       return all(self._op_binary(other, ops.ne)) # Dona error, si no es defineix Python fa !__eq__() i funciona bé
     def __ge__(self, other):       return all(self._op_binary(other, ops.ge))
     def __gt__(self, other):       return all(self._op_binary(other, ops.gt))
 
 class Estat:
     # totes les accions possibles amb el seu cost associat
-    ACCIO = { "MOURE": 1, "BOTAR": 2, "POSAR_PARET": 3 }
+    ACCIO = { "MOURE": 1, "BOTAR": 2, "POSAR_PARET": 3, "RES": 55}
     # tots els desplaçaments possibles amb la seva direcció (x, y)
     DESP = { "N": Pos(0, -1), "O": Pos(-1, 0), "S": Pos(0, 1), "E": Pos(1, 0) }
 
-    def __init__(self, pos: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], cami: list[tuple[str, str]] | None = None):
-        self.pos, self.desti, self.parets, self.dim = pos, desti, parets, dim
-        self.cami = cami if cami is not None else []
+    def __init__(self, pos: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], cami: list[tuple[str, str]] | None = None, pos_adv: Pos = None):
+        self.pos, self.desti, self.parets, self.dim, self.pos_adv = pos, desti, parets, dim, pos_adv
+        self.cami = cami if cami is not None else []        
         # cost: suma de totes les accions que s'han fet per a arribar a l'estat actual
         self.c = sum(self.ACCIO[a] for a, _ in self.cami)
         # heurística: distància manhattan entre la posició actual i el destí
         self.h = sum(abs(pos - desti))
 
     def accio(self, accio: str, desp: str) -> Self | None:
-        if desp not in self.DESP: raise KeyError(f"desplaçament invalid: {desp}")
+        if  accio != "RES" and desp not in self.DESP: raise KeyError(f"desplaçament invalid: {desp}")
         pos, parets = self.pos, self.parets
         match accio:
             case "MOURE":       pos += self.DESP[desp]
             case "BOTAR":       pos += self.DESP[desp] * 2
             case "POSAR_PARET": parets = self.parets.union({pos})
+            case "RES":         pass # No modifica ni posició ni parets
             case _:             raise KeyError(f"accio invalida: {accio}")
-        if (0, 0) <= pos < self.dim and pos not in self.parets:
-            return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
+        # if (0, 0) <= pos < self.dim and pos not in self.parets:
+        if (0, 0) <= pos < self.dim and pos not in self.parets and pos != self.pos_adv :
+            return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)], pos_adv=self.pos_adv)
 
     def fills(self) -> list[Self]:
         # obtenir els estats per a totes les acciones possible i per a tots els desplaçaments possibles
         # filter(None) per a llevar els estats invàlids que retorna accio()
-        return list(filter(None, (self.accio(a, d) for a in self.ACCIO.keys() for d in self.DESP.keys())))
+        return list(filter(None, 
+            [self.accio(a, d) for a in self.ACCIO.keys() if a != "RES" for d in self.DESP.keys()] + 
+            [self.accio("RES", None)]
+        ))
+
+
+    def resultat(self) -> tuple["Estat", int]:
+        if self.pos_adv is None : 
+            print("pos_adv is None")
+            return self, self.h
+        h, h_adv = self.h, sum(abs(self.pos_adv - self.desti))
+        if h > h_adv : return self, -1
+        elif h == h_adv : return self, 0
+        return self, 1
 
     def __eq__(self, other):
-        if not isinstance(other, Estat): return NotImplemented
-        g = ops.attrgetter("pos", "desti", "parets", "dim")
-        return g(self) == g(other)
+        return self.__hash__() == other.__hash__()
 
     def __lt__(self, other):
         if not isinstance(other, Estat): return NotImplemented
@@ -85,3 +98,44 @@ class Estat:
         # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(self.pos + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))
+
+    def __str__(self):
+        wall, empt, goal, robot, enemy, board = "🟥", "🔲", "🏁", "🤖", "🏴‍☠️", "" #🛑
+
+        for j in range(self.dim[0]):
+            for i in range(self.dim[1]):
+                if self.pos == Pos(i, j):
+                    board += robot
+                elif self.desti == Pos(i,j):
+                    board += goal
+                elif Pos(i,j) in self.parets:
+                    board += wall
+                elif Pos(i,j) == self.pos_adv:
+                    board += enemy
+                else:
+                    board += empt
+            board += "\n"        
+        return board
+
+
+    @staticmethod
+    def inline_print(estats):
+        wall, empt, goal, robot, enemy, board = "🟥", "🔲", "🏁", "🤖", "🏴‍☠️", "" #🛑
+
+        for j in range(estats[0].dim[0]):
+            for brd_num in range(len(estats)):
+                estat_act = estats[brd_num]
+                for i in range(estat_act.dim[1]):
+                    if estat_act.pos == Pos(i, j):
+                        board += robot
+                    elif estat_act.desti == Pos(i,j):
+                        board += goal
+                    elif Pos(i,j) in estat_act.parets:
+                        board += wall
+                    elif Pos(i,j) == estat_act.pos_adv:
+                        board += enemy
+                    else:
+                        board += empt
+                board += "  "
+            board += "\n"
+        return board

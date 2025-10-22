@@ -1,0 +1,41 @@
+CANVIS:
+
+Classe Agent:
+S'ha afegit una variable global MODE que permet conmutar entre els tres algorismes de cerca, aquesta influeix tant 
+dins actua() com al main() per a triar la mida del tauler i els agents instanciats
+
+
+Classe Estat:
+
+S'ha afegit una paràmetre al constructor de la classe Estat que indica amb un Pos la posició de l'agent contrari, 
+segurament es pot implementar de forma que tant la posició de l'agent actual com la de la resta es trobin dins un 
+mateix conjunt i que el primer element sigui sempre l'agent actual, d'aquesta forma evitam afegir cap paràmetre
+
+El mètode __eq__() ara compara els mètodes __hash__() dels dos objectes
+
+Al mètode accio() no només es comproven les parets sino també les posicions dels agents contraris
+
+S'ha afegit el mètode resultat(), calcula el valor que retorna el mètode minimax() compara la distància respecte al destí de ambdos agents, 
+de forma que es retorna +1 si es guanya, 0 si s'empata, -1 si es perd
+
+S'ha afegit el mètode __str__() per a imprimir per consola l'estat en qüestió, es pot fer més compacte
+
+S'ha afegit un mètode estàtic inline_print() que imprimeix de forma horitzontal una llista de objectes Estat, es pot fer més compacte
+
+
+BUGS:
+
+(?) L'ús del dicionari de tancats crec que no està ben implementat, potser podria implementar-se com un set() 
+
+A certes execucions un dels agents es queda aturat després de certes iteracions mentre l'altre segueix
+
+Genera fills genera estats idèntics al pare(?) El llistat sol tenir al final de tot uns estats idèntics al pare 
+
+Minimax utilitza un set de estats visitats per a cada branca per a evitar que es formin bucles, 
+no obstant per a poder permetre que l'agent faci "RES" s'ha de permetre que l'estat pare sigui igual al fill,
+això col·lisiona ja que es crea un bucle infinit
+
+S'ha assignat una puntuació molt dolenta a la acció "RES" per a que mai sigui considerada com a bona si hi ha altres opcions
+en els algorismes que si tenen en compte el cost
+
+Minimax no escolleix la ruta més òptima, p.ex. té la meta a la casella adjaçent i decideix mourer-se a la casella oposada
