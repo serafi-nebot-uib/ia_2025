@@ -2,6 +2,7 @@ from typing import NamedTuple, Self
 from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
+from copy import deepcopy
 
 class Pos(NamedTuple):
     x: int
@@ -50,14 +51,19 @@ class Estat:
         # heurística: distància manhattan entre la posició actual i el destí
         self.h = sum(abs(pos - desti))
 
+    def _pos_valid(self, pos: Pos) -> bool: return (0, 0) <= pos < self.dim and pos not in self.parets
+
     def accio(self, accio: str, desp: str) -> Self | None:
         if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
         desti = self.pos + self.DESP[desp] * (1 + (accio == "BOTAR"))
-        if (0, 0) <= desti < self.dim and desti not in self.parets:
-            pos, parets = self.pos, self.parets
+        if self._pos_valid(desti):
+            pos, parets = self.pos, deepcopy(self.parets)
             match accio:
-                case "MOURE" | "BOTAR": pos, parets = desti, parets | {self.pos}
-                case "POSAR_PARET":     parets |= {desti}
+                case "MOURE" | "BOTAR":
+                    pos, parets = desti, parets | {self.pos}
+                case "POSAR_PARET":
+                    if desti in self.desti: return None
+                    parets |= {desti}
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     def fills(self) -> list[Self]:
@@ -104,13 +110,14 @@ class EstatAdv:
         pos_adv = adv if self.torn else pos
         desti = pos_inicial + self.DESP[desp] * (1 + (accio == "BOTAR"))
         if self._pos_valid(desti, pos_adv):
-            pos, parets = self.pos, self.parets
+            pos, parets = self.pos, deepcopy(self.parets)
             match accio:
                 case "MOURE" | "BOTAR":
                     if self.torn: pos = desti
                     else: adv = desti
-                    parets = parets | {pos_inicial}
+                    parets |= {pos_inicial}
                 case "POSAR_PARET":
+                    if desti in self.desti: return None
                     parets |= {desti}
             return self.__class__(pos, adv, self.desti, parets, self.dim, not self.torn, self.cami + [(accio, desp)])
 
@@ -127,8 +134,8 @@ class EstatAdv:
     @cached_property
     def value(self):
         if self.meta:
-            if self.h < self.h_adv: return 1
-            if self.h > self.h_adv: return -1
+            if self.h == 0: return 1
+            if self.h_adv == 0: return -1
             return 0
         fvals = (fill.value for fill in self.fills)
         return max(fvals) if self.torn else min(fvals)
@@ -136,11 +143,6 @@ class EstatAdv:
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
         return hash(self) == hash(other)
-
-    def __lt__(self, other):
-        if not isinstance(other, Estat): return NotImplemented
-        sval, oval = self.h + self.c, other.h + other.c
-        return self.h < other.h if sval == oval else sval < oval
 
     def __hash__(self):
         # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
@@ -152,13 +154,6 @@ class EstatAdv:
         if not isinstance(estats, list): estats = [estats]
         if len(set(e.dim for e in estats)) != 1: return
 
-        # icon = { "": "🔲", "pos": "🤖", "adv": "🏴‍☠️", "desti": "🏁", "paret": "🟥" }
-        # s = [[[icon[""] for _ in range(width)] for _ in range(height)] for _ in range(n)]
-        # for board, estat in zip(s, estats):
-        #     s[estat.pos[0]][estat.pos[1]] = icon["pos"]
-        #     s[estat.adv[0]][estat.adv[1]] = icon["adv"]
-        # return "\n".join(" ".join(r) for r in s)
-
         black_bg = "\033[40m"
         red_bg = "\033[41m"
         green_bg = "\033[42m"
@@ -166,29 +161,48 @@ class EstatAdv:
         blue_bg = "\033[44m"
         rst = "\033[0m"
 
-        # wall, empt, goal, robot, enemy, board = "🟥", "🔲", "🏁", "🤖", "🏴‍☠️", "" #🛑
         wall = black_bg + "  " + rst
-        empt = white_bg + "  " + rst
+        empty = white_bg + "  " + rst
         robot = blue_bg + "  " + rst
         enemy = red_bg  + "  " + rst
         goal = green_bg + "  " + rst
         board = ""
 
-        board += " ".join(str(e.value) for e in estats) + "\n"
-        for j in range(estats[0].dim[0]):
-            for brd_num in range(len(estats)):
-                estat_act = estats[brd_num]
-                for i in range(estat_act.dim[1]):
-                    if estat_act.pos == Pos(i, j):
-                        board += robot
-                    elif estat_act.desti == Pos(i,j):
-                        board += goal
-                    elif Pos(i,j) in estat_act.parets:
-                        board += wall
-                    elif Pos(i,j) == estat_act.adv:
-                        board += enemy
-                    else:
-                        board += empt
-                if brd_num < len(estats) - 1: board += "  "
-            board += "\n"
-        return board
+        width = estats[0].dim[0] * 2
+        print("  ".join(f"{e.value:<{width}d}" for e in estats))
+        for e in estats:
+            a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
+            s = " ".join(map(str, (a[0], d)))
+            print(f"{s:<{width}s}", end="  ")
+        print()
+
+        width, height = estats[0].dim
+        n = len(estats)
+
+        s = [[[empty for _ in range(width)] for _ in range(height)] for _ in range(n)]
+        for board, estat in zip(s, estats):
+            board[estat.pos[1]][estat.pos[0]] = robot
+            board[estat.adv[1]][estat.adv[0]] = enemy
+            board[estat.desti[1]][estat.desti[0]] = goal
+            for p in estat.parets: board[p[1]][p[0]] = wall
+        return "\n".join("  ".join("".join(c) for c in b) for b in zip(*s))
+
+        # NOTE: no se perque amb emoticonos no se me mostra be per pantalla, me va molt millor amb colors ANSI
+        # wall, empt, goal, robot, enemy, board = "🟥", "🔲", "🏁", "🤖", "🏴‍☠️", "" #🛑
+        # for j in range(estats[0].dim[0]):
+        #     for brd_num in range(len(estats)):
+        #         estat_act = estats[brd_num]
+        #         for i in range(estat_act.dim[1]):
+        #             if estat_act.pos == Pos(i, j):
+        #                 board += robot
+        #             elif estat_act.desti == Pos(i,j):
+        #                 board += goal
+        #             elif Pos(i,j) in estat_act.parets:
+        #                 board += wall
+        #             elif Pos(i,j) == estat_act.adv:
+        #                 board += enemy
+        #             else:
+        #                 board += empt
+        #         if brd_num < len(estats) - 1: board += "  "
+        #     board += "\n"
+        # return board

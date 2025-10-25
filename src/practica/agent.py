@@ -64,37 +64,38 @@ class Viatger(joc.Viatger):
 
             if adv is not None:
                 self.__accions = []
-                e = EstatAdv(pos, adv, desti, parets, dim, False)
-                # print(EstatAdv.print(e))
-                # print(EstatAdv.print(e.fills))
+                e = EstatAdv(pos, adv, desti, parets, dim, True)
+                print(EstatAdv.print(e))
+                print(EstatAdv.print(e.fills))
 
-                while not e.meta:
-                    print("inicial:")
-                    print(EstatAdv.print(e))
-                    print(EstatAdv.print(e.fills))
+                # while not e.meta:
+                #     print("max:")
+                #     print(EstatAdv.print(e))
+                #     print(EstatAdv.print(e.fills))
+                #     e = max(e.fills, key=lambda x: x.value)
+                #     print(EstatAdv.print(e))
 
-                    e = max(e.fills, key=lambda x: x.value)
-                    print("max:")
-                    print(EstatAdv.print(e))
-                    print(EstatAdv.print(e.fills))
+                #     self.__accions.append(e.cami[-1])
+                #     if len(e.fills) == 0: break
 
-                    self.__accions.append(e.cami[-1])
-                    if len(e.fills) == 0: break
+                #     print("min:")
+                #     print(EstatAdv.print(e))
+                #     print(EstatAdv.print(e.fills))
+                #     e = min(e.fills, key=lambda x: x.value)
+                #     print(EstatAdv.print(e))
+                #     print()
+                #     print()
+                #     print()
 
-                    e = min(e.fills, key=lambda x: x.value)
-                    print("min:")
-                    print(EstatAdv.print(e))
-                    print(EstatAdv.print(e.fills))
-                    break
+                # print(self.__accions)
 
-                print(self.__accions)
-
-            # import sys
-            # sys.exit(0)
-
-            # self.dfs(Estat(pos, desti, parets, dim))
-            # self.astar(Estat(pos, desti, parets, dim))
+            import sys
+            sys.exit(0)
             print(f"n steps: {len(self.__accions if self.__accions else [])}")
+
+        # accio = self.__accions.pop(0) if self.__accions else ("ESPERAR", "")
+        # print(accio)
+        # return accio
         if self.__accions:
             accio = self.__accions.pop(0)
             print(accio)
