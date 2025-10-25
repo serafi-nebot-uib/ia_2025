@@ -1,6 +1,7 @@
 from practica import joc
 from practica.estat import Pos, Estat, EstatAdv
 from queue import PriorityQueue
+import time
 
 class Viatger(joc.Viatger):
     def __init__(self, *args, **kwargs):
@@ -78,18 +79,18 @@ class Viatger(joc.Viatger):
 
             if adv is not None:
                 e = EstatAdv(pos, adv, desti, parets, dim, True)
+
+                start = time.perf_counter()
                 f = self.minimax(e, float("-inf"), float("inf"))
+                end = time.perf_counter()
+                print(f"minimax in {end - start:.6f} seconds")
+
+                # agafar les accions de max (totes les parells del cami al node final)
                 self.__accions = f.cami[::2]
 
             print(f"n steps: {len(self.__accions if self.__accions else [])}")
-            print(self.__accions)
-
-            # import sys
-            # sys.exit(0)
 
         if self.__accions:
-            accio = self.__accions.pop(0)
-            print(accio)
-            return accio
+            return self.__accions.pop(0)
 
         return "ESPERAR", ""

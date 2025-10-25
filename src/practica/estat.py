@@ -2,7 +2,7 @@ from typing import NamedTuple, Self
 from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
-from copy import deepcopy
+from copy import copy
 
 class Pos(NamedTuple):
     x: int
@@ -56,7 +56,7 @@ class Estat:
         if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
         desti = self.pos + self.DESP[desp] * (1 + (accio == "BOTAR"))
         if self._pos_valid(desti):
-            pos, parets = self.pos, deepcopy(self.parets)
+            pos, parets = self.pos, copy(self.parets)
             match accio:
                 case "MOURE" | "BOTAR":
                     pos = desti
@@ -108,7 +108,7 @@ class EstatAdv:
         pos_adv = adv if self.torn else pos
         desti = pos_inicial + self.DESP[desp] * (1 + (accio == "BOTAR"))
         if self._pos_valid(desti, pos_adv):
-            pos, parets = self.pos, deepcopy(self.parets)
+            pos, parets = self.pos, copy(self.parets)
             match accio:
                 case "MOURE" | "BOTAR":
                     if self.torn: pos = desti
@@ -144,15 +144,7 @@ class EstatAdv:
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a))))
 
-    def __str__(self):
-        icons = {
-            "wall":  "██",
-            "empty": "  ",
-            "robot": "rr",
-            "enemy": "ee",
-            "goal":  "xx"
-        }
-        return EstatAdv.tostr(self)
+    def __str__(self): return EstatAdv.tostr(self)
 
     BG_BLACK = "\033[40m"
     BG_RED = "\033[41m"
@@ -176,14 +168,14 @@ class EstatAdv:
         if len(set(e.dim for e in estats)) != 1: return ""
 
         width = estats[0].dim[0] * 2
-        print("  ".join(f"{e.value:<{width}d}" for e in estats))
-        print("  ".join(f"{str(e.meta):<{width}s}" for e in estats))
-        print("  ".join(f"{str(e.torn):<{width}s}" for e in estats))
+        header = ""
+        header += "  ".join(f"{'max' if e.torn else 'min':<{width}s}" for e in estats) + "\n"
+        header += "  ".join(f"{e.value:<{width}d}" for e in estats) + "\n"
         for e in estats:
             a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
             s = " ".join(map(str, (a[0], d)))
-            print(f"{s:<{width}s}", end="  ")
-        print()
+            header += f"{s:<{width}s}  "
+        header += "\n"
 
         width, height = estats[0].dim
         n = len(estats)
@@ -194,7 +186,7 @@ class EstatAdv:
             board[estat.adv[1]][estat.adv[0]] = icons["enemy"]
             board[estat.desti[1]][estat.desti[0]] = icons["goal"]
             for p in estat.parets: board[p[1]][p[0]] = icons["wall"]
-        return "\n".join("  ".join("".join(c) for c in b) for b in zip(*s))
+        return header + "\n".join("  ".join("".join(c) for c in b) for b in zip(*s))
 
         # NOTE: no se perque amb emoticonos no se me mostra be per pantalla, me va molt millor amb colors ANSI
         # wall, empt, goal, robot, enemy, board = "🟥", "🔲", "🏁", "🤖", "🏴‍☠️", "" #🛑
