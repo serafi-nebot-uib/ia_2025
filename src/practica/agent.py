@@ -53,6 +53,20 @@ class Viatger(joc.Viatger):
 
         return exit
 
+    def minimax(self, estat: EstatAdv, alpha: float, beta: float) -> EstatAdv:
+        if estat.meta: return estat
+
+        fills = []
+        for f in estat.fills:
+            v = self.minimax(f, alpha, beta)
+            if f.torn: alpha = max(alpha, v.value)
+            else: beta = min(beta, v.value)
+            fills.append(v)
+            if alpha >= beta: break
+
+        fn = max if estat.torn else min
+        return fn(fills, key=lambda x: x.value)
+
     def actua(self, percepcio) -> tuple[str, str]:
         if self.__accions is None:
             dim = percepcio["MIDA"]
@@ -63,28 +77,15 @@ class Viatger(joc.Viatger):
             desti = Pos(*percepcio["DESTI"])
 
             if adv is not None:
-                self.__accions = []
                 e = EstatAdv(pos, adv, desti, parets, dim, True)
+                f = self.minimax(e, float("-inf"), float("inf"))
+                self.__accions = f.cami[::2]
 
-                while not e.meta:
-                    print("max:")
-                    print(EstatAdv.tostr(e))
-                    print(EstatAdv.tostr(e.fills))
-                    e = max(e.fills, key=lambda x: x.value)
-
-                    self.__accions.append(e.cami[-1])
-                    if len(e.fills) == 0: break
-
-                    print("min:")
-                    print(EstatAdv.tostr(e))
-                    print(EstatAdv.tostr(e.fills))
-                    e = min(e.fills, key=lambda x: x.value)
-                    print()
-                    print()
+            print(f"n steps: {len(self.__accions if self.__accions else [])}")
+            print(self.__accions)
 
             # import sys
             # sys.exit(0)
-            print(f"n steps: {len(self.__accions if self.__accions else [])}")
 
         if self.__accions:
             accio = self.__accions.pop(0)

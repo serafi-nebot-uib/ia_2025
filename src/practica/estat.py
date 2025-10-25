@@ -95,8 +95,6 @@ class EstatAdv:
         self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, parets, dim
         self.torn = torn # True si el torn actual es de l'agent on esta pos, False si ho es de adv
         self.cami = cami if cami is not None else []
-        # cost: suma de totes les accions que s'han fet per a arribar a l'estat actual
-        self.c = sum(self.ACCIO[a] for a, _ in self.cami)
         # heurística: distància manhattan entre la posició actual i el destí
         self.h = sum(abs(pos - desti))
         self.h_adv = sum(abs(adv - desti))
@@ -133,12 +131,9 @@ class EstatAdv:
 
     @cached_property
     def value(self):
-        if self.meta:
-            if self.h == 0: return 1
-            if self.h_adv == 0: return -1
-            return 0
-        fvals = (fill.value for fill in self.fills)
-        return max(fvals) if self.torn else min(fvals)
+        if self.h == 0: return 1
+        if self.h_adv == 0: return -1
+        return 0
 
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
@@ -148,7 +143,6 @@ class EstatAdv:
         # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a))))
-        # return hash(self.pos + self.adv + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))
 
     def __str__(self):
         icons = {
