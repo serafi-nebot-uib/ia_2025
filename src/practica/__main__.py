@@ -3,7 +3,7 @@ import random
 
 
 def main():
-    random.seed(1234567890)
+    # random.seed(1234567890)
     mida = (10, 10)
     mida = (5, 5)
 

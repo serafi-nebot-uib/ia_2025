@@ -65,39 +65,30 @@ class Viatger(joc.Viatger):
             if adv is not None:
                 self.__accions = []
                 e = EstatAdv(pos, adv, desti, parets, dim, True)
-                print(EstatAdv.print(e))
-                print(EstatAdv.print(e.fills))
 
-                # while not e.meta:
-                #     print("max:")
-                #     print(EstatAdv.print(e))
-                #     print(EstatAdv.print(e.fills))
-                #     e = max(e.fills, key=lambda x: x.value)
-                #     print(EstatAdv.print(e))
+                while not e.meta:
+                    print("max:")
+                    print(EstatAdv.tostr(e))
+                    print(EstatAdv.tostr(e.fills))
+                    e = max(e.fills, key=lambda x: x.value)
 
-                #     self.__accions.append(e.cami[-1])
-                #     if len(e.fills) == 0: break
+                    self.__accions.append(e.cami[-1])
+                    if len(e.fills) == 0: break
 
-                #     print("min:")
-                #     print(EstatAdv.print(e))
-                #     print(EstatAdv.print(e.fills))
-                #     e = min(e.fills, key=lambda x: x.value)
-                #     print(EstatAdv.print(e))
-                #     print()
-                #     print()
-                #     print()
+                    print("min:")
+                    print(EstatAdv.tostr(e))
+                    print(EstatAdv.tostr(e.fills))
+                    e = min(e.fills, key=lambda x: x.value)
+                    print()
+                    print()
 
-                # print(self.__accions)
-
-            import sys
-            sys.exit(0)
+            # import sys
+            # sys.exit(0)
             print(f"n steps: {len(self.__accions if self.__accions else [])}")
 
-        # accio = self.__accions.pop(0) if self.__accions else ("ESPERAR", "")
-        # print(accio)
-        # return accio
         if self.__accions:
             accio = self.__accions.pop(0)
             print(accio)
             return accio
+
         return "ESPERAR", ""

@@ -33,7 +33,6 @@ class Pos(NamedTuple):
     def __lt__(self, other):       return all(self._op_binary(ops.lt, other))
     def __le__(self, other):       return all(self._op_binary(ops.le, other))
     def __eq__(self, other):       return all(self._op_binary(ops.eq, other))
-    def __ne__(self, other):       return all(self._op_binary(ops.ne, other))
     def __ge__(self, other):       return all(self._op_binary(ops.ge, other))
     def __gt__(self, other):       return all(self._op_binary(ops.gt, other))
 
@@ -60,10 +59,11 @@ class Estat:
             pos, parets = self.pos, deepcopy(self.parets)
             match accio:
                 case "MOURE" | "BOTAR":
-                    pos, parets = desti, parets | {self.pos}
+                    pos = desti
+                    parets.add(self.pos)
                 case "POSAR_PARET":
                     if desti in self.desti: return None
-                    parets |= {desti}
+                    parets.add(desti)
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     def fills(self) -> list[Self]:
@@ -115,10 +115,10 @@ class EstatAdv:
                 case "MOURE" | "BOTAR":
                     if self.torn: pos = desti
                     else: adv = desti
-                    parets |= {pos_inicial}
+                    parets.add(pos_inicial)
                 case "POSAR_PARET":
                     if desti in self.desti: return None
-                    parets |= {desti}
+                    parets.add(desti)
             return self.__class__(pos, adv, self.desti, parets, self.dim, not self.torn, self.cami + [(accio, desp)])
 
     @cached_property
@@ -147,29 +147,44 @@ class EstatAdv:
     def __hash__(self):
         # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
-        return hash(self.pos + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))
+        return hash(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a))))
+        # return hash(self.pos + self.adv + self.desti + self.dim + tuple(b for a in sorted(self.parets) for b in a))
+
+    def __str__(self):
+        icons = {
+            "wall":  "██",
+            "empty": "  ",
+            "robot": "rr",
+            "enemy": "ee",
+            "goal":  "xx"
+        }
+        return EstatAdv.tostr(self)
+
+    BG_BLACK = "\033[40m"
+    BG_RED = "\033[41m"
+    BG_GREEN = "\033[42m"
+    BG_WHITE = "\033[47m"
+    BG_BLUE = "\033[44m"
+    RST = "\033[0m"
+
+    ICONS = {
+        "wall":  BG_BLACK + "  " + RST,
+        "empty": BG_WHITE + "  " + RST,
+        "robot": BG_BLUE  + "  " + RST,
+        "enemy": BG_RED   + "  " + RST,
+        "goal":  BG_GREEN + "  " + RST
+    }
 
     @staticmethod
-    def print(estats: Self | list):
+    def tostr(estats: Self | list, *, icons: dict[str, str] = ICONS) -> str:
+        if estats is None: return ""
         if not isinstance(estats, list): estats = [estats]
-        if len(set(e.dim for e in estats)) != 1: return
-
-        black_bg = "\033[40m"
-        red_bg = "\033[41m"
-        green_bg = "\033[42m"
-        white_bg = "\033[47m"
-        blue_bg = "\033[44m"
-        rst = "\033[0m"
-
-        wall = black_bg + "  " + rst
-        empty = white_bg + "  " + rst
-        robot = blue_bg + "  " + rst
-        enemy = red_bg  + "  " + rst
-        goal = green_bg + "  " + rst
-        board = ""
+        if len(set(e.dim for e in estats)) != 1: return ""
 
         width = estats[0].dim[0] * 2
         print("  ".join(f"{e.value:<{width}d}" for e in estats))
+        print("  ".join(f"{str(e.meta):<{width}s}" for e in estats))
+        print("  ".join(f"{str(e.torn):<{width}s}" for e in estats))
         for e in estats:
             a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
             s = " ".join(map(str, (a[0], d)))
@@ -179,12 +194,12 @@ class EstatAdv:
         width, height = estats[0].dim
         n = len(estats)
 
-        s = [[[empty for _ in range(width)] for _ in range(height)] for _ in range(n)]
+        s = [[[icons["empty"] for _ in range(width)] for _ in range(height)] for _ in range(n)]
         for board, estat in zip(s, estats):
-            board[estat.pos[1]][estat.pos[0]] = robot
-            board[estat.adv[1]][estat.adv[0]] = enemy
-            board[estat.desti[1]][estat.desti[0]] = goal
-            for p in estat.parets: board[p[1]][p[0]] = wall
+            board[estat.pos[1]][estat.pos[0]] = icons["robot"]
+            board[estat.adv[1]][estat.adv[0]] = icons["enemy"]
+            board[estat.desti[1]][estat.desti[0]] = icons["goal"]
+            for p in estat.parets: board[p[1]][p[0]] = icons["wall"]
         return "\n".join("  ".join("".join(c) for c in b) for b in zip(*s))
 
         # NOTE: no se perque amb emoticonos no se me mostra be per pantalla, me va molt millor amb colors ANSI
