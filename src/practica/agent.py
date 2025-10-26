@@ -69,13 +69,14 @@ class Viatger(joc.Viatger):
         return fn(fills, key=lambda x: x.value)
 
     def actua(self, percepcio) -> tuple[str, str]:
+        dim = percepcio["MIDA"]
+        torn = percepcio["TORN"]
+        pos = Pos(*percepcio["AGENTS"][torn])
+        adv = next((Pos(*v) for k, v in percepcio["AGENTS"].items() if k != torn), None)
+        parets = {Pos(*p) for p in percepcio["PARETS"]}
+        desti = Pos(*percepcio["DESTI"])
+
         if self.__accions is None:
-            dim = percepcio["MIDA"]
-            torn = percepcio["TORN"]
-            pos = Pos(*percepcio["AGENTS"][torn])
-            adv = next((Pos(*v) for k, v in percepcio["AGENTS"].items() if k != torn), None)
-            parets = {Pos(*p) for p in percepcio["PARETS"]}
-            desti = Pos(*percepcio["DESTI"])
 
             if adv is not None:
                 e = EstatAdv(pos, adv, desti, parets, dim, True)
@@ -91,6 +92,8 @@ class Viatger(joc.Viatger):
             print(f"n steps: {len(self.__accions if self.__accions else [])}")
 
         if self.__accions:
-            return self.__accions.pop(0)
+            accio = self.__accions.pop(0)
+            print(accio)
+            return accio
 
         return "ESPERAR", ""

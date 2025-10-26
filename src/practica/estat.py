@@ -1,14 +1,34 @@
-from typing import NamedTuple, Self
+from typing import NamedTuple, Self, Literal
 from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
 from copy import copy
 
-class Pos(NamedTuple):
-    x: int
-    y: int
+class Pos:
+    __cache: dict[int, Self] = {}
 
-    def __hash__(self): return hash(tuple(self))
+    def __new__(cls, *coords):
+        k = cls.__hash(*coords)
+        o = cls.__cache.get(k, None)
+        if o is None:
+            o = super().__new__(cls)
+            cls.__cache[k] = o
+        return o
+
+    def __del__(self): del self.__class__.__cache[hash(self)]
+
+    def __init__(self, x: int, y: int):
+        if not hasattr(self, "__init"):
+            self.__coords = (x, y)
+            self.__init = True
+
+    def __iter__(self): yield from self.__coords
+    def __len__(self): return len(self.__coords)
+    def __getitem__(self, index: int): return self.__coords[index]
+
+    @staticmethod
+    def __hash(*coords) -> int: return hash(tuple(coords))
+    def __hash__(self): return Pos.__hash(*self)
     def __str__(self): return str(tuple(self))
 
     # conjunt d'operacions aritmètiques i lògiques amb altres objectes Pos, int o qualsevol Iterable
@@ -62,14 +82,14 @@ class Estat:
                     pos = desti
                     parets.add(self.pos)
                 case "POSAR_PARET":
-                    if desti in self.desti: return None
+                    if desti == self.desti: return None
                     parets.add(desti)
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     def fills(self) -> list[Self]:
         # obtenir els estats per a totes les acciones possible i per a tots els desplaçaments possibles
         # filter(None) per a llevar els estats invàlids que retorna accio()
-        return list(filter(None, (self.accio(a, d) for a in self.ACCIO.keys() for d in self.DESP.keys())))
+        return [f for a in self.ACCIO.keys() for d in self.DESP.keys() if (f := self.accio(a, d))]
 
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
@@ -92,12 +112,14 @@ class EstatAdv:
     DESP = { "N": Pos(0, -1), "O": Pos(-1, 0), "S": Pos(0, 1), "E": Pos(1, 0) }
 
     def __init__(self, pos: Pos, adv: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], torn: bool = True, cami: list[tuple[str, str]] | None = None):
-        self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, parets, dim
-        self.torn = torn # True si el torn actual es de l'agent on esta pos, False si ho es de adv
-        self.cami = cami if cami is not None else []
-        # heurística: distància manhattan entre la posició actual i el destí
-        self.h = sum(abs(pos - desti))
-        self.h_adv = sum(abs(adv - desti))
+        if not hasattr(self, "__init"):
+            self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, parets, dim
+            self.torn = torn # True si el torn actual es de l'agent on esta pos, False si ho es de adv
+            self.cami = cami if cami is not None else []
+            # heurística: distància manhattan entre la posició actual i el destí
+            self.h = sum(abs(pos - desti))
+            self.h_adv = sum(abs(adv - desti))
+            self.__init = True
 
     def _pos_valid(self, pos: Pos, adv: Pos) -> bool: return (0, 0) <= pos < self.dim and pos not in self.parets and pos != adv
 
@@ -115,7 +137,7 @@ class EstatAdv:
                     else: adv = desti
                     parets.add(pos_inicial)
                 case "POSAR_PARET":
-                    if desti in self.desti: return None
+                    if desti == self.desti: return None
                     parets.add(desti)
             return self.__class__(pos, adv, self.desti, parets, self.dim, not self.torn, self.cami + [(accio, desp)])
 
@@ -131,18 +153,20 @@ class EstatAdv:
 
     @cached_property
     def value(self):
-        if self.h == 0: return 1
-        if self.h_adv == 0: return -1
+        if self.h == 0: return self.h_adv
+        if self.h_adv == 0: return -self.h
         return 0
 
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
         return hash(self) == hash(other)
 
-    def __hash__(self):
+    @staticmethod
+    def __hash(pos: Pos, adv: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], torn: bool):
         # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
-        return hash(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a))))
+        return hash(tuple(map(tuple, (pos, adv, desti, dim, (torn,), (b for a in sorted(parets) for b in a)))))
+    def __hash__(self): return self.__hash(self.pos, self.adv, self.desti, self.parets, self.dim, self.torn)
 
     def __str__(self): return EstatAdv.tostr(self)
 
@@ -161,20 +185,20 @@ class EstatAdv:
         "goal":  BG_GREEN + "  " + RST
     }
 
-    @staticmethod
-    def tostr(estats: Self | list, *, icons: dict[str, str] = ICONS) -> str:
+    @classmethod
+    def tostr(cls, estats: Self | list, *, icons: dict[str, str] = ICONS) -> str:
         if estats is None: return ""
         if not isinstance(estats, list): estats = [estats]
         if len(set(e.dim for e in estats)) != 1: return ""
 
-        width = estats[0].dim[0] * 2
+        sep = estats[0].dim[0] * 2
         header = ""
-        header += "  ".join(f"{'max' if e.torn else 'min':<{width}s}" for e in estats) + "\n"
-        header += "  ".join(f"{e.value:<{width}d}" for e in estats) + "\n"
+        header += "  ".join(f"{'max' if e.torn else 'min':<{sep}s}" for e in estats) + "\n"
+        header += "  ".join(f"{e.value:<{sep}d}" for e in estats) + "\n"
         for e in estats:
             a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
             s = " ".join(map(str, (a[0], d)))
-            header += f"{s:<{width}s}  "
+            header += f"{s:<{sep}s}  "
         header += "\n"
 
         width, height = estats[0].dim
