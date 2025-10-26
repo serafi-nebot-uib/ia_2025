@@ -1,0 +1,120 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+
+% Page setup
+\geometry{margin=1in}
+\onehalfspacing
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
+% Header & Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{Your Report Title}
+\fancyhead[R]{\thepage}
+
+% Title setup
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\Huge}
+  {\chaptername\ \thechapter}{20pt}{\Huge}
+
+% Title Page
+\title{
+  \vspace{3cm}
+  \textbf{Memòria pràctica IA}\\
+  \large A Demonstration of Report Formatting in \LaTeX
+  \vspace{2cm}
+}
+\author{Your Name \\ \small University or Organization}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+
+% ==========================
+\chapter{Introduction}
+\label{ch:intro}
+This is the introduction to the report. You can include background information, context, and the motivation for your project.
+
+\section{Purpose}
+The purpose of this report is to demonstrate how to create a structured report using \LaTeX.
+
+% ==========================
+\chapter{Methodology}
+\label{ch:method}
+Describe the methods used in your study or project.
+
+\section{Data Collection}
+Data were collected through surveys, experiments, or simulations.
+
+\section{Analysis Techniques}
+The collected data were analyzed using statistical methods such as regression or hypothesis testing.
+
+% Example Equation
+\begin{equation}
+E = mc^2
+\end{equation}
+
+% ==========================
+\chapter{Results}
+\label{ch:results}
+You can include tables and figures to present your findings.
+
+\begin{table}[h!]
+  \centering
+  \caption{Example Table}
+  \begin{tabular}{|c|c|c|}
+    \hline
+    Sample & Value & Result \\
+    \hline
+    A & 10 & Pass \\
+    B & 7 & Fail \\
+    C & 9 & Pass \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{example-image}
+  \caption{Example Figure}
+\end{figure}
+
+% ==========================
+\chapter{Conclusion}
+\label{ch:conclusion}
+Summarize your work and discuss implications or future work.
+
+% ==========================
+\appendix
+\chapter{Appendix A: Additional Data}
+Extra materials, code, or detailed tables can go here.
+
+% ==========================
+\begin{thebibliography}{9}
+\bibitem{ref1}
+Author, A. (2025). \textit{Title of the Paper or Book}. Publisher or Journal Name.
+
+\bibitem{ref2}
+Author, B. (2024). Another Reference Example. \textit{Journal of Examples}, 12(3), 45--56.
+\end{thebibliography}
+
+\end{document}
