@@ -22,7 +22,7 @@ class Viatger(joc.Viatger):
             if estat_actual in tancats: continue
             if estat_actual.h == 0: break
 
-            for f in estat_actual.fills(): oberts.append(f)
+            for f in estat_actual.fills: oberts.append(f)
             tancats.add(estat_actual)
 
         if estat_actual and estat_actual.h == 0:
@@ -45,7 +45,7 @@ class Viatger(joc.Viatger):
             if estat_actual in tancats: continue
             if estat_actual.h == 0: break
 
-            for f in estat_actual.fills(): oberts.put(f)
+            for f in estat_actual.fills: oberts.put(f)
             tancats.add(estat_actual)
 
         if estat_actual and estat_actual.h == 0:
@@ -91,11 +91,5 @@ class Viatger(joc.Viatger):
             end = time.perf_counter()
             print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({len(self.__accions if self.__accions else [])} pases)")
 
-        if self.__accions:
-            e = EstatAdv(pos, adv, desti, parets, dim, True) if adv is not None else Estat(pos, desti, parets, dim)
-            accio = self.__accions.pop(0)
-            # print(EstatAdv.tostr([e, e.accio(*accio)]))
-            # print(accio)
-            return accio
-
+        if self.__accions: return self.__accions.pop(0)
         return "ESPERAR", ""

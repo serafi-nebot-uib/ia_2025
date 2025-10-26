@@ -1,35 +1,16 @@
-from typing import Self
+from typing import Self, NamedTuple
 from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
-from copy import copy, deepcopy
+from copy import copy
 
-class Pos:
-    # __cache: dict[int, Self] = {}
+class Pos(NamedTuple):
+    x: int
+    y: int
 
-    # def __new__(cls, *coords):
-    #     k = cls.__hash(*coords)
-    #     o = cls.__cache.get(k, None)
-    #     if o is None:
-    #         o = super().__new__(cls)
-    #         cls.__cache[k] = o
-    #     return o
-
-    # def __del__(self): del self.__class__.__cache[hash(self)]
-
-    def __init__(self, x: int, y: int):
-        if not hasattr(self, "__init"):
-            self.__coords = (x, y)
-            self.__init = True
-
-    def __iter__(self): yield from self.__coords
-    def __len__(self): return len(self.__coords)
-    def __getitem__(self, index: int): return self.__coords[index]
-
-    @staticmethod
-    def __hash(*coords) -> int: return hash(tuple(coords))
-    def __hash__(self): return Pos.__hash(*self)
+    def __hash__(self): return hash(tuple(self))
     def __str__(self): return str(tuple(self))
+    def __repr__(self): return str(tuple(self))
 
     # conjunt d'operacions aritmètiques i lògiques amb altres objectes Pos, int o qualsevol Iterable
     # les operacións aritmètiques retornen un objecte Pos nou amb el resultat
@@ -75,7 +56,7 @@ class Estat:
 
     def accio(self, accio: str, desp: str) -> Self | None:
         if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
-        desti = self.pos + self.DESP[desp] * (1 + (accio == "BOTAR"))
+        desti = self.pos + self.DESP[desp] * (1 + int(accio == "BOTAR"))
         if self._pos_valid(desti):
             pos, parets = self.pos, copy(self.parets)
             match accio:
@@ -132,6 +113,7 @@ class Estat:
     def tostr(cls, estats: Self | list, *, icons: dict[str, str] = ICONS) -> str:
         if estats is None: return ""
         if not isinstance(estats, list): estats = [estats]
+        estats = list(filter(None, estats))
         if len(set(e.dim for e in estats)) != 1: return ""
 
         sep = estats[0].dim[0] * 2
