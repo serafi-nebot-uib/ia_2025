@@ -54,19 +54,21 @@ class Viatger(joc.Viatger):
 
         return exit
 
-    def minimax(self, estat: EstatAdv, alpha: float, beta: float) -> EstatAdv:
+    def minimax(self, estat: EstatAdv, alpha: float | None = None, beta: float | None = None) -> EstatAdv:
         if estat.meta: return estat
 
         fills = []
-        for f in estat.fills:
-            v = self.minimax(f, alpha, beta)
-            if f.torn: alpha = max(alpha, v.value)
-            else: beta = min(beta, v.value)
-            fills.append(v)
-            if alpha >= beta: break
+        prune = None not in (alpha, beta)
+        for fill in estat.fills:
+            final = self.minimax(fill, alpha, beta)
+            if prune:
+                if estat.torn: alpha = max(alpha, final.puntuacio)
+                else: beta = min(beta, final.puntuacio)
+            fills.append(final)
+            if prune and alpha >= beta: break
 
         fn = max if estat.torn else min
-        return fn(fills, key=lambda x: x.value)
+        return fn(fills, key=lambda x: x.puntuacio)
 
     def actua(self, percepcio) -> tuple[str, str]:
         dim = percepcio["MIDA"]
@@ -77,23 +79,23 @@ class Viatger(joc.Viatger):
         desti = Pos(*percepcio["DESTI"])
 
         if self.__accions is None:
-
+            start = time.perf_counter()
             if adv is not None:
                 e = EstatAdv(pos, adv, desti, parets, dim, True)
-
-                start = time.perf_counter()
                 f = self.minimax(e, float("-inf"), float("inf"))
-                end = time.perf_counter()
-                print(f"minimax in {end - start:.6f} seconds")
-
                 # agafar les accions de max (totes les parells del cami al node final)
                 self.__accions = f.cami[::2]
-
-            print(f"n steps: {len(self.__accions if self.__accions else [])}")
+            else:
+                e = Estat(pos, desti, parets, dim)
+                self.astar(e)
+            end = time.perf_counter()
+            print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({len(self.__accions if self.__accions else [])} pases)")
 
         if self.__accions:
+            e = EstatAdv(pos, adv, desti, parets, dim, True) if adv is not None else Estat(pos, desti, parets, dim)
             accio = self.__accions.pop(0)
-            print(accio)
+            # print(EstatAdv.tostr([e, e.accio(*accio)]))
+            # print(accio)
             return accio
 
         return "ESPERAR", ""
