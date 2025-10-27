@@ -4,14 +4,18 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{amsmath, amssymb}
-\usepackage{geometry}
+\usepackage[a4paper, top=0.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
 \usepackage{setspace}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
+\usepackage{relsize}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+
 
 % Page setup
-\geometry{margin=1in}
+% \geometry{margin=1in}
 \onehalfspacing
 \setlength{\parskip}{0.8em}
 \setlength{\parindent}{0pt}
@@ -19,62 +23,212 @@
 % Header & Footer
 \pagestyle{fancy}
 \fancyhf{}
-\fancyhead[L]{Your Report Title}
-\fancyhead[R]{\thepage}
+\fancyhead[L]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{Pràctica 1 - Agents intel·ligents adversarials i basats en cerques}} % \fancyhead[L]{Your Report Title}
+\fancyhead[R]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{\thepage}} % \fancyhead[R]{\thepage}
+% \setlength{\headheight}{15pt} %\setlength{\headheight}{10pt}
+% \setlength{\headsep}{40pt}
 
 % Title setup
 \titleformat{\chapter}[display]
   {\normalfont\bfseries\Huge}
-  {\chaptername\ \thechapter}{20pt}{\Huge}
+  {\vspace{-2cm}}{20pt}{\Huge}
 
 % Title Page
 \title{
-  \vspace{3cm}
-  \textbf{Memòria pràctica IA}\\
-  \large A Demonstration of Report Formatting in \LaTeX
-  \vspace{2cm}
+  \vspace{0cm}
+  \textbf{Memòria de la Pràctica 1}\\
+  {\Large \textbf{Agents intel·ligents adversarials \\[-0.3em] i basats en cerques}}
+  \vspace{5cm}
 }
-\author{Your Name \\ \small University or Organization}
-\date{\today}
+\author{Serafí Nebot Ginard \\  Jaume Galmés Ramis \\
+\vspace{7cm}
+\\ 21722 - Intel·ligència Artificial \\ Grau d’Enginyeria Informàtica \\ Curs 2025/2026
+}
+
+\fancypagestyle{plain}{
+  \fancyhf{} % neteja
+  \fancyfoot[C]{\thepage} % número de pàgina al centre
+  \renewcommand{\footrulewidth}{0pt}
+  \setlength{\footskip}{1.5cm} % ajusta la distància des del final de la pàgina
+}
 
 \begin{document}
 
+\date{}  % No mostrar cap data
 \maketitle
 \thispagestyle{empty}
 \newpage
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}  
 
 \pagenumbering{roman}
+\renewcommand{\contentsname}{Índex}
 \tableofcontents
 \newpage
 
 \pagenumbering{arabic}
 
 % ==========================
-\chapter{Introduction}
+\chapter{Introducció}
 \label{ch:intro}
-This is the introduction to the report. You can include background information, context, and the motivation for your project.
-
-\section{Purpose}
-The purpose of this report is to demonstrate how to create a structured report using \LaTeX.
-
-% ==========================
-\chapter{Methodology}
-\label{ch:method}
-Describe the methods used in your study or project.
-
-\section{Data Collection}
-Data were collected through surveys, experiments, or simulations.
-
-\section{Analysis Techniques}
-The collected data were analyzed using statistical methods such as regression or hypothesis testing.
-
-% Example Equation
-\begin{equation}
-E = mc^2
-\end{equation}
+Aquesta memòria pretèn mostrar la feina realitzada sobre la pràctica 1, en les següents pàgines s'exposa l'abordament del problema
+des del disseny de l'estructura de dades, passant per el plantejament i implementació dels distints algorismes i acabant amb
+l'estudi dels resultats obtinguts.
 
 % ==========================
-\chapter{Results}
+\chapter{Estructura de dades}
+\label{ch:structure}
+Dins aquest apartat es descriuen les estructures de dades que hem considerat adients per a fonamentar un problema com el proposat,
+entenent la seva naturalesa i les particularitats del mateix.
+
+\section{Classe Pos i tractament de la percepció}
+A partir de les dades proporcionades per el mètode \texttt{percepció} de \texttt{joc.py} podem estructurar les dades efectives, és a dir, 
+les que ens seràn útils per a poder dur a terme la dinàmica del joc.
+
+Per conveniència s'ha implementat una classe pròpia \texttt{Pos} dins \texttt{Estat.py}, aquesta hereta de \texttt{NamedTuple}
+i permet treballar i operar amb les posicions dels objectes de forma més còmode.
+
+Per tant, dins del nostre codi, algunes de les percepcions com la dimensió o el torn es mantenen iguals,
+mentre que altres percepcions com la posició dels agents i el destí es converteixen en objectes \texttt{Pos}, de forma
+idèntica succeeix amb les parets, on aquestes formen un conjunt d'objectes \texttt{Pos}.
+
+\section{Classe Estat}
+Dins l'arxiu \texttt{Estat.py} trobam les classes \texttt{Estat} i \texttt{EstatAdv}, aquestes formulen els estats i permeten donar
+una representació lògica de l'entorn en un moment concret. La implementació de dues classes separades ve justificada principalment
+per qüestions de facilitat. D'aquesta forma entenem \texttt{Estat} com una representació d'un sol agent sobre el tauler,
+mentre que l'ús d'atributs addicionals donen a \texttt{EstatAdv} la capacitat de treballar sobre un entorn multiagent.
+
+Un estat sobre el problema donat, en la seva forma més atòmica, es composa dels següents atributs:
+\begin{itemize}[topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=4pt]
+    \item La posició del/s agent/s sobre el tauler
+    \item La posició de destí final (objectiu)
+    \item La posició dels obstacles (parets)
+    \item La dimensió del tauler
+\end{itemize}
+\vspace*{0,5cm} %força un espai en blanc
+
+Addicionalment trobem atributs derivats de la naturalesa de l'algorisme amb el qual estem treballant, necessaris per a poder
+resoldre el problema, alguns d'ells són:
+\begin{itemize}[topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=4pt]
+    \item El camí com a seqüència d'estats i accions que duen fins al node en qüestió
+    \item La heurística de cada agent 
+    \item El cost del camí acumulat
+    \item El torn de l'agent que actua sobre l'estat
+\end{itemize}
+
+Així mateix dins les classes d'estats hi trobam la definició de les accions que l'agent pot dur a terme, juntament amb el seu respectiu cost.
+Aquestes entren en joc als mètodes involucrats amb la generació de fills i el seu cami associat. Mètodes com \texttt{accio} s'encarrèguen 
+d'aplicar una acció sobre un estat donat, retornant l'estat consegüent, mentre que d'altra banda els mètodes \texttt{fills} empren aquesta 
+per a generar una llista de tots els possibles estats resultants.
+
+També trobam mètodes com \texttt{meta}, encarregat de comprovar si en l’estat actual un agent ha arribat al destí 
+o si no hi ha moviments disponibles, i funcions auxiliars com \texttt{hash} i \texttt{eq}, 
+que permeten treballar amb els estats dins d’estructures de dades.
+
+% ==========================
+\chapter{Algorismes basats en cerca}
+\label{ch:searchAlgorithms}
+Els següents algorismes basats en cerca permeten, donat un estat inicial, obtenir com a solució un cami
+\section{Algorisme Depth-First Search}
+L'algorisme de cerca en profunditat o \textit{Depth-First Search} (DFS) és un tipus de
+cerca no informada que recorr de forma iterada el cami descendent de pares a fills.
+Dins el nostre projecte aquest s'ha implementat emprant principalment un llistat dels nodes oberts 
+i un conjunt dels nodes tancats, mitjançant l'extracció i posterior visita 
+del darrer element (-1) de la llista de nodes oberts. 
+A cada iteració es comprova si el node fill és l'estat objectiu.
+
+
+\section{Algorisme A*}
+
+Per contraposició a l'algorisme DFS, l'A* és un algorisme de cerca informada, és a dir, a cada iteració, s'avalua la bondat d'un node
+tenguent en compte no només la seva heurística sino també el cost acumulat fins al mateix.
+
+Per a dur a terme la bondat d'un estat s'ha emprat com a heurística la distància Manhattan,
+és a dir:
+
+Sigui $\mathbf{p}$ la posició de l'agent a l'estat $\mathbf{n}$ i $\mathbf{d}$ la posició de l'objectiu, amb coordenades:
+{
+\normalsize
+\[
+\mathbf{p} =
+\begin{bmatrix}
+x_p & y_p
+\end{bmatrix}, \quad
+\mathbf{d} =
+\begin{bmatrix}
+x_d & y_d
+\end{bmatrix}
+\]
+}
+
+Obtenim l'heurística com:
+\[
+h(\mathbf{n})
+= d(\mathbf{p}, \mathbf{d}) 
+= \sum_{i=1}^{2} |p_i - d_i|
+= |x_p - x_d| + |y_p - y_d|
+\]
+
+
+% ==========================
+\newcommand{\alphabeta}{\(\alpha\)\textnormal{-}\(\beta\)}
+
+\chapter{Algorisme adversarial - Minimax}
+\label{ch:minimax}
+A diferència dels algorismes de cerca informats/no informats, els algorismes adversarials ens permeten avaluar cada jugada
+on la solució no és el cami sino la acció òptima.
+
+\section{Plantejament}
+L'algorisme \texttt{minimax} genera, a partir d'un estat donat, totes les possibles jugades, avaluant la bondat de cada una
+i finalment retornant la que resulta més adient per a l'agent del torn actual. Recordem que ens interessa que l'agent
+MAX dugui a terme el moviment que li pugui donar més avantatge fent el supòsit de que MIN actuarà de la forma més obstructiva possible,
+d'aquesta forma asseguram que \texttt{minimax} es posi en el pitjor dels casos i no només contempli quan l'agent MIN jugui de forma subòptima.
+
+Per a implementar aquest comportament al codi, s'ha definit que la puntuació que avalua una jugada sigui com de molt s'ha aconseguit
+obstruir a l'agent contari, és a dir:
+
+Siguin $a_{act}$ i $a_{adv}$ l’agent del torn actual i el seu adversari, 
+i $d(a)$ la distància Manhattan d’un agent $a$ respecte al destí:
+\[
+\text{puntuació}(a_{act}) =
+\begin{cases}
+d(a_{adv}), & \text{si } d(a_{act}) = 0, \\
+-d(a_{act}), & \text{si } d(a_{adv}) = 0, \\
+0, & \text{en cas contrari.}
+\end{cases}
+\]
+
+\section{Poda \alphabeta}
+La poda \alphabeta\ permet reduïr el nombre de nodes explorats. Dins el nostre projecte aquesta es veu reflexada 
+com a dos paràmetres de la funció \texttt{minimax}.
+\\\\La primera crida a \texttt{minimax} es produeix al mètode
+\texttt{actua} on aquest inicialitza $\alpha = -\infty$ i $\beta=+\infty$.
+Posteriorment les crides recursives al mètode \texttt{minimax} van confinant l'interval entre \alphabeta\ fins a arribar, 
+si s'esdevé, al compliment de la condició de poda ($\alpha \geqq \beta$).\\
+\newpage
+
+\vspace*{0.1cm} %força un espai en blanc
+\section{Execució}
+A continuació es presenta una descripció general del funcionament de l’algorisme \texttt{minimax}, 
+especificant les passes que segueix durant l’execució.\\
+
+A partir d’un estat passat per paràmetre:\\
+\begin{tcolorbox}[colback=gray!5!white, colframe=black!30, title={Algorisme Minimax}]
+\begin{enumerate}[label=\textbf{Pas \arabic*:}, leftmargin=1.2cm]
+    \item Inicialitza $\alpha = -\infty$ i $\beta = +\infty$.
+    \item Si l’estat actual és un estat final, es retorna a ell mateix (conté la puntuació).
+    \item Genera tots els estats fills possibles.
+    \item Per a cada fill:
+    \begin{enumerate}[label*=\arabic*.]
+        \item Calcula recursivament el valor de \texttt{minimax}.
+        \item Actualitza $\alpha$ o $\beta$ segons el torn.
+        \item Si $\alpha \geq \beta$, aplica la poda i surt del bucle.
+    \end{enumerate}
+    \item Retorna el valor màxim o mínim segons l’agent del torn.
+\end{enumerate}
+\end{tcolorbox}
+
+% ==========================
+\chapter{Estudi dels resultats}
 \label{ch:results}
 You can include tables and figures to present your findings.
 
@@ -99,22 +253,39 @@ You can include tables and figures to present your findings.
 \end{figure}
 
 % ==========================
-\chapter{Conclusion}
+\chapter{Conclusió}
 \label{ch:conclusion}
-Summarize your work and discuss implications or future work.
+La pràctica realitzada ha permès aplicar els conceptes i tècniques apresos al llarg del curs d’intel·ligència artificial per al 
+desenvolupament d’agents basats en cerques i agents adversarials. Mitjançant la implementació dels algoritmes de cerca no informada, 
+A* i Minimax amb poda $\alpha$-$\beta$, hem pogut observar de primera mà com cada tècnica aborda el problema de trobar un camí cap 
+a l’objectiu i com afecta la seva eficiència i rendiment segons les restriccions del taulell i les accions disponibles.
 
-% ==========================
-\appendix
-\chapter{Appendix A: Additional Data}
-Extra materials, code, or detailed tables can go here.
+A més, la pràctica ha posat de manifest la importància de la representació adequada dels estats, la gestió de les accions i el càlcul
+de puntuacions en entorns multiagent. L’anàlisi comparatiu dels algorismes implementats ha evidenciat les diferències entre cerques
+informades i no informades, així com la rellevància de la poda $\alpha$-$\beta$ per optimitzar la presa de decisions en situacions adversarials.
 
-% ==========================
-\begin{thebibliography}{9}
-\bibitem{ref1}
-Author, A. (2025). \textit{Title of the Paper or Book}. Publisher or Journal Name.
+En conclusió, aquesta pràctica no només ha reforçat els coneixements teòrics adquirits a classe, sinó que també ha desenvolupat 
+habilitats de programació, anàlisi i documentació de solucions en un entorn controlat, proporcionant una base sòlida per a futurs 
+treballs en intel·ligència artificial aplicada.
 
-\bibitem{ref2}
-Author, B. (2024). Another Reference Example. \textit{Journal of Examples}, 12(3), 45--56.
-\end{thebibliography}
+
+\cleardoublepage
+\thispagestyle{empty} % sense número de pàgina
+
+\begin{center}
+\vspace*{5cm} % espai superior
+
+{\LARGE \textbf{Pràctica Bloc I}}\\[1em]
+{\Large Intel·ligència Artificial}\\[4cm]
+
+{\large Agents intel·ligents adversarials\\ i basats en cerca}\\[5cm]
+
+{\large %\textbf{Alumnes:}}\\
+Serafí Nebot Ginard\\
+Jaume Galmés Ramis\\[4cm]}
+
+{\large Grau d'Enginyeria Informàtica\\Curs 2025/2026}
+
+\end{center}
 
 \end{document}
