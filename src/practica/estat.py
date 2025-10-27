@@ -59,13 +59,12 @@ class Estat:
         desti = self.pos + self.DESP[desp] * (1 + int(accio == "BOTAR"))
         if self._pos_valid(desti):
             pos, parets = self.pos, copy(self.parets)
-            match accio:
-                case "MOURE" | "BOTAR":
-                    pos = desti
-                    parets.add(self.pos)
-                case "POSAR_PARET":
-                    if desti == self.desti: return None
-                    parets.add(desti)
+            if accio in ("MOURE", "BOTAR"):
+                pos = desti
+                parets.add(self.pos)
+            else:
+                if desti == self.desti: return None
+                parets.add(desti)
             return self.__class__(pos, self.desti, parets, self.dim, self.cami + [(accio, desp)])
 
     @cached_property
@@ -135,8 +134,8 @@ class Estat:
         return header + "\n".join("  ".join("".join(c) for c in b) for b in zip(*s))
 
 class EstatAdv:
-    # totes les accions possibles amb el seu cost associat
-    ACCIO = { "MOURE": 1, "BOTAR": 2, "POSAR_PARET": 3 }
+    # totes les accions possibles
+    ACCIO = { "MOURE", "BOTAR", "POSAR_PARET" }
     # tots els desplaçaments possibles amb la seva direcció (x, y)
     DESP = { "N": Pos(0, -1), "O": Pos(-1, 0), "S": Pos(0, 1), "E": Pos(1, 0) }
 
@@ -144,7 +143,7 @@ class EstatAdv:
         self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, parets, dim
         self.torn = torn # True si el torn actual es de l'agent on esta pos, False si ho es de adv
         self.cami = cami if cami is not None else []
-        # heurística: distància manhattan entre la posició actual i el destí
+        # distància manhattan entre la posició actual i el destí
         self.dist = sum(abs(pos - desti))
         self.dist_adv = sum(abs(adv - desti))
 
@@ -157,21 +156,27 @@ class EstatAdv:
         desti = pos_inicial + self.DESP[desp] * (1 + (accio == "BOTAR"))
         if self._pos_valid(desti, pos_adv):
             pos, parets = self.pos, copy(self.parets)
-            match accio:
-                case "MOURE" | "BOTAR":
-                    if self.torn: pos = desti
-                    else: adv = desti
-                    parets.add(pos_inicial)
-                case "POSAR_PARET":
-                    if desti == self.desti: return None
-                    parets.add(desti)
+            if accio in ("MOURE", "BOTAR"):
+                if self.torn: pos = desti
+                else: adv = desti
+                parets.add(pos_inicial)
+            else:
+                if desti == self.desti: return None
+                parets.add(desti)
             return self.__class__(pos, adv, self.desti, parets, self.dim, not self.torn, self.cami + [(accio, desp)])
 
     @cached_property
     def fills(self) -> list[Self]:
         # obtenir els estats per a totes les acciones possible i per a tots els desplaçaments possibles
         # filter(None) per a llevar els estats invàlids que retorna accio()
-        return [f for a in self.ACCIO.keys() for d in self.DESP.keys() if (f := self.accio(a, d))]
+        fills = [f for a in self.ACCIO for d in self.DESP.keys() if (f := self.accio(a, d))]
+        # en cas de que ja no hi hagi més moviments possibles
+        # s'afegeix l'acció "ESPERAR" per a permetre que l'agent contrari pugui seguir fent moviments (sinó l'arbre d'accions acaba aquí)
+        # també es comprova que l'acció anterior (la del contrincant) no sigui "ESPERAR" per a evitar un arbre infinit
+        if len(fills) == 0 and self.cami[-1][0] != "ESPERAR":
+            e = self.__class__(self.pos, self.adv, self.desti, self.parets, self.dim, not self.torn, self.cami + [("ESPERAR", "")])
+            fills.append(e)
+        return fills
 
     # meta només comprova si l'estat actual és un node fulla (qualcú ha guanyat o no hi ha més accions possibles)
     @cached_property
@@ -192,7 +197,15 @@ class EstatAdv:
         # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
         return hash(tuple(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a)))))
 
-    def __str__(self): return EstatAdv.tostr(self)
+    def __str__(self):
+        icons = {
+            "wall":  "##",
+            "empty": "  ",
+            "robot": "rr",
+            "enemy": "ee",
+            "goal":  "gg"
+        }
+        return EstatAdv.tostr(self, icons=icons)
 
     BG_BLACK = "\033[40m"
     BG_RED = "\033[41m"
@@ -216,15 +229,15 @@ class EstatAdv:
         estats = list(filter(None, estats))
         if len(set(e.dim for e in estats)) != 1: return ""
 
-        sep = estats[0].dim[0] * 2
         header = ""
-        header += "  ".join(f"{'max' if e.torn else 'min':<{sep}s}" for e in estats) + "\n"
-        header += "  ".join(f"{e.puntuacio:<{sep}d}" for e in estats) + "\n"
-        for e in estats:
-            a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
-            s = " ".join(map(str, (a[0], d)))
-            header += f"{s:<{sep}s}  "
-        header += "\n"
+        # sep = estats[0].dim[0] * 2
+        # header += "  ".join(f"{'max' if e.torn else 'min':<{sep}s}" for e in estats) + "\n"
+        # header += "  ".join(f"{e.puntuacio:<{sep}d}" for e in estats) + "\n"
+        # for e in estats:
+        #     a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
+        #     s = " ".join(map(str, (a[0], d)))
+        #     header += f"{s:<{sep}s}  "
+        # header += "\n"
 
         width, height = estats[0].dim
         n = len(estats)

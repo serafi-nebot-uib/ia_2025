@@ -196,7 +196,7 @@ class Laberint(joc.Joc):
 			parets = [i for i in range(self.size) if random.randint(0, 2) == 0]
 
 		for paret in parets:
-			x, y = paret // self.__mida_taulell[0], paret % self.__mida_taulell[0]
+			x, y = paret // self.__mida_taulell[1], paret % self.__mida_taulell[1]
 			if not self.__caselles[x][y].desti and self.__caselles[x][y].is_accessible():
 				self.__caselles[x][y].paret = True
 				self.__parets.add((x, y))
