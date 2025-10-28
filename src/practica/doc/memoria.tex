@@ -77,64 +77,58 @@ l'estudi dels resultats obtinguts.
 % ==========================
 \chapter{Estructura de dades}
 \label{ch:structure}
-Dins aquest apartat es descriuen les estructures de dades que hem considerat adients per a fonamentar un problema com el proposat,
-entenent la seva naturalesa i les particularitats del mateix.
+Dins aquest apartat es descriuen les estructures de dades que hem definit per a solucionar el problema proposat.
+Creiem que han estat molt encetades perquè ens han ajudat a simplificar la lògica dels mètodes de cerca i a pensar sobre el problema de forma molt intuitiva.
 
 \section{Classe Pos i tractament de la percepció}
-A partir de les dades proporcionades per el mètode \texttt{percepció} de \texttt{joc.py} podem estructurar les dades efectives, és a dir, 
-les que ens seràn útils per a poder dur a terme la dinàmica del joc.
+Per conveniència s'ha creat una classe \texttt{Pos} que extén les funcionalitats d'una tupla \texttt{(x, y)}
+i permet realitzar operacions aritmétiques i lògiques, element per element, de forma molt intuitiva. Cosa que ha simplificat bastant el
+desenvolupament de la práctica.
 
-Per conveniència s'ha creat una classe \texttt{Pos} (dins \texttt{estat.py}) que representa una tupla amb les coordenades \texttt{x}, \texttt{y} d'una posicó del tauler.
-S'han implementat uns quants \textit{magic methods} per a poder realitzar operacions aritmétiques i lògiques bàsiques de forma fàcil.
-\texttt{Pos} també hereta de \texttt{NamedTuple} per a simplificar l'assignació dels atributs i fer-los immutables.
-
-Per tant, dins del nostre codi, algunes de les percepcions com la dimensió o el torn es mantenen iguals,
+Per tant algunes de les percepcions com la dimensió o el torn es mantenen iguals,
 mentre que altres percepcions com la posició dels agents i el destí es converteixen en objectes \texttt{Pos}, de forma
 idèntica succeeix amb les parets, on aquestes formen un conjunt d'objectes \texttt{Pos}.
 
 \section{Classe Estat}
-Dins l'arxiu \texttt{estat.py} trobam les classes \texttt{Estat} i \texttt{EstatAdv}, aquestes formulen els estats i permeten donar
-una representació lògica de l'entorn en un moment concret. La implementació de dues classes separades ve justificada principalment
-per qüestions de facilitat. D'aquesta forma entenem \texttt{Estat} com una representació d'un sol agent sobre el tauler,
-mentre que l'ús d'atributs addicionals donen a \texttt{EstatAdv} la capacitat de treballar sobre un entorn multiagent.
+Les classes \texttt{Estat} i \texttt{EstatAdv}, que permeten donar
+una representació de l'entorn en un moment concret i generar tot l'arbre de moviments possibles a partir d'un estat inicial.
+\texttt{Estat} representa un entorn d'un sol agent sobre el tauler, mentre que l'ús d'atributs addicionals donen a \texttt{EstatAdv} la capacitat de treballar sobre un entorn multiagent.
 
-Un estat sobre el problema donat, en la seva forma més atòmica, es composa dels següents atributs:
+\pagebreak
+
+\vspace*{1em}
+En concret, la classe \texttt{Estat} ve definit pels següents atributs:
 \begin{itemize}[topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=4pt]
-    \item La posició del/s agent/s sobre el tauler
+    \item La posició de l'agent actual sobre el tauler
     \item La posició de destí final (objectiu)
     \item La posició dels obstacles (parets)
     \item La dimensió del tauler
+    \item El camí com a seqüència d'accions que duen fins al node en qüestió
+    \item La heurística de l'estat actual (distància Manhattan)
+    \item El cost de l'estat actual (suma de costs del accions de tot el camí)
 \end{itemize}
-\vspace*{0,5cm} %força un espai en blanc
 
-Addicionalment trobem atributs derivats de la naturalesa de l'algorisme amb el qual estem treballant, necessaris per a poder
-resoldre el problema, alguns d'ells són:
+Per a la classe \texttt{EstatAdv} conté els següent atributs:
 \begin{itemize}[topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=4pt]
-    \item El camí com a seqüència d'estats i accions que duen fins al node en qüestió
-    \item La heurística de cada agent 
-    \item El cost del camí acumulat
-    \item El torn de l'agent que actua sobre l'estat
+    \item La posició de l'agent actual i contrari sobre el tauler
+    \item La posició de destí final (objectiu)
+    \item La posició dels obstacles (parets)
+    \item La dimensió del tauler
+    \item El camí com a seqüència d'accions que duen fins al node en qüestió (inlcoent el moviments tant de MAX i MIN)
+    \item La distància Manhattan de l'agent actual i contrari
+    \item El torn actual (si és de MAX o de MIN)
 \end{itemize}
-
-Així mateix dins les classes d'estats hi trobam la definició de les accions que l'agent pot dur a terme, juntament amb el seu respectiu cost.
-Aquestes entren en joc als mètodes involucrats amb la generació de fills i el seu cami associat. Mètodes com \texttt{accio} s'encarrèguen 
-d'aplicar una acció sobre un estat donat, retornant l'estat consegüent, mentre que d'altra banda els mètodes \texttt{fills} empren aquesta 
-per a generar una llista de tots els possibles estats resultants.
-
-També trobam mètodes com \texttt{meta}, encarregat de comprovar si en l’estat actual un agent ha arribat al destí 
-o si no hi ha moviments disponibles, i funcions auxiliars com \texttt{hash} i \texttt{eq}, 
-que permeten treballar amb els estats dins d’estructures de dades.
 
 % ==========================
 \chapter{Algorismes basats en cerca}
 \label{ch:searchAlgorithms}
-Els següents algorismes basats en cerca permeten, donat un estat inicial, obtenir com a solució un cami
+Els següents algorismes basats en cerca permeten, donat un estat inicial, obtenir com a solució un cami (seqüència d'accions).
 \section{Algorisme Depth-First Search}
 L'algorisme de cerca en profunditat o \textit{Depth-First Search} (DFS) és un tipus de
 cerca no informada que recorr de forma iterada el cami descendent de pares a fills.
 Dins el nostre projecte aquest s'ha implementat emprant principalment un llistat dels nodes oberts 
 i un conjunt dels nodes tancats, mitjançant l'extracció i posterior visita 
-del darrer element (-1) de la llista de nodes oberts. 
+del darrer element de la llista de nodes oberts. 
 A cada iteració es comprova si el node fill és l'estat objectiu.
 
 
@@ -163,11 +157,19 @@ x_d & y_d
 
 Obtenim l'heurística com:
 \[
-h(\mathbf{n})
-= d(\mathbf{p}, \mathbf{d}) 
-= \sum_{i=1}^{2} |p_i - d_i|
-= |x_p - x_d| + |y_p - y_d|
+  h(\mathbf{n})
+  = d(\mathbf{p}, \mathbf{d}) 
+  = \sum_{i=1}^{2} |p_i - d_i|
+  = |x_p - x_d| + |y_p - y_d|
 \]
+
+Per tant, si el cost acumulat ve donat per la funció $c(\mathbf{n})$, el valor del node actual és:
+\[
+  f(\mathbf{n}) = h(\mathbf{n}) + c(\mathbf{n})
+  = d(\mathbf{p}, \mathbf{d})  + c(\mathbf{n})
+\]
+
+En el cas de que dos estats tenguin el mateix valor, s'utilitza la heurística menor per a desempatar entre ells.
 
 
 % ==========================
@@ -181,10 +183,10 @@ on la solució no és el cami sino la acció òptima.
 \section{Plantejament}
 L'algorisme \texttt{minimax} genera, a partir d'un estat donat, totes les possibles jugades, avaluant la bondat de cada una
 i finalment retornant la que resulta més adient per a l'agent del torn actual. Recordem que ens interessa que l'agent
-MAX dugui a terme el moviment que li pugui donar més avantatge fent el supòsit de que MIN actuarà de la forma més obstructiva possible,
-d'aquesta forma asseguram que \texttt{minimax} es posi en el pitjor dels casos i no només contempli quan l'agent MIN jugui de forma subòptima.
+MAX dugui a terme el moviment que li pugui donar més avantatge fent el supòsit de que MIN actuarà de la mateixa forma,
+d'aquesta manera asseguram que \texttt{minimax} es posi en el pitjor dels casos i no només contempli quan l'agent MIN jugui de forma subòptima.
 
-Per a implementar aquest comportament al codi, s'ha definit que la puntuació que avalua una jugada sigui com de molt s'ha aconseguit
+Per a implementar aquest comportament, s'ha definit que la puntuació que avalua una jugada sigui com de molt s'ha aconseguit
 obstruir a l'agent contari, és a dir:
 
 Siguin $a_{act}$ i $a_{adv}$ l’agent del torn actual i el seu adversari, 
@@ -197,6 +199,11 @@ d(a_{adv}), & \text{si } d(a_{act}) = 0, \\
 0, & \text{en cas contrari.}
 \end{cases}
 \]
+
+Consideram que aquesta puntuació és una millora a la de -1 si guanya MIN, 0 si no guanya ningú i 1 si guanya MAX perque,
+per exemple, si MAX guanya és molt millor que ho faci si MIN queda enfora de l'objectiu que si queda aprop (MIN té menys possibilitats de guanyar).
+D'aquesta forma es passa més informació cap als nodes pare sobre quina de les accions és més favorable.
+
 
 \section{Poda \alphabeta}
 La poda \alphabeta\ permet reduïr el nombre de nodes explorats. Dins el nostre projecte aquesta es veu reflexada 
