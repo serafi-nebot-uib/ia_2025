@@ -18,35 +18,35 @@ def run_astar(mida: tuple[int, int]):
     end = time.perf_counter()
     return end - start, agents[0].npases, agents[0].nestats
 
-def run_minimax(mida: tuple[int, int], poda: bool):
-    agents = [agent.ViatgerMinimax(poda=poda), agent.ViatgerMinimax(poda=poda)]
+def run_minimax(mida: tuple[int, int], poda: bool, cache: bool):
+    agents = [agent.ViatgerMinimax(poda=poda, cache=cache), agent.ViatgerMinimax(poda=poda, cache=cache)]
     lab = joc.Laberint(agents, mida_taulell=mida)
     start = time.perf_counter()
     lab._logica(lab._agents)
     lab._logica(lab._agents)
     end = time.perf_counter()
-    return end - start, tuple(a.npases for a in agents), tuple(a.nestats for a in agents)
+    return end - start, tuple(a.npases for a in agents), tuple(a.nestats for a in agents), tuple(len(a.estats) for a in agents)
 
 def main():
     dfs_time, dfs_step, dfs_state = [], [], []
     as_time, as_step, as_state = [], [], []
     mm_time, mm_step, mm_state = [], [], []
-    for i in range(30):
+    for i in range(100):
         try:
             print(f"iteration #{i}")
             state = random.getstate()
 
             random.setstate(state)
             tdfs, ndfs, edfs = run_dfs(mida=(10, 10))
-            print(f"    DFS: {tdfs:10.6f} (pases: {ndfs}; estats: {edfs})")
+            print(f"    dfs: {tdfs:10.6f} (pases: {ndfs}; estats: {edfs})")
 
             random.setstate(state)
             tas, nas, eas = run_astar(mida=(10, 10))
             print(f"  astar: {tas:10.6f} (pases: {nas}; estats: {eas})")
 
-            random.setstate(state)
-            tmm, nmm, emm = run_minimax(mida=(5, 5), poda=True)
-            print(f"minimax: {tmm:10.6f} (pases: {', '.join(map(str, nmm))}; estats: {', '.join(map(str, emm))})")
+            # random.setstate(state)
+            # tmm, nmm, emm, lemm = run_minimax(mida=(5, 5), poda=True, cache=True)
+            # print(f"minimax: {tmm:10.6f} (pases: {', '.join(map(str, nmm))}; estats: {', '.join(map(str, emm))}); set estats: {', '.join(map(str, lemm))}")
 
             dfs_time.append(tdfs)
             dfs_step.append(ndfs)
@@ -54,9 +54,9 @@ def main():
             as_time.append(tas)
             as_step.append(nas)
             as_state.append(eas)
-            mm_time.append(tmm)
-            mm_step.append(nmm)
-            mm_state.append(emm)
+            # mm_time.append(tmm)
+            # mm_step.append(nmm)
+            # mm_state.append(emm)
         except KeyboardInterrupt:
           pass
 

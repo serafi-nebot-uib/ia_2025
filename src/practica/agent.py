@@ -49,7 +49,10 @@ class ViatgerDFS(joc.Viatger):
             e = Estat(pos, desti, parets, dim)
             self.dfs(e)
             end = time.perf_counter()
-            # print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
+            print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
+
+            import sys
+            sys.exit(0)
 
         if self.__accions: return self.__accions.pop(0)
         return "ESPERAR", ""
@@ -106,14 +109,20 @@ class ViatgerAstar(joc.Viatger):
         return "ESPERAR", ""
 
 class ViatgerMinimax(joc.Viatger):
-    def __init__(self, poda=True):
+    def __init__(self, poda: bool = True, cache: bool = False):
         super(ViatgerMinimax, self).__init__()
         self.__poda = poda
         self.__accions = None
         self.npases = 0
         self.nestats = 0
+        self.estats = set()
+        self.__cache = {} if cache else None
 
     def minimax(self, estat: EstatAdv, alpha: float | None = None, beta: float | None = None) -> EstatAdv:
+        key = (estat, alpha, beta)
+        if self.__cache and key in self.__cache: return self.__cache[key]
+
+        self.estats.add(estat)
         self.nestats += 1
         if estat.meta: return estat
 
@@ -128,7 +137,9 @@ class ViatgerMinimax(joc.Viatger):
             if prune and alpha >= beta: break
 
         fn = max if estat.torn else min
-        return fn(fills, key=lambda x: x.puntuacio)
+        best = fn(fills, key=lambda x: x.puntuacio)
+        if self.__cache: self.__cache[key] = best
+        return best
 
     def actua(self, percepcio) -> tuple[str, str]:
         dim = percepcio["MIDA"]
@@ -146,7 +157,8 @@ class ViatgerMinimax(joc.Viatger):
             f = self.minimax(e, alpha, beta)
             self.__accions = f.cami[::2] # agafar les accions de max (totes les accions parell del cami al node final)
             self.npases = len(self.__accions)
-            # print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
+            end = time.perf_counter()
+            print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases; {self.nestats} nestats; {len(self.estats)} estats)")
 
         if self.__accions: return self.__accions.pop(0)
         return "ESPERAR", ""

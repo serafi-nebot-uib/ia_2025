@@ -193,9 +193,16 @@ class EstatAdv:
 
     def __eq__(self, other):
         if not isinstance(other, EstatAdv): return NotImplemented
-        return self.pos == other.pos and self.adv == other.adv and self.desti == other.desti and self.dim == other.dim
+        return (
+            self.pos == other.pos and
+            self.adv == other.adv and
+            self.desti == other.desti and
+            self.dim == other.dim and
+            self.torn == other.torn and
+            self.parets == other.parets
+        )
 
-    def __hash__(self): return hash((tuple(self.pos), tuple(self.adv), tuple(self.desti), self.dim, self.torn))
+    def __hash__(self): return hash((tuple(self.pos), tuple(self.adv), tuple(self.desti), self.dim, self.torn, self.parets))
 
     def __str__(self): return EstatAdv.tostr(self)
 
