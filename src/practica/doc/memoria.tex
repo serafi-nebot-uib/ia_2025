@@ -258,14 +258,15 @@ A partir d’un estat passat per paràmetre:\\
 \label{ch:results}
 A partir dels algorismes implementats, exposam dins aquest apartat
 els resultats obtinguts després d'haver duit a terme l'execució 
-repetida dels 3 algorismes. L'experiment en qüestió prèn mesures
+repetida dels 3 algorismes, tots a partir del mateix tauler per tal de poder comparar-los millor (fixant la semilla random).
+L'experiment en qüestió prèn mesures
 durant 30 execucions i ens permet treure una conclusió aproximada
 del comportament general dels mateixos.
 
 
 \section{Mesura de rendiment: Temps d'execució}
 Després de dur a terme l'experiment podem comparar l'algorisme de cerca no informada DFS amb el de
-cerca informada A*, com veim es pot apreciar una clara millora en el temps de execució.\\
+cerca informada A*, com veim es pot apreciar una clara millora en el temps de execució amb A*.\\
 
 \begin{figure}[h!]
   \centering
@@ -275,14 +276,20 @@ cerca informada A*, com veim es pot apreciar una clara millora en el temps de ex
 
 \vspace*{0.5cm}
 
-En quant a l'algorisme minimax veim que, per qualque motiu que desconeixem,
+En quant a l'algorisme minimax veim que,
 hi ha execucions que tarden un temps desorbitat, això fa que tant la mitja
 de l'experiment com la desviació típica es vegin alterades.
-
-A la següent gràfica es pot observar el succès:
+Suposam que això és degut a que per segons quines configuracions del tauler l'algorisme minimax
+no pot realitzar moltes podes i necessita visitar quasi tots els estats possibles.
 
 \newpage
 \vspace*{0.5cm}
+
+També, si els agents estan molt enfora del desti i/o hi ha molt poques parets la quantitat d'estats possibles
+és més gran. Una combinació d'aquestes dues condicions pot dur als temps de cerca tan elevats.
+
+A la següent gràfica es pot observar el succès:
+
 
 \begin{figure}[h!]
   \centering
@@ -312,8 +319,8 @@ resultats globals.
 \end{table}
 
 
-% \newpage
-% \vspace*{0.01cm}
+\newpage
+\vspace*{0.01cm}
 \section{Mesura de rendiment: Nombre de passes}
 Una altra mesura de rendiment que hem considerat que pot ser interessant
 estudiar és el nombre de passes que tarda un algorisme en qüestió en
@@ -328,6 +335,11 @@ Per altra banda a la Figura 5.4 trobam el nombre de passes de l'algorisme minima
 i la comparativa numèrica dels 3 algorismes a la Taula 5.2. Com es pot observar 
 tot i tenir variacions dràstiques de les medicions de minimax, seguim obtenint
 un valor bastant contingut amb una desviació no tan dolenta.
+
+Un darrer punt a comentar es que en el cas del minimax el primer agent a executar l'algorisme de cerca
+sempre és el que tarda més i visita més estats. Això és degut a que aquest ja realitza un moviment
+i el següent agent comença a cercar a partir de l'estat resultant.
+Per tant, l'espai d'estats possibles és més petit, el que resulta amb un temps de cerca menor.
 
 \newpage
 \vspace*{0.5cm}
@@ -354,8 +366,8 @@ un valor bastant contingut amb una desviació no tan dolenta.
     \hline
     DFS & 31,482758621 & 14,8964719 \\
     A* & 4,482758621 & 2,061480714 \\
-    MINIMAX (MAX) & 2,93 & 1,48396102 \\
-    MINIMAX (MIN) & 2,34 & 1,468657892 \\
+    MINIMAX (Agent 1) & 2,93 & 1,48396102 \\
+    MINIMAX (Agent 2) & 2,34 & 1,468657892 \\
     \hline
   \end{tabular}
   \caption{Taula comparativa: Nombre de passes per execució}

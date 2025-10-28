@@ -11,5 +11,5 @@
 \contentsline {section}{\numberline {4.3}Execució}{7}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Estudi dels resultats}{8}{chapter.5}%
 \contentsline {section}{\numberline {5.1}Mesura de rendiment: Temps d'execució}{8}{section.5.1}%
-\contentsline {section}{\numberline {5.2}Mesura de rendiment: Nombre de passes}{9}{section.5.2}%
-\contentsline {chapter}{\numberline {6}Conclusió}{11}{chapter.6}%
+\contentsline {section}{\numberline {5.2}Mesura de rendiment: Nombre de passes}{10}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Conclusió}{12}{chapter.6}%
