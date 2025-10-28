@@ -231,27 +231,76 @@ A partir d’un estat passat per paràmetre:\\
 % ==========================
 \chapter{Estudi dels resultats}
 \label{ch:results}
-You can include tables and figures to present your findings.
+A partir dels algorismes implementats, exposam dins aquest apartat
+els resultats obtinguts després d'haver duit a terme l'execució 
+repetida dels 3 algorismes.
 
-\begin{table}[h!]
-  \centering
-  \caption{Example Table}
-  \begin{tabular}{|c|c|c|}
-    \hline
-    Sample & Value & Result \\
-    \hline
-    A & 10 & Pass \\
-    B & 7 & Fail \\
-    C & 9 & Pass \\
-    \hline
-  \end{tabular}
-\end{table}
+
+\section{Mesura de rendiment: Temps d'execució}
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\textwidth]{example-image}
-  \caption{Example Figure}
+  \includegraphics[width=1\textwidth]{doc-images/DFS_VS_ASTAR_EXECTIME}
+  \caption{Gràfica comparativa: temps d'execució dels algorismes DFS i A*}
 \end{figure}
+
+En quant a l'algorisme minimax veim que, per qualque motiu que desconeixem,
+hi ha execucions que tarden un temps desorbitat, això fa que tant la mitja
+de l'experiment com la desviació típica es vegin alterades.
+
+A la següent gràfica es pot observar el succès
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\textwidth]{doc-images/MINIMAX_NOFILTER}
+  \caption{Gràfica comparativa: temps d'execució dels algorismes DFS i A*}
+\end{figure}
+
+\newpage
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    Algorisme & Mitja & Desviació típica \\
+    \hline
+    DFS & 0,002409387 & 0,001169715 \\
+    A* & 0,000454857 & 0,000192119 \\
+    MINIMAX & 37,13 & 104,1104874 \\
+    \hline
+  \end{tabular}
+  \caption{Taula comparativa: temps de execució}
+\end{table}
+
+\vspace*{0.5cm}
+\section{Mesura de rendiment: Nombre de passes}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\textwidth]{doc-images/DFS_VS_ASTAR_STEPNUM}
+  \caption{Gràfica comparativa: DFS i A*}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=1\textwidth]{doc-images/MINIMAX_STEPNUM}
+  \caption{Gràfica de resultats: Algorisme Minimax}
+\end{figure}
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    Algorisme & Mitja & Desviació típica \\
+    \hline
+    DFS & 31,482758621 & 14,8964719 \\
+    A* & 4,482758621 & 2,061480714 \\
+    MINIMAX (MAX) & 2,93 & 1,48396102 \\
+    MINIMAX (MIN) & 2,34 & 1,468657892 \\
+    \hline
+  \end{tabular}
+  \caption{Taula comparativa: Nombre de passes per execució}
+\end{table}
+
 
 % ==========================
 \chapter{Conclusió}

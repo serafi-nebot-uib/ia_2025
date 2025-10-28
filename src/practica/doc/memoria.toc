@@ -10,4 +10,6 @@
 \contentsline {section}{\numberline {4.2}Poda \(\alpha \)\textnormal {-}\(\beta \)}{5}{section.4.2}%
 \contentsline {section}{\numberline {4.3}Execució}{6}{section.4.3}%
 \contentsline {chapter}{\numberline {5}Estudi dels resultats}{7}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Conclusió}{8}{chapter.6}%
+\contentsline {section}{\numberline {5.1}Mesura de rendiment: Temps d'execució}{7}{section.5.1}%
+\contentsline {section}{\numberline {5.2}Mesura de rendiment: Nombre de passes}{8}{section.5.2}%
+\contentsline {chapter}{\numberline {6}Conclusió}{10}{chapter.6}%
