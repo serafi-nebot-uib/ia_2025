@@ -2,15 +2,14 @@ from typing import Self, NamedTuple
 from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
-from copy import copy
 
 class Pos(NamedTuple):
     x: int
     y: int
 
-    def __hash__(self): return hash(tuple(self))
-    def __str__(self): return str(tuple(self))
-    def __repr__(self): return str(tuple(self))
+    def __hash__(self): return hash((self.x, self.y))
+    def __str__(self): return f"({self.x}, {self.y})"
+    def __repr__(self): return f"({self.x}, {self.y})"
 
     # conjunt d'operacions aritmètiques i lògiques amb altres objectes Pos, int o qualsevol Iterable
     # les operacións aritmètiques retornen un objecte Pos nou amb el resultat
@@ -34,7 +33,6 @@ class Pos(NamedTuple):
     def __lt__(self, other):       return all(self._op_binary(ops.lt, other))
     def __le__(self, other):       return all(self._op_binary(ops.le, other))
     def __eq__(self, other):       return all(self._op_binary(ops.eq, other))
-    def __ne__(self, other):       return any(self._op_binary(ops.ne, other))
     def __ge__(self, other):       return all(self._op_binary(ops.ge, other))
     def __gt__(self, other):       return all(self._op_binary(ops.gt, other))
 
@@ -44,21 +42,25 @@ class Estat:
     # tots els desplaçaments possibles amb la seva direcció (x, y)
     DESP = { "N": Pos(0, -1), "O": Pos(-1, 0), "S": Pos(0, 1), "E": Pos(1, 0) }
 
-    def __init__(self, pos: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], cami: list[tuple[str, str]] | None = None):
-        self.pos, self.desti, self.parets, self.dim = pos, desti, parets, dim
+    def __init__(self, pos: Pos, desti: Pos, parets: set[Pos] | frozenset[Pos], dim: tuple[int, int], cami: list[tuple[str, str]] | None = None):
+        self.pos, self.desti, self.parets, self.dim = pos, desti, frozenset(parets), dim
         self.cami = cami if cami is not None else []
         # cost: suma de totes les accions que s'han fet per a arribar a l'estat actual
         self.c = sum(self.ACCIO[a] for a, _ in self.cami)
         # heurística: distància manhattan entre la posició actual i el destí
         self.h = sum(abs(pos - desti))
 
+    # una posició és vàlida per a accedir-hi si està dintre del tauler i no hi ha cap paret
     def _pos_valid(self, pos: Pos) -> bool: return (0, 0) <= pos < self.dim and pos not in self.parets
 
     def accio(self, accio: str, desp: str) -> Self | None:
         if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
+        # desplaçar la posició actual cap la direcció especificada, botant si s'ha especificat
         desti = self.pos + self.DESP[desp] * (1 + int(accio == "BOTAR"))
         if self._pos_valid(desti):
-            pos, parets = self.pos, copy(self.parets)
+            # el set de parets s'han de copiar per a evitar que els estats fills modifiquin les parets dels pares i viceversa
+            # copy() en lloc de deepcopy() per a millorar el rendiment
+            pos, parets = self.pos, set(self.parets)
             if accio in ("MOURE", "BOTAR"):
                 pos = desti
                 parets.add(self.pos)
@@ -79,17 +81,14 @@ class Estat:
 
     def __eq__(self, other):
         if not isinstance(other, Estat): return NotImplemented
-        return hash(self) == hash(other)
+        return self.pos == other.pos and self.desti == other.desti and self.dim == other.dim
 
     def __lt__(self, other):
         if not isinstance(other, Estat): return NotImplemented
         sval, oval = self.h + self.c, other.h + other.c
         return self.h < other.h if sval == oval else sval < oval
 
-    def __hash__(self):
-        # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
-        # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
-        return hash(tuple(map(tuple, (self.pos, self.desti, self.dim, (b for a in sorted(self.parets) for b in a)))))
+    def __hash__(self): return hash((tuple(self.pos), tuple(self.desti), self.dim))
 
     def __str__(self): return Estat.tostr(self)
 
@@ -139,23 +138,26 @@ class EstatAdv:
     # tots els desplaçaments possibles amb la seva direcció (x, y)
     DESP = { "N": Pos(0, -1), "O": Pos(-1, 0), "S": Pos(0, 1), "E": Pos(1, 0) }
 
-    def __init__(self, pos: Pos, adv: Pos, desti: Pos, parets: set[Pos], dim: tuple[int, int], torn: bool = True, cami: list[tuple[str, str]] | None = None):
-        self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, parets, dim
+    def __init__(self, pos: Pos, adv: Pos, desti: Pos, parets: set[Pos] | frozenset[Pos], dim: tuple[int, int], torn: bool = True, cami: list[tuple[str, str]] | None = None):
+        self.pos, self.adv, self.desti, self.parets, self.dim = pos, adv, desti, frozenset(parets), dim
         self.torn = torn # True si el torn actual es de l'agent on esta pos, False si ho es de adv
         self.cami = cami if cami is not None else []
-        # distància manhattan entre la posició actual i el destí
+        # distància manhattan entre la posició de cada agent i el destí
         self.dist = sum(abs(pos - desti))
         self.dist_adv = sum(abs(adv - desti))
 
+    # una posició és vàlida per a accedir-hi si està dintre del tauler, no hi ha cap paret i tampoc hi ha l'adversari
     def _pos_valid(self, pos: Pos, adv: Pos) -> bool: return (0, 0) <= pos < self.dim and pos not in self.parets and pos != adv
 
     def accio(self, accio: str, desp: str) -> Self | None:
         if accio not in self.ACCIO or desp not in self.DESP: raise KeyError(f"acció invàlida: {accio}, {desp}")
+        # EstatAdv manté constància del torn actual, per tant s'ha de tenir en compte si la posició inicial és de min o max
         pos, adv = self.pos, self.adv
         pos_inicial, pos_adv = (pos, adv) if self.torn else (adv, pos)
+        # desplaçar la posició actual cap la direcció especificada, botant si s'ha especificat
         desti = pos_inicial + self.DESP[desp] * (1 + (accio == "BOTAR"))
         if self._pos_valid(desti, pos_adv):
-            pos, parets = self.pos, copy(self.parets)
+            pos, parets = self.pos, set(self.parets)
             if accio in ("MOURE", "BOTAR"):
                 if self.torn: pos = desti
                 else: adv = desti
@@ -173,9 +175,10 @@ class EstatAdv:
         # en cas de que ja no hi hagi més moviments possibles
         # s'afegeix l'acció "ESPERAR" per a permetre que l'agent contrari pugui seguir fent moviments (sinó l'arbre d'accions acaba aquí)
         # també es comprova que l'acció anterior (la del contrincant) no sigui "ESPERAR" per a evitar un arbre infinit
-        if len(fills) == 0 and self.cami[-1][0] != "ESPERAR":
-            e = self.__class__(self.pos, self.adv, self.desti, self.parets, self.dim, not self.torn, self.cami + [("ESPERAR", "")])
-            fills.append(e)
+        if len(fills) == 0:
+            if not self.cami or self.cami[-1][0] != "ESPERAR":
+                e = self.__class__(self.pos, self.adv, self.desti, self.parets, self.dim, not self.torn, self.cami + [("ESPERAR", "")])
+                fills.append(e)
         return fills
 
     # meta només comprova si l'estat actual és un node fulla (qualcú ha guanyat o no hi ha més accions possibles)
@@ -189,23 +192,12 @@ class EstatAdv:
         return 0
 
     def __eq__(self, other):
-        if not isinstance(other, Estat): return NotImplemented
-        return hash(self) == hash(other)
+        if not isinstance(other, EstatAdv): return NotImplemented
+        return self.pos == other.pos and self.adv == other.adv and self.desti == other.desti and self.dim == other.dim
 
-    def __hash__(self):
-        # parets s'ordena abans per a assegurar que hash sempre sigui el mateix per al mateix conjunt de parets
-        # (python no assegura que dos set() amb els mateixos elements seguesquin el mateix ordre)
-        return hash(tuple(map(tuple, (self.pos, self.adv, self.desti, self.dim, (self.torn,), (b for a in sorted(self.parets) for b in a)))))
+    def __hash__(self): return hash((tuple(self.pos), tuple(self.adv), tuple(self.desti), self.dim, self.torn))
 
-    def __str__(self):
-        icons = {
-            "wall":  "##",
-            "empty": "  ",
-            "robot": "rr",
-            "enemy": "ee",
-            "goal":  "gg"
-        }
-        return EstatAdv.tostr(self, icons=icons)
+    def __str__(self): return EstatAdv.tostr(self)
 
     BG_BLACK = "\033[40m"
     BG_RED = "\033[41m"
@@ -230,14 +222,14 @@ class EstatAdv:
         if len(set(e.dim for e in estats)) != 1: return ""
 
         header = ""
-        # sep = estats[0].dim[0] * 2
-        # header += "  ".join(f"{'max' if e.torn else 'min':<{sep}s}" for e in estats) + "\n"
-        # header += "  ".join(f"{e.puntuacio:<{sep}d}" for e in estats) + "\n"
-        # for e in estats:
-        #     a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
-        #     s = " ".join(map(str, (a[0], d)))
-        #     header += f"{s:<{sep}s}  "
-        # header += "\n"
+        sep = estats[0].dim[0] * 2
+        header += "  ".join(f"{'max' if e.torn else 'min':<{sep}s}" for e in estats) + "\n"
+        header += "  ".join(f"{e.puntuacio:<{sep}d}" for e in estats) + "\n"
+        for e in estats:
+            a, d = e.cami[-1] if e.cami else ("ESPERAR", None)
+            s = " ".join(map(str, (a[0], d)))
+            header += f"{s:<{sep}s}  "
+        header += "\n"
 
         width, height = estats[0].dim
         n = len(estats)
