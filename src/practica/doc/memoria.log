@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  28 OCT 2025 19:29
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  28 OCT 2025 20:08
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -745,11 +745,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 209--215
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 209--215
-
- []
-
-
 
 [5
 
@@ -763,12 +758,12 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-45.17911pt}.
 
 [6]
-Underfull \hbox (badness 10000) in paragraph at lines 219--221
+Underfull \hbox (badness 10000) in paragraph at lines 235--237
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 222--236
+Underfull \hbox (badness 10000) in paragraph at lines 238--252
 
  []
 
@@ -783,15 +778,15 @@ Package fancyhdr Warning: \headheight is too small (12.0pt):
 
 [7]
 Chapter 5.
-<doc-images/DFS_VS_ASTAR_EXECTIME.jpg, id=179, 437.343pt x 239.148pt>
+<doc-images/DFS_VS_ASTAR_EXECTIME.jpg, id=180, 437.343pt x 239.148pt>
 File: doc-images/DFS_VS_ASTAR_EXECTIME.jpg Graphic file (type jpg)
 <use doc-images/DFS_VS_ASTAR_EXECTIME.jpg>
-Package pdftex.def Info: doc-images/DFS_VS_ASTAR_EXECTIME.jpg  used on input line 250.
+Package pdftex.def Info: doc-images/DFS_VS_ASTAR_EXECTIME.jpg  used on input line 266.
 (pdftex.def)             Requested size: 455.24411pt x 248.95253pt.
-<doc-images/MINIMAX_NOFILTER.jpg, id=180, 433.62pt x 224.256pt>
+<doc-images/MINIMAX_NOFILTER.jpg, id=181, 433.62pt x 224.256pt>
 File: doc-images/MINIMAX_NOFILTER.jpg Graphic file (type jpg)
 <use doc-images/MINIMAX_NOFILTER.jpg>
-Package pdftex.def Info: doc-images/MINIMAX_NOFILTER.jpg  used on input line 262.
+Package pdftex.def Info: doc-images/MINIMAX_NOFILTER.jpg  used on input line 278.
 (pdftex.def)             Requested size: 455.24411pt x 235.45178pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -801,15 +796,15 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 [8
 
  <./doc-images/DFS_VS_ASTAR_EXECTIME.jpg>]
-<doc-images/DFS_VS_ASTAR_STEPNUM.jpg, id=186, 437.124pt x 239.148pt>
+<doc-images/DFS_VS_ASTAR_STEPNUM.jpg, id=187, 437.124pt x 239.148pt>
 File: doc-images/DFS_VS_ASTAR_STEPNUM.jpg Graphic file (type jpg)
 <use doc-images/DFS_VS_ASTAR_STEPNUM.jpg>
-Package pdftex.def Info: doc-images/DFS_VS_ASTAR_STEPNUM.jpg  used on input line 286.
+Package pdftex.def Info: doc-images/DFS_VS_ASTAR_STEPNUM.jpg  used on input line 302.
 (pdftex.def)             Requested size: 455.24411pt x 249.0766pt.
-<doc-images/MINIMAX_STEPNUM.jpg, id=187, 447.636pt x 239.148pt>
+<doc-images/MINIMAX_STEPNUM.jpg, id=188, 447.636pt x 239.148pt>
 File: doc-images/MINIMAX_STEPNUM.jpg Graphic file (type jpg)
 <use doc-images/MINIMAX_STEPNUM.jpg>
-Package pdftex.def Info: doc-images/MINIMAX_STEPNUM.jpg  used on input line 292.
+Package pdftex.def Info: doc-images/MINIMAX_STEPNUM.jpg  used on input line 308.
 (pdftex.def)             Requested size: 455.24411pt x 243.21614pt.
 
 
@@ -855,18 +850,18 @@ Package rerunfilecheck Info: File `memoria.out' has not changed.
 (rerunfilecheck)             Checksum: DAA050067543E1FA5BA12FC1C493B7A1;2395.
  ) 
 Here is how much of TeX's memory you used:
- 28347 strings out of 473190
- 569148 string characters out of 5715800
+ 28348 strings out of 473190
+ 569157 string characters out of 5715800
  980186 words of memory out of 5000000
  51104 multiletter control sequences out of 15000+600000
  571957 words of font info for 85 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,13n,105p,485b,592s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on memoria.pdf (14 pages, 849967 bytes).
+Output written on memoria.pdf (14 pages, 850689 bytes).
 PDF statistics:
- 289 PDF objects out of 1000 (max. 8388607)
- 212 compressed objects within 3 object streams
- 44 named destinations out of 1000 (max. 500000)
+ 290 PDF objects out of 1000 (max. 8388607)
+ 213 compressed objects within 3 object streams
+ 45 named destinations out of 1000 (max. 500000)
  297 words of extra memory for PDF output out of 10000 (max. 10000000)
 

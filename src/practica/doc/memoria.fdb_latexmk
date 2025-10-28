@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1761676147.78386 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/practica/doc/memoria.tex" "memoria.pdf" "memoria" 1761676148.37789 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/practica/doc/memoria.tex" 1761676147.69928 13708 7033b58d5dbb5f678a3640c3c96494f7 ""
+["pdflatex"] 1761678534.38573 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/practica/doc/memoria.tex" "memoria.pdf" "memoria" 1761678534.95842 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/practica/doc/memoria.tex" 1761678534.20166 14437 895bec24695101901d237771e23227aa ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcbx1728.tfm" 1136768653 1536 bdf092734aa2fa5107a609ef11182e85 ""
@@ -202,14 +202,14 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743237580 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743237537 3345739 7da140f55beb7e0878cefe3b9a895bb4 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "doc-images/DFS_VS_ASTAR_EXECTIME.jpg" 1761673935.80301 206089 c4e301008f89c1ceb1d9ca697f369ec8 ""
-  "doc-images/DFS_VS_ASTAR_STEPNUM.jpg" 1761673935.80384 194513 078d623fa08aaf600866f275121acbaf ""
-  "doc-images/MINIMAX_NOFILTER.jpg" 1761673935.80434 118059 c662bf9f4eb1670a31228522a527a19b ""
-  "doc-images/MINIMAX_STEPNUM.jpg" 1761673935.80497 166726 208c07e3051cec95dd7026b4f6e1737f ""
-  "memoria.aux" 1761676148.31612 3834 e3439ffa00212f48165df46d0bee90bb "pdflatex"
-  "memoria.out" 1761676148.31675 2395 daa050067543e1fa5ba12fc1c493b7a1 "pdflatex"
-  "memoria.tex" 1761676147.69928 13708 7033b58d5dbb5f678a3640c3c96494f7 ""
-  "memoria.toc" 1761676148.31687 1225 0abfcbb458e2daa948526cdd364e0091 "pdflatex"
+  "doc-images/DFS_VS_ASTAR_EXECTIME.jpg" 1761677480.25464 206089 c4e301008f89c1ceb1d9ca697f369ec8 ""
+  "doc-images/DFS_VS_ASTAR_STEPNUM.jpg" 1761677480.25538 194513 078d623fa08aaf600866f275121acbaf ""
+  "doc-images/MINIMAX_NOFILTER.jpg" 1761677480.25582 118059 c662bf9f4eb1670a31228522a527a19b ""
+  "doc-images/MINIMAX_STEPNUM.jpg" 1761677480.25642 166726 208c07e3051cec95dd7026b4f6e1737f ""
+  "memoria.aux" 1761678534.89757 4008 4ecc0cad69e510ca64179a8f0f3fac79 "pdflatex"
+  "memoria.out" 1761678534.89802 2395 daa050067543e1fa5ba12fc1c493b7a1 "pdflatex"
+  "memoria.tex" 1761678534.20166 14437 895bec24695101901d237771e23227aa ""
+  "memoria.toc" 1761678534.89817 1225 0abfcbb458e2daa948526cdd364e0091 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

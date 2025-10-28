@@ -211,7 +211,23 @@ com a dos paràmetres de la funció \texttt{minimax}.
 \\\\La primera crida a \texttt{minimax} es produeix al mètode
 \texttt{actua} on aquest inicialitza $\alpha = -\infty$ i $\beta=+\infty$.
 Posteriorment les crides recursives al mètode \texttt{minimax} van confinant l'interval entre \alphabeta\ fins a arribar, 
-si s'esdevé, al compliment de la condició de poda ($\alpha \geqq \beta$).\\
+si s'esdevé, al compliment de la condició de poda ($\alpha \geqq \beta$).
+
+Amb la implementació de la poda \alphabeta\ hem vist un increment considerable en el rendiment de l'algorisme de cerca.
+La següent taula mostra el una comparativa de diferentes execucions de l'algorisme minimax amb poda i fora poda sobre el mateix tauler (semilla random fixada).
+La primera columna de cada cas és el temps i la segona el nombre de nodes generats.
+
+\begin{table}[h!]
+  \centering
+  \begin{tabular}{|r|cc|cc|cc|cc|cc|}
+    \hline
+    \textbf{Poda}    & 0.27 &  3849 & 0.10 &  905 & 0.21 &  2248 & 2.99 & 13036 & 1.19 & 9965 \\
+    \textbf{No Poda} & 24.3 & 49863 & 0.74 & 3014 & 15.4 & 33178 & 54.6 & 82086 & 36.9 & 58230 \\
+    \hline
+  \end{tabular}
+  \caption{Taula comparativa: poda \alphabeta}
+\end{table}
+
 \newpage
 
 \vspace*{0.1cm} %força un espai en blanc
