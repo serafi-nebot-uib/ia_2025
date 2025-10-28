@@ -8,6 +8,7 @@ class ViatgerDFS(joc.Viatger):
         super(ViatgerDFS, self).__init__(*args, **kwargs)
         self.__accions = None
         self.npases = 0
+        self.nestats = 0
 
     def dfs(self, estat_inicial: Estat) -> bool:
         oberts = []
@@ -30,6 +31,8 @@ class ViatgerDFS(joc.Viatger):
 
         if estat_actual and estat_actual.h == 0:
             self.__accions = estat_actual.cami
+            self.npases = len(self.__accions)
+            self.nestats = len(tancats)
             exit = True
 
         return exit
@@ -46,7 +49,6 @@ class ViatgerDFS(joc.Viatger):
             e = Estat(pos, desti, parets, dim)
             self.dfs(e)
             end = time.perf_counter()
-            self.npases = len(self.__accions if self.__accions else [])
             # print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
 
         if self.__accions: return self.__accions.pop(0)
@@ -57,6 +59,7 @@ class ViatgerAstar(joc.Viatger):
         super(ViatgerAstar, self).__init__(*args, **kwargs)
         self.__accions = None
         self.npases = 0
+        self.nestats = 0
 
     def astar(self, estat_inicial: Estat) -> bool:
         oberts = PriorityQueue()
@@ -79,6 +82,8 @@ class ViatgerAstar(joc.Viatger):
 
         if estat_actual and estat_actual.h == 0:
             self.__accions = estat_actual.cami
+            self.npases = len(self.__accions)
+            self.nestats = len(tancats)
             exit = True
 
         return exit
@@ -95,20 +100,21 @@ class ViatgerAstar(joc.Viatger):
             e = Estat(pos, desti, parets, dim)
             self.astar(e)
             end = time.perf_counter()
-            self.npases = len(self.__accions if self.__accions else [])
             # print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
 
         if self.__accions: return self.__accions.pop(0)
         return "ESPERAR", ""
 
-
 class ViatgerMinimax(joc.Viatger):
-    def __init__(self, *args, **kwargs):
-        super(ViatgerMinimax, self).__init__(*args, **kwargs)
+    def __init__(self, poda=True):
+        super(ViatgerMinimax, self).__init__()
+        self.__poda = poda
         self.__accions = None
         self.npases = 0
+        self.nestats = 0
 
     def minimax(self, estat: EstatAdv, alpha: float | None = None, beta: float | None = None) -> EstatAdv:
+        self.nestats += 1
         if estat.meta: return estat
 
         fills = []
@@ -136,11 +142,10 @@ class ViatgerMinimax(joc.Viatger):
         if self.__accions is None:
             start = time.perf_counter()
             e = EstatAdv(pos, adv, desti, parets, dim, True)
-            f = self.minimax(e, float("-inf"), float("inf"))
-            # agafar les accions de max (totes les parells del cami al node final)
-            self.__accions = f.cami[::2]
-            end = time.perf_counter()
-            self.npases = len(self.__accions if self.__accions else [])
+            alpha, beta = (float("-inf"), float("inf")) if self.__poda else (None, None)
+            f = self.minimax(e, alpha, beta)
+            self.__accions = f.cami[::2] # agafar les accions de max (totes les accions parell del cami al node final)
+            self.npases = len(self.__accions)
             # print(f"{self.nom} ha trobat solució en {end - start:.6f} segons ({self.npases} pases)")
 
         if self.__accions: return self.__accions.pop(0)
