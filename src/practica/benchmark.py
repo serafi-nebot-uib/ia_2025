@@ -44,9 +44,9 @@ def main():
             tas, nas, eas = run_astar(mida=(10, 10))
             print(f"  astar: {tas:10.6f} (pases: {nas}; estats: {eas})")
 
-            # random.setstate(state)
-            # tmm, nmm, emm, lemm = run_minimax(mida=(5, 5), poda=True, cache=True)
-            # print(f"minimax: {tmm:10.6f} (pases: {', '.join(map(str, nmm))}; estats: {', '.join(map(str, emm))}); set estats: {', '.join(map(str, lemm))}")
+            random.setstate(state)
+            tmm, nmm, emm, lemm = run_minimax(mida=(5, 5), poda=True, cache=False)
+            print(f"minimax: {tmm:10.6f} (pases: {', '.join(map(str, nmm))}; estats: {', '.join(map(str, emm))}); set estats: {', '.join(map(str, lemm))}")
 
             dfs_time.append(tdfs)
             dfs_step.append(ndfs)
@@ -54,9 +54,9 @@ def main():
             as_time.append(tas)
             as_step.append(nas)
             as_state.append(eas)
-            # mm_time.append(tmm)
-            # mm_step.append(nmm)
-            # mm_state.append(emm)
+            mm_time.append(tmm)
+            mm_step.append(nmm)
+            mm_state.append(emm)
         except KeyboardInterrupt:
           pass
 

@@ -3,6 +3,7 @@ from collections.abc import Iterable
 import operator as ops
 from functools import cached_property
 
+# classe Pos exten la funcionalitat d'una tupla de valors (x, y) per a poder realizar operacions aritmètiques y lògiques element per element
 class Pos(NamedTuple):
     x: int
     y: int
@@ -11,7 +12,7 @@ class Pos(NamedTuple):
     def __str__(self): return f"({self.x}, {self.y})"
     def __repr__(self): return f"({self.x}, {self.y})"
 
-    # conjunt d'operacions aritmètiques i lògiques amb altres objectes Pos, int o qualsevol Iterable
+    # conjunt d'operacions aritmètiques i lògiques implementades amb altres objectes Pos, int o qualsevol Iterable
     # les operacións aritmètiques retornen un objecte Pos nou amb el resultat
     # les operacións lògiques retornen un booleà (en concret comproven que tots els elements de Pos compleixen la condició lògica)
     def _op_unary(self, op): return (op(a) for a in self)
@@ -85,7 +86,9 @@ class Estat:
 
     def __lt__(self, other):
         if not isinstance(other, Estat): return NotImplemented
+        # f(n) = h(n) + c(n)
         sval, oval = self.h + self.c, other.h + other.c
+        # s'utilitza la heurística menor com a tie-break
         return self.h < other.h if sval == oval else sval < oval
 
     def __hash__(self): return hash((tuple(self.pos), tuple(self.desti), self.dim))
@@ -194,12 +197,8 @@ class EstatAdv:
     def __eq__(self, other):
         if not isinstance(other, EstatAdv): return NotImplemented
         return (
-            self.pos == other.pos and
-            self.adv == other.adv and
-            self.desti == other.desti and
-            self.dim == other.dim and
-            self.torn == other.torn and
-            self.parets == other.parets
+            self.pos == other.pos and self.adv == other.adv and self.desti == other.desti and
+            self.dim == other.dim and self.torn == other.torn and self.parets == other.parets
         )
 
     def __hash__(self): return hash((tuple(self.pos), tuple(self.adv), tuple(self.desti), self.dim, self.torn, self.parets))
