@@ -84,15 +84,16 @@ entenent la seva naturalesa i les particularitats del mateix.
 A partir de les dades proporcionades per el mètode \texttt{percepció} de \texttt{joc.py} podem estructurar les dades efectives, és a dir, 
 les que ens seràn útils per a poder dur a terme la dinàmica del joc.
 
-Per conveniència s'ha implementat una classe pròpia \texttt{Pos} dins \texttt{Estat.py}, aquesta hereta de \texttt{NamedTuple}
-i permet treballar i operar amb les posicions dels objectes de forma més còmode.
+Per conveniència s'ha creat una classe \texttt{Pos} (dins \texttt{estat.py}) que representa una tupla amb les coordenades \texttt{x}, \texttt{y} d'una posicó del tauler.
+S'han implementat uns quants \textit{magic methods} per a poder realitzar operacions aritmétiques i lògiques bàsiques de forma fàcil.
+\texttt{Pos} també hereta de \texttt{NamedTuple} per a simplificar l'assignació dels atributs i fer-los immutables.
 
 Per tant, dins del nostre codi, algunes de les percepcions com la dimensió o el torn es mantenen iguals,
 mentre que altres percepcions com la posició dels agents i el destí es converteixen en objectes \texttt{Pos}, de forma
 idèntica succeeix amb les parets, on aquestes formen un conjunt d'objectes \texttt{Pos}.
 
 \section{Classe Estat}
-Dins l'arxiu \texttt{Estat.py} trobam les classes \texttt{Estat} i \texttt{EstatAdv}, aquestes formulen els estats i permeten donar
+Dins l'arxiu \texttt{estat.py} trobam les classes \texttt{Estat} i \texttt{EstatAdv}, aquestes formulen els estats i permeten donar
 una representació lògica de l'entorn en un moment concret. La implementació de dues classes separades ve justificada principalment
 per qüestions de facilitat. D'aquesta forma entenem \texttt{Estat} com una representació d'un sol agent sobre el tauler,
 mentre que l'ús d'atributs addicionals donen a \texttt{EstatAdv} la capacitat de treballar sobre un entorn multiagent.
