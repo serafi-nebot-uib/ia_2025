@@ -204,17 +204,19 @@ Consideram que aquesta puntuació és una millora a la de -1 si guanya MIN, 0 si
 per exemple, si MAX guanya és molt millor que ho faci si MIN queda enfora de l'objectiu que si queda aprop (MIN té menys possibilitats de guanyar).
 D'aquesta forma es passa més informació cap als nodes pare sobre quina de les accions és més favorable.
 
-
+\newpage
+\vspace*{0.01cm}
 \section{Poda \alphabeta}
 La poda \alphabeta\ permet reduïr el nombre de nodes explorats. Dins el nostre projecte aquesta es veu reflexada 
 com a dos paràmetres de la funció \texttt{minimax}.
-\\\\La primera crida a \texttt{minimax} es produeix al mètode
+
+La primera crida a \texttt{minimax} es produeix al mètode
 \texttt{actua} on aquest inicialitza $\alpha = -\infty$ i $\beta=+\infty$.
 Posteriorment les crides recursives al mètode \texttt{minimax} van confinant l'interval entre \alphabeta\ fins a arribar, 
 si s'esdevé, al compliment de la condició de poda ($\alpha \geqq \beta$).
 
 Amb la implementació de la poda \alphabeta\ hem vist un increment considerable en el rendiment de l'algorisme de cerca.
-La següent taula mostra el una comparativa de diferentes execucions de l'algorisme minimax amb poda i fora poda sobre el mateix tauler (semilla random fixada).
+La següent taula mostra el una comparativa de diferentes execucions de l'algorisme minimax amb poda i fora poda sobre el mateix tauler (llavor random fixada).
 La primera columna de cada cas és el temps i la segona el nombre de nodes generats.
 
 \begin{table}[h!]
@@ -256,10 +258,14 @@ A partir d’un estat passat per paràmetre:\\
 \label{ch:results}
 A partir dels algorismes implementats, exposam dins aquest apartat
 els resultats obtinguts després d'haver duit a terme l'execució 
-repetida dels 3 algorismes.
+repetida dels 3 algorismes. L'experiment en qüestió prèn mesures
+durant 30 execucions i ens permet treure una conclusió aproximada
+del comportament general dels mateixos.
 
 
 \section{Mesura de rendiment: Temps d'execució}
+Després de dur a terme l'experiment podem comparar l'algorisme de cerca no informada DFS amb el de
+cerca informada A*, com veim es pot apreciar una clara millora en el temps de execució.\\
 
 \begin{figure}[h!]
   \centering
@@ -267,19 +273,30 @@ repetida dels 3 algorismes.
   \caption{Gràfica comparativa: temps d'execució dels algorismes DFS i A*}
 \end{figure}
 
+\vspace*{0.5cm}
+
 En quant a l'algorisme minimax veim que, per qualque motiu que desconeixem,
 hi ha execucions que tarden un temps desorbitat, això fa que tant la mitja
 de l'experiment com la desviació típica es vegin alterades.
 
-A la següent gràfica es pot observar el succès
+A la següent gràfica es pot observar el succès:
+
+\newpage
+\vspace*{0.5cm}
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{doc-images/MINIMAX_NOFILTER}
-  \caption{Gràfica comparativa: temps d'execució dels algorismes DFS i A*}
+  \caption{Gràfica de resultats: temps d'execució de l'algorisme minimax}
 \end{figure}
 
-\newpage
+\vspace*{0.5cm}
+A la següent taula es mostra una comparativa directa del temps mig d'execució
+de cada un dels 3 algorismes, així també com la desviació típica. Com podem
+observar les mostres anòmales del minimax afecten directament sobre els 
+resultats globals.
+\vspace*{0.25cm}
+
 \begin{table}[h!]
   \centering
   \begin{tabular}{|c|c|c|}
@@ -291,17 +308,36 @@ A la següent gràfica es pot observar el succès
     MINIMAX & 37,13 & 104,1104874 \\
     \hline
   \end{tabular}
-  \caption{Taula comparativa: temps de execució}
+  \caption{Taula comparativa: temps d'execució}
 \end{table}
 
-\vspace*{0.5cm}
-\section{Mesura de rendiment: Nombre de passes}
 
+% \newpage
+% \vspace*{0.01cm}
+\section{Mesura de rendiment: Nombre de passes}
+Una altra mesura de rendiment que hem considerat que pot ser interessant
+estudiar és el nombre de passes que tarda un algorisme en qüestió en
+arribar a l'objectiu.
+
+A la Figura 5.3 trobam la comparació directa entre els algorismes de cerca DFS i A*.
+Recordem que la cerca informada ens permet obtenir un cami òptim, per tant,
+resulta evident que el nombre de passes es veurà reduït al descartar i no 
+seguir explorant camins que ja son massa costosos de per si.
+
+Per altra banda a la Figura 5.4 trobam el nombre de passes de l'algorisme minimax
+i la comparativa numèrica dels 3 algorismes a la Taula 5.2. Com es pot observar 
+tot i tenir variacions dràstiques de les medicions de minimax, seguim obtenint
+un valor bastant contingut amb una desviació no tan dolenta.
+
+\newpage
+\vspace*{0.5cm}
 \begin{figure}[h!]
   \centering
   \includegraphics[width=1\textwidth]{doc-images/DFS_VS_ASTAR_STEPNUM}
   \caption{Gràfica comparativa: DFS i A*}
 \end{figure}
+
+\vspace*{0.5cm}
 
 \begin{figure}[h!]
   \centering
@@ -309,6 +345,7 @@ A la següent gràfica es pot observar el succès
   \caption{Gràfica de resultats: Algorisme Minimax}
 \end{figure}
 
+\vspace*{0.75cm}
 \begin{table}[h!]
   \centering
   \begin{tabular}{|c|c|c|}
