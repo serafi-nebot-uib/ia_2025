@@ -53,6 +53,10 @@ def cliffwalking():
     run_module("cliffwalking")
 
 @app.command()
+def frozenlake():
+    run_module("frozenlake")
+
+@app.command()
 def prova():
     """ Test per si tot ha funcionat correctament"""
     print("Tot ha funcionat")
