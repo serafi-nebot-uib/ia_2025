@@ -7,9 +7,9 @@ class QLearning(Model):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
-  def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     ep = 0
-    while ep < episodes:
+    while ep < max_iter:
       state, _ = env.reset()
       reward = 0
 
@@ -44,8 +44,8 @@ class DoubleQLearning(Model):
       td_error = target - self.qb[state, action]
       self.qb[state, action] += self.lr * td_error
 
-  def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
-    for _ in range(episodes):
+  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+    for _ in range(max_iter):
       state, _ = env.reset()
       term, trunc = False, False
       while not (term or trunc):
@@ -57,4 +57,4 @@ class DoubleQLearning(Model):
 
     self.q = (self.qa + self.qb) / 2
 
-    return episodes
+    return max_iter

@@ -7,9 +7,9 @@ class SARSA(Model):
     target = reward + self.dr * self.q[new_state, new_action] * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
-  def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     ep = 0
-    while ep < episodes:
+    while ep < max_iter:
       state, _ = env.reset()
       action = self(state)
       reward = 0

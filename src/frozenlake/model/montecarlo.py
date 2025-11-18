@@ -24,8 +24,8 @@ class MonteCarlo(Model):
       state = new_state
     return episode
 
-  def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
-    for _ in range(episodes):
+  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+    for _ in range(max_iter):
       state, _ = env.reset()
       g = 0
       visited = set()
@@ -37,4 +37,4 @@ class MonteCarlo(Model):
           visited.add(sa)
           self.update(state, action, g)
       self.er = max(self.er_min, self.er * self.er_decay)
-    return episodes
+    return max_iter
