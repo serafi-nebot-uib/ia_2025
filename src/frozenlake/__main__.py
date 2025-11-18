@@ -26,6 +26,8 @@ def test(model: Model, *, episodes, seed: int | None = None):
     while not (term or trunc): state, reward, term, trunc, _ = env.step(model(state))
     success += reward
 
+  m.printPolicy(env)
+
   env.close()
   return success / ntest, episodes
 

@@ -3,7 +3,7 @@ import numpy as np
 from gymnasium import Env
 
 class SARSA(Model):
-  def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False):
+  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     target = reward + self.dr * self.q[new_state, new_action] * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 

@@ -25,7 +25,7 @@ class Model:
     if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
     else: return self.q[state].argmax().astype("uint8")
 
-  def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False): raise NotImplementedError()
+  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False): raise NotImplementedError()
   def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int: raise NotImplementedError()
 
   def printPolicy(self, env: Env):

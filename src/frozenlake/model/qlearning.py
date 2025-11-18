@@ -3,7 +3,7 @@ import numpy as np
 from gymnasium import Env
 
 class QLearning(Model):
-  def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False):
+  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
@@ -34,7 +34,7 @@ class DoubleQLearning(Model):
     if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
     else: return self.q[state].argmax().astype("uint8")
 
-  def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False):
+  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     if np.random.uniform(0, 1) < 0.5:
       target = reward + self.dr * self.qb[new_state].max() * (not final)
       td_error = target - self.qa[state, action]
