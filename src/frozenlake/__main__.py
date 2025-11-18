@@ -1,4 +1,4 @@
-from frozenlake.model import Parameters, SARSA, QLearning, DoubleQLearning
+from frozenlake.model import Parameters, SARSA, QLearning
 import frozenlake.plot as plot
 import numpy as np
 import gymnasium as gym
@@ -9,10 +9,10 @@ import random
 def test(model, *, episodes, seed: int | None = None):
   slippery = True
   env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode=None)
-  episodes = model.train(env, episodes, seed=seed)
+  episodes = model.train(env, episodes)
   # print(f"episodes: {episodes}")
   success = 0
-  ntest = 100
+  ntest = 1000
   for _ in range(ntest):
     term, trunc = False, False
     state, _ = env.reset()
@@ -22,14 +22,16 @@ def test(model, *, episodes, seed: int | None = None):
   return success / ntest, episodes
 
 if __name__ == "__main__":
-  params = Parameters(state_size=4*4, action_size=4,
-                      learning_rate=0.01, discount_rate=0.95,
-                      eps=1.00, eps_min=0.10, eps_decay=0.995)
-  m = QLearning(**params)
+  params = Parameters(lr=0.20,
+                      dr=0.95,
+                      er=1.00, er_min=0.01, er_decay=0.995)
+  m = QLearning(state_size=4*4, action_size=4, **params)
+  # m = SARSA(state_size=4*4, action_size=4, **params)
   sr, ep = test(m, episodes=40000)
   print(f"sr: {sr:.4f}; ep: {ep}")
 
-  plt.plot(range(len(m.rewards_mean)), m.rewards_mean)
+  r = [0] * 1000 + m.rewards_mean[1000:]
+  plt.plot(range(len(r)), r)
   plt.show()
 
   # sr, ep = [], []
@@ -54,7 +56,7 @@ if __name__ == "__main__":
   # plot.qtable(m.qa, 4, 4)
   # plot.qtable(m.qb, 4, 4)
 
-  # env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode="human")
+  # env = gym.make("FrozenLake-v1", is_slippery=True, render_mode="human")
   # state, _ = env.reset()
   # term, trunc = False, False
   # while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))
