@@ -1,18 +1,16 @@
-from .model import Model, Parameters
+from .model import Model
 import numpy as np
 from gymnasium import Env
-from typing import TypedDict, Unpack
 
 class DynamicProgramming(Model):
   def reset(self): 
     super().reset()
     self.v = np.zeros(self.state_size, dtype="float32")
-    self.last_v = np.copy(self.v)
-    self.p = None
+    self.last_v = np.zeros(self.state_size, dtype="float32")
 
-  def update(self, state: int, action: int):
+  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     if self.probs is None: return
-    self.q[state, action] = sum(prob * (reward + self.dr * self.last_v[new_state]) for (prob, new_state, reward, _) in self.probs)
+    self.q[state, action] = sum(prob * (reward + self.dr * self.last_v[new_state]) for (prob, new_state, reward, _) in self.probs[state][action])
 
   def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
     """ Value Iteration algorithm. Iterate until convergence falls below the threshold or the maximum number of iterations is reached. """
@@ -22,7 +20,7 @@ class DynamicProgramming(Model):
         diff = 0
         self.last_v = np.copy(self.v)
         for state in range(self.state_size):
-            for action in range(self.action_size): self.update(state, action)
+            for action in range(self.action_size): self.update(state, action, 0)
             self.v[state] = np.max(self.q[state])
             diff = max(diff, abs(self.last_v[state] - self.v[state]))
         ep += 1

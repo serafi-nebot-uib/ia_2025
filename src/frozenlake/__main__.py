@@ -32,12 +32,18 @@ def test(model: Model, *, episodes, seed: int | None = None):
   return success / ntest, episodes
 
 if __name__ == "__main__":
+  # TODO: is there a better way to retrieve/build P without making a new environment just for it?
+  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
+  probs = env.unwrapped.P
+  env.close()
+
   params = Parameters(lr=0.20,
                       dr=0.95,
                       er=1.00, er_min=0.01, er_decay=0.995)
   # m = QLearning(state_size=4*4, action_size=4, **params)
   # m = SARSA(state_size=4*4, action_size=4, **params)
-  m = MonteCarlo(state_size=4*4, action_size=4, **params)
+  # m = MonteCarlo(state_size=4*4, action_size=4, **params)
+  m = DynamicProgramming(state_size=4*4, action_size=4, probs=probs, **params)
   sr, ep = test(m, episodes=40000)
   print(f"sr: {sr:.4f}; ep: {ep}")
 
@@ -64,8 +70,8 @@ if __name__ == "__main__":
   # plot.qtable(m.qa, 4, 4)
   # plot.qtable(m.qb, 4, 4)
 
-  # env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
-  # state, _ = env.reset()
-  # term, trunc = False, False
-  # while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))
-  # env.close()
+  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
+  state, _ = env.reset()
+  term, trunc = False, False
+  while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))
+  env.close()

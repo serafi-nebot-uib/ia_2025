@@ -10,7 +10,9 @@ class Parameters(TypedDict):
   er_decay: float # exploration rate decay
 
 class Model:
-  def __init__(self, state_size: int, action_size: int, probs: tuple[float, int, float, bool] | None = None, **params: Unpack[Parameters]):
+  def __init__(self, state_size: int, action_size: int, *,
+               probs: dict[int, dict[int, list[tuple[float, int, float, bool]]]] | None = None,
+               **params: Unpack[Parameters]):
     self.state_size, self.action_size, self.probs, self.params = state_size, action_size, probs, params
     self.reset()
 
@@ -18,8 +20,6 @@ class Model:
     self.lr, self.dr = self.params["lr"], self.params["dr"]
     self.er, self.er_min, self.er_decay = self.params["er"], self.params["er_min"], self.params["er_decay"]
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
-    # self.policy = np.zeros((self.state_size,), dtype="uint8")
-    # self.value = np.zeros((self.state_size,), dtype="float32")
 
   def __call__(self, state: int, *, training: bool = False) -> int:
     if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
