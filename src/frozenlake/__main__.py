@@ -1,55 +1,59 @@
-from frozenlake.model import SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming
+from frozenlake.model import Parameters, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming
 import frozenlake.plot as plot
+import numpy as np
 import gymnasium as gym
+from tqdm import tqdm
+import matplotlib.pyplot as plt
 
-if __name__ == "__main__":
+def test(model, *, episodes, seed: int | None = None):
   slippery = True
   env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode=None)
+  episodes = model.train(env, episodes)
+  # print(f"episodes: {episodes}")
+  success = 0
+  ntest = 1000
+  for _ in range(ntest):
+    term, trunc = False, False
+    state, _ = env.reset()
+    while not (term or trunc): state, reward, term, trunc, _ = env.step(model(state))
+    success += reward
+  env.close()
+  return success / ntest, episodes
 
-  # m = SARSA(env.observation_space.n, env.action_space.n, learning_rate=0.10, gamma=0.95)
-  # m = QLearning(env.observation_space.n, env.action_space.n, learning_rate=0.10, gamma=0.95)
-  # m = DoubleQLearning(env.observation_space.n, env.action_space.n, learning_rate=0.10, gamma=0.95)
-  # m = MonteCarlo(env.observation_space.n, env.action_space.n, gamma = 0.95)
-  m = DynamicProgramming(env.observation_space.n, env.action_space.n, gamma = 0.95)
+if __name__ == "__main__":
+  params = Parameters(lr=0.20,
+                      dr=0.95,
+                      er=1.00, er_min=0.01, er_decay=0.995)
+  m = QLearning(state_size=4*4, action_size=4, **params)
+  # m = SARSA(state_size=4*4, action_size=4, **params)
+  sr, ep = test(m, episodes=40000)
+  print(f"sr: {sr:.4f}; ep: {ep}")
 
-  if isinstance(m, DynamicProgramming) and False:
-    """ 
-      No té cap sentit tractar el mètode de programació dinàmica com si fos un algorisme de prova i error
-      ja que és aplicar la política òptima sempre, no hi ha prova i error. Es pot adaptar per a que funcioni
-      amb la execució de 10000 vegades sense haver de posar aqui isistance() però no té sentit.
-    """
-    m.train(env, 50)
-    m.printOutput(env)
-    env.close()
-    plot.policy(m.q, 4, 4)
-  else:
-    m.printOutput(env)
-    m.train(env, 10000)
+  # sr, ep = [], []
+  # for i in tqdm(range(25), desc="test"):
+  #   s, e = test(QLearning(**params))
+  #   sr.append(s)
+  #   ep.append(e)
+  # print(f"avg success rate: {np.mean(sr):.4f}")
+  # fig, ax1 = plt.subplots(figsize=(8, 8))
+  # ax1.plot(np.arange(len(sr)), sr, label="sr", color="blue")
+  # # ax2 = ax1.twinx()
+  # # ax2.plot(np.arange(len(ep)), ep, label="ep", color="red")
+  # plt.legend(loc="upper right")
+  # plt.show()
 
-    success = 0
-    ntest = 1000
-    for _ in range(ntest):
-      term, trunc = False, False
-      state, _ = env.reset()
-      while not (term or trunc): state, reward, term, trunc, _ = env.step(m(state))
-      success += reward
-    
-    m.printOutput(env)
-    print(f"success rate: {success / ntest:.4f}")
-    env.close()
+  # view Q table (policy)
+  # requirements:
+  #     - uv pip install matplotlib
+  # ----- for SARSA/QLearning/MonteCarlo
+  # plot.qtable(m.q, 4, 4)
+  # plot.policy(m.q, 4, 4)
+  # ----- for DoubleQLearning
+  # plot.qtable(m.qa, 4, 4)
+  # plot.qtable(m.qb, 4, 4)
 
-    # view Q table (policy)
-    # requirements:
-    #     - uv pip install matplotlib
-    # ----- for SARSA/QLearning/MonteCarlo
-    # plot.qtable(m.q, 4, 4)
-    plot.policy(m.q, 4, 4)
-    # ----- for DoubleQLearning
-    # plot.qtable(m.qa, 4, 4)
-    # plot.qtable(m.qb, 4, 4)
-
-    # env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode="human")
-    # state, _ = env.reset()
-    # term, trunc = False, False
-    # while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))
-    # env.close()
+  # env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode="human")
+  # state, _ = env.reset()
+  # term, trunc = False, False
+  # while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))
+  # env.close()
