@@ -124,6 +124,7 @@ class MonteCarlo(Model):
 
   def __call__(self, state: int, initial: bool = False):
     if initial or not self.q[state].any() or np.random.uniform(0, 1) < self.eps: return np.random.choice(self.action_size) # Returns random action
+    # if initial and np.random.uniform(0, 1) < self.eps: return np.random.choice(self.action_size)
     else: return self.q[state].argmax() # Returns best action [π(s)] 
 
   def update(self, state: int, action: int): self.q[state, action] = np.mean(self.returns[(state, action)])
@@ -163,6 +164,8 @@ class DynamicProgramming(Model):
     self.gamma = gamma
     self.reset()
 
+  def __call__(self, state: int): return self.q[state].argmax()
+
   def reset(self): 
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.v = np.zeros(self.state_size, dtype="float32")
@@ -185,5 +188,5 @@ class DynamicProgramming(Model):
             self.v[state] = np.max(self.q[state])
             diff = max(diff, abs(self.last_v[state] - self.v[state]))
         iternum += 1
-        print(f"diff: {diff} (threshold: {threshold})")
+        # print(f"diff: {diff} (threshold: {threshold})")
     print(f"\n{iternum} iterations needed.\n" if iternum < max_iterations else f"\nIteration limit exceeded({max_iterations}).\n")
