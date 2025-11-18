@@ -1,0 +1,108 @@
+\documentclass[12pt,a4paper]{report}
+
+% Packages
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb}
+\usepackage[a4paper, top=0.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{relsize}
+\usepackage{enumitem}
+\usepackage[most]{tcolorbox}
+
+
+% Page setup
+% \geometry{margin=1in}
+\onehalfspacing
+\setlength{\parskip}{0.8em}
+\setlength{\parindent}{0pt}
+
+% Header & Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{Pràctica 2 - Aprenentatge per reforç}} % \fancyhead[L]{Your Report Title}
+\fancyhead[R]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{\thepage}} % \fancyhead[R]{\thepage}
+% \setlength{\headheight}{15pt} %\setlength{\headheight}{10pt}
+% \setlength{\headsep}{40pt}
+
+% Title setup
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\Huge}
+  {\vspace{-2cm}}{20pt}{\Huge}
+
+% Title Page
+\title{
+  \vspace{0cm}
+  \textbf{Memòria de la Pràctica 2}\\
+  {\Large \textbf{Aprenentatge per reforç}}
+  \vspace{5cm}
+}
+\author{Serafí Nebot Ginard \\  Jaume Galmés Ramis \\
+\vspace{7cm}
+\\ 21722 - Intel·ligència Artificial \\ Grau d’Enginyeria Informàtica \\ Curs 2025/2026
+}
+
+\fancypagestyle{plain}{
+  \fancyhf{} % neteja
+  \fancyfoot[C]{\thepage} % número de pàgina al centre
+  \renewcommand{\footrulewidth}{0pt}
+  \setlength{\footskip}{1.5cm} % ajusta la distància des del final de la pàgina
+}
+
+\begin{document}
+
+\date{}  % No mostrar cap data
+\maketitle
+\thispagestyle{empty}
+\newpage
+\titlespacing*{\chapter}{0pt}{0pt}{20pt}  
+
+\pagenumbering{roman}
+\renewcommand{\contentsname}{Índex}
+\tableofcontents
+\newpage
+
+\pagenumbering{arabic}
+
+% ==========================
+\chapter{Introducció}
+\label{ch:intro}
+
+% ==========================
+\chapter{Estructura de dades}
+\label{ch:structure}
+\pagebreak
+
+% ==========================
+\chapter{Estudi dels resultats}
+\label{ch:results}
+
+\section{Mesura de rendiment}
+
+% ==========================
+\chapter{Conclusió}
+\label{ch:conclusion}
+
+\cleardoublepage
+\thispagestyle{empty} % sense número de pàgina
+
+\begin{center}
+\vspace*{5cm} % espai superior
+
+{\LARGE \textbf{Pràctica Bloc I}}\\[1em]
+{\Large Intel·ligència Artificial}\\[4cm]
+
+{\large Aprenentatge per reforç}\\[5cm]
+
+{\large %\textbf{Alumnes:}}\\
+Serafí Nebot Ginard\\
+Jaume Galmés Ramis\\[4cm]}
+
+{\large Grau d'Enginyeria Informàtica\\Curs 2025/2026}
+
+\end{center}
+
+\end{document}
