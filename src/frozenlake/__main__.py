@@ -1,22 +1,31 @@
-from frozenlake.model import Parameters, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming
+from frozenlake.model import Parameters, Model, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming
 import frozenlake.plot as plot
 import numpy as np
 import gymnasium as gym
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+import random
 
-def test(model, *, episodes, seed: int | None = None):
-  slippery = True
-  env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode=None)
+SLIPPERY = True
+
+def test(model: Model, *, episodes, seed: int | None = None):
+  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
+
+  if seed:
+    np.random.seed(seed)
+    random.seed(seed)
+
+  env.reset(seed=seed)
   episodes = model.train(env, episodes)
   # print(f"episodes: {episodes}")
   success = 0
   ntest = 1000
   for _ in range(ntest):
     term, trunc = False, False
-    state, _ = env.reset()
+    state, _ = env.reset(seed=seed)
     while not (term or trunc): state, reward, term, trunc, _ = env.step(model(state))
     success += reward
+
   env.close()
   return success / ntest, episodes
 
@@ -24,8 +33,9 @@ if __name__ == "__main__":
   params = Parameters(lr=0.20,
                       dr=0.95,
                       er=1.00, er_min=0.01, er_decay=0.995)
-  m = QLearning(state_size=4*4, action_size=4, **params)
+  # m = QLearning(state_size=4*4, action_size=4, **params)
   # m = SARSA(state_size=4*4, action_size=4, **params)
+  m = MonteCarlo(state_size=4*4, action_size=4, **params)
   sr, ep = test(m, episodes=40000)
   print(f"sr: {sr:.4f}; ep: {ep}")
 
@@ -52,7 +62,7 @@ if __name__ == "__main__":
   # plot.qtable(m.qa, 4, 4)
   # plot.qtable(m.qb, 4, 4)
 
-  # env = gym.make("FrozenLake-v1", is_slippery=slippery, render_mode="human")
+  # env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
   # state, _ = env.reset()
   # term, trunc = False, False
   # while not (term or trunc): state, _ , term, trunc, _ = env.step(m(state))

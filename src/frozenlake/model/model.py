@@ -18,16 +18,12 @@ class Model:
     self.lr, self.dr = self.params["lr"], self.params["dr"]
     self.er, self.er_min, self.er_decay = self.params["er"], self.params["er_min"], self.params["er_decay"]
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
-
-  # TODO: make properties lazy?
-  @property
-  def policy(self) -> np.ndarray: return self.q.argmax(axis=-1)
-  @property
-  def value(self) -> np.ndarray: return self.q.max(axis=-1)
+    # self.policy = np.zeros((self.state_size,), dtype="uint8")
+    # self.value = np.zeros((self.state_size,), dtype="float32")
 
   def __call__(self, state: int, *, training: bool = False) -> int:
     if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
-    else: return self.policy[state].argmax()
+    else: return self.q[state].argmax().astype("uint8")
 
   def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False): raise NotImplementedError()
   def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int: raise NotImplementedError()
@@ -36,8 +32,8 @@ class Model:
       arrows = { 0: '⇐', 1: '⇓', 2: '⇒', 3: '⇑' }
       goal = "⊕"
       wall = " " # visible wall:"▓"
-      v = self.value
-      policy = self.policy
+      v = self.q.max(axis=-1)
+      policy = self.q.argmax(axis=-1)
       dim = int(np.sqrt(self.state_size))
       desc = env.unwrapped.desc
       print("       ╭────╮        ╭────╮   ")

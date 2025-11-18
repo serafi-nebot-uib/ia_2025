@@ -2,9 +2,6 @@ from . import Model
 import numpy as np
 from gymnasium import Env
 
-# TODO: make rewards mean available for all models (& make it something like success_rate_avg)
-from collections import deque
-
 class QLearning(Model):
   def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False):
     target = reward + self.dr * self.q[new_state].max() * (not final)
@@ -12,7 +9,7 @@ class QLearning(Model):
 
   def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
     ep = 0
-    while ep < episodes: # or (len(self.rewards_mean) > 0 and self.rewards_mean[-1] <= 0.40):
+    while ep < episodes:
       state, _ = env.reset()
       reward = 0
 
@@ -20,7 +17,7 @@ class QLearning(Model):
       while not (done or trunc):
         action = self(state, training=True)
         new_state, reward, done, trunc, _ = env.step(action)
-        self.update(state, action, reward, new_state, None, done)
+        self.update(state, action, float(reward), new_state, None, done)
         state = new_state
 
       if reward != 0: self.er = max(self.er_min, self.er * self.er_decay)
@@ -33,6 +30,10 @@ class DoubleQLearning(Model):
     self.qa = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.qb = np.zeros((self.state_size, self.action_size), dtype="float32")
 
+  def __call__(self, state: int, *, training: bool = False) -> int:
+    if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
+    else: return self.q[state].argmax().astype("uint8")
+
   def update(self, state: int, action: int, reward: float, new_state: int, new_action: int | None = None, final: bool = False):
     if np.random.uniform(0, 1) < 0.5:
       target = reward + self.dr * self.qb[new_state].max() * (not final)
@@ -43,14 +44,17 @@ class DoubleQLearning(Model):
       td_error = target - self.qb[state, action]
       self.qb[state, action] += self.lr * td_error
 
-  def train(self, env: Env, episodes: int) -> int:
+  def train(self, env: Env, episodes: int, threshold: float = 1e-9) -> int:
     for _ in range(episodes):
       state, _ = env.reset()
       term, trunc = False, False
       while not (term or trunc):
         action = self(state, training=True)
         new_state, reward, term, trunc, _ = env.step(action)
-        self.update(state, action, reward, new_state, term)
+        self.update(state, action, float(reward), new_state, term)
         state = new_state
       self.er = max(self.er_min, self.er * self.er_decay)
+
+    self.q = (self.qa + self.qb) / 2
+
     return episodes
