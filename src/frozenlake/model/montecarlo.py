@@ -13,14 +13,16 @@ class MonteCarlo(Model):
     self.c = np.zeros((self.state_size, self.action_size), dtype=int)
 
   def action(self, state: int, greedy: bool = True) -> int:
-    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax()
+    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
+    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
 
-  def update(self, state: int, action: int, reward: float):
+  def update(self, state: int, action: int, g: float):
     # new_avg = old_avg + (new_value - old_avg) / (n + 1)
     self.c[state][action] += 1
-    self.q[state][action] += (reward - self.q[state][action]) / self.c[state][action]
+    self.q[state][action] += (g - self.q[state][action]) / self.c[state][action]
 
-  def _gen_episode(self, env: Env, state: int):
+  def _gen_episode(self, env: Env):
+    state, _ = env.reset()
     episode = []
     done, trunc = False, False
     while not (done or trunc):
@@ -34,22 +36,20 @@ class MonteCarlo(Model):
     iter = 0
     iter_start = time.perf_counter()
     while iter < max_iter:
-      state, _ = env.reset()
-      g = 0
-      visited = set()
-      episode = self._gen_episode(env, state) 
+      episode = self._gen_episode(env) 
 
       reward_total = 0.0
-      for state, action, reward in episode[::-1]:
+      g = 0.0
+      visited = set()
+      for state, action, reward in reversed(episode):
         reward_total += reward
         g = reward + self.dr * g
         sa = (state, action)
         if sa not in visited:
           visited.add(sa)
           self.update(state, action, g)
-      if reward_total > 0: self.er = max(self.er_min, self.er * self.er_decay)
-      self.policy = self.q.argmax(axis=-1)
 
+      self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
 
       if STATS > 0: self.rewards.append(reward_total)

@@ -35,7 +35,7 @@ class SARSA(Model):
         state, action = new_state, new_action
         reward_total += reward
 
-      if reward_total > 0: self.er = max(self.er_min, self.er * self.er_decay)
+      self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
 
       if DEBUG > 0 or STATS > 0: self.rewards.append(reward_total)

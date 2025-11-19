@@ -34,7 +34,7 @@ class QLearning(Model):
         state = new_state
         reward_total += reward
 
-      if reward_total > 0: self.er = max(self.er_min, self.er * self.er_decay)
+      self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
 
       if DEBUG > 0 or STATS > 0: self.rewards.append(reward_total)
@@ -79,7 +79,7 @@ class DoubleQLearning(Model):
         state = new_state
         reward_total += reward
 
-      if reward_total > 0: self.er = max(self.er_min, self.er * self.er_decay)
+      self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
 
       if DEBUG > 0 or STATS > 0: self.rewards.append(reward_total)

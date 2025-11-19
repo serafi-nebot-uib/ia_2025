@@ -35,7 +35,6 @@ def test(model: Model, *, num_iter, seed: int | None = None):
   return sr, num_iter
 
 if __name__ == "__main__":
-  # TODO: is there a better way to retrieve/build P without making a new environment just for it?
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
   probs = env.unwrapped.P
   state_size = env.observation_space.n
@@ -45,10 +44,10 @@ if __name__ == "__main__":
   # m = DynamicProgramming(state_size=4*4, action_size=4, probs=probs, **params)
   # m = Genetic(state_size=4*4, action_size=4, population_size=100, mutation_rate=0.08, **params)
   models = [
-         MonteCarlo(state_size, action_size,          dr=1.00, er=1.00, er_min=0.05, er_decay=0.99995),
-              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
-          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
-    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95)
+         MonteCarlo(state_size, action_size,          dr=0.99, er=1.00, er_min=0.01, er_decay=0.9995),
+              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
+          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
+    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995)
   ]
   data = {}
   for model in models:
