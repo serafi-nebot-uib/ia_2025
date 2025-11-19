@@ -42,7 +42,7 @@ class Genetic(Model):
       iter_end = time.perf_counter()
 
       if DEBUG > 0:
-        print(f"gen: {generation:>3d}; best_idx: {best:>3d} -> {self.pop[best]} | {iter_end - iter_start:.6f} sec")
+        print(f"{generation:>7d} | {fitness[best]:>4.2f} : {self.pop[best]} | {iter_end - iter_start:.6f} sec")
 
     self.policy = self.pop[self.fitness(env).argmax()]
 

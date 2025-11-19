@@ -62,13 +62,20 @@ if __name__ == "__main__":
   params = Parameters(lr=0.20,
                       dr=0.95,
                       er=1.00, er_min=0.01, er_decay=0.995)
-  # m = QLearning(state_size=4*4, action_size=4, **params)
+  m = QLearning(state_size=4*4, action_size=4, **params)
   # m = SARSA(state_size=4*4, action_size=4, **params)
   # m = MonteCarlo(state_size=4*4, action_size=4, **params)
   # m = DynamicProgramming(state_size=4*4, action_size=4, probs=probs, **params)
-  m = Genetic(state_size=4*4, action_size=4, population_size=100, mutation_rate=0.08, **params)
-  sr, ep = test(m, num_iter=20)
+  # m = Genetic(state_size=4*4, action_size=4, population_size=100, mutation_rate=0.08, **params)
+  sr, ep = test(m, num_iter=1000)
   print(f"sr: {sr:.4f}; ep: {ep}")
+
+  desc = env.unwrapped.desc
+  # plot.policy(m.policy, m.q.max(axis=-1))
+  fig = plot.qtable(desc, m.q)
+  fig.suptitle("QLearning")
+  fig.tight_layout()
+  plt.show()
 
   # sr, ep = [], []
   # for i in tqdm(range(25), desc="test"):

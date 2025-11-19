@@ -1,6 +1,9 @@
-from . import Model
+from frozenlake.model import Model
 import numpy as np
 from gymnasium import Env
+from typing import Callable
+from frozenlake.const import DEBUG
+import time
 
 class QLearning(Model):
   def reset(self):
@@ -10,9 +13,11 @@ class QLearning(Model):
   def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
+    self.policy = self.q.argmax(axis=-1)
 
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     ep = 0
+    iter_start = time.perf_counter()
     while ep < max_iter:
       state, _ = env.reset()
       reward = 0
@@ -26,6 +31,11 @@ class QLearning(Model):
 
       if reward != 0: self.er = max(self.er_min, self.er * self.er_decay)
       ep += 1
+
+      if ep % 1000 == 0 and DEBUG > 0:
+        iter_end = time.perf_counter()
+        print(f"{ep:>7d} | {reward:>4.2f} : {self.policy} | {iter_end - iter_start:.6f} sec")
+        iter_start = time.perf_counter()
     return ep
 
 class DoubleQLearning(Model):
