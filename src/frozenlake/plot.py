@@ -60,3 +60,20 @@ def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
   ax.set_yticks([])
 
   return fig
+
+def success_rate(data: dict[str, list[float]], m: int):
+  fig, ax = plt.subplots(figsize=(6, 6))
+
+  xmax = 0
+  for name, reward in data.items():
+    y = np.convolve(reward, np.ones(m) / m, mode="valid")
+    x = np.arange(len(y)) + m
+    ax.plot(x, y, label=name)
+    xmax = max(xmax, x.max())
+
+  ax.set_xlim((0, xmax + m))
+  ax.set_ylim((0, 1.0))
+  ax.set_ylabel("success rate")
+  ax.set_xlabel("iterations")
+  fig.legend(loc="upper right")
+  return fig

@@ -14,7 +14,7 @@ class DynamicProgramming(Model):
     self.v = np.zeros(self.state_size, dtype="float32")
     self.last_v = np.zeros(self.state_size, dtype="float32")
 
-  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
+  def update(self, state: int, action: int):
     self.q[state, action] = sum(prob * (reward + self.dr * self.last_v[new_state]) for (prob, new_state, reward, _) in self.probs[state][action])
 
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
@@ -25,7 +25,7 @@ class DynamicProgramming(Model):
         diff = 0
         self.last_v = np.copy(self.v)
         for state in range(self.state_size):
-            for action in range(self.action_size): self.update(state, action, 0)
+            for action in range(self.action_size): self.update(state, action)
             self.v[state] = np.max(self.q[state])
             diff = max(diff, abs(self.last_v[state] - self.v[state]))
         ep += 1

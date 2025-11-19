@@ -19,6 +19,7 @@ class Model:
     self.lr, self.dr = self.params["lr"], self.params["dr"]
     self.er, self.er_min, self.er_decay = self.params["er"], self.params["er_min"], self.params["er_decay"]
     self.policy = np.zeros(self.state_size, dtype="uint8")
+    self.rewards = []
 
   def __call__(self, state: int, *, greedy: bool = True) -> int:
     return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.policy[state]
