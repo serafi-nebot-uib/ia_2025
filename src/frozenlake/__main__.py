@@ -2,11 +2,41 @@ from frozenlake.model import Parameters, Model, SARSA, QLearning, DoubleQLearnin
 import frozenlake.plot as plot
 import numpy as np
 import gymnasium as gym
+from gymnasium import Env
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import random
 
 SLIPPERY = True
+
+def printPolicy(env: Env, policy: np.ndarray):
+    arrows, goal, wall = [ '⇐', '⇓', '⇒', '⇑' ], "⊕", " " # visible wall:"▓"
+    dim = int(np.sqrt(env.observation_space.n))
+    desc = env.unwrapped.desc
+    print("   ╭────╮   ")
+    print("┍━━┥ π* ┝━━┑")
+    print("│  ╰────╯  │")
+    for y in range(dim):
+        row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
+        print(f"│ {row_pi}  │")
+    print("┕━━━━━━━━━━┙")
+
+# def printValue(self, env: Env):
+#     arrows = { 0: '⇐', 1: '⇓', 2: '⇒', 3: '⇑' }
+#     goal = "⊕"
+#     wall = " " # visible wall:"▓"
+#     v = self.q.max(axis=-1)
+#     policy = self.q.argmax(axis=-1)
+#     dim = int(np.sqrt(self.state_size))
+#     desc = env.unwrapped.desc
+#     print("       ╭────╮        ╭────╮   ")
+#     print("┍━━━━━━┥ v* ┝━━━━━┯━━┥ π* ┝━━┑")
+#     print("│      ╰────╯     │  ╰────╯  │")
+#     for y in range(dim):
+#         row_v = " ".join(f"{v[y*dim + x]:.1f}" for x in range(dim))
+#         row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
+#         print(f"│ {row_v} │ {row_pi}  │")
+#     print("┕━━━━━━━━━━━━━━━━━┷━━━━━━━━━━┙")
 
 def test(model: Model, *, num_iter, seed: int | None = None):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
@@ -17,7 +47,7 @@ def test(model: Model, *, num_iter, seed: int | None = None):
 
   env.reset(seed=seed)
   num_iter = model.train(env, num_iter)
-  # m.printPolicy(env)
+  printPolicy(env, model.policy)
   sr = model.test(env, 1000)
   env.close()
 

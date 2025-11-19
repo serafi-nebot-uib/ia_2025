@@ -3,6 +3,10 @@ import numpy as np
 from gymnasium import Env
 
 class QLearning(Model):
+  def reset(self):
+    super().reset()
+    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
+
   def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
@@ -15,7 +19,7 @@ class QLearning(Model):
 
       done, trunc = False, False
       while not (done or trunc):
-        action = self(state, training=True)
+        action = self(state, greedy=False)
         new_state, reward, done, trunc, _ = env.step(action)
         self.update(state, action, float(reward), new_state, None, done)
         state = new_state
@@ -30,9 +34,8 @@ class DoubleQLearning(Model):
     self.qa = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.qb = np.zeros((self.state_size, self.action_size), dtype="float32")
 
-  def __call__(self, state: int, *, training: bool = False) -> int:
-    if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
-    else: return self.q[state].argmax().astype("uint8")
+  def __call__(self, state: int, *, greedy: bool = True) -> int:
+    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax().astype("uint8")
 
   def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
     if np.random.uniform(0, 1) < 0.5:
@@ -49,7 +52,7 @@ class DoubleQLearning(Model):
       state, _ = env.reset()
       term, trunc = False, False
       while not (term or trunc):
-        action = self(state, training=True)
+        action = self(state, greedy=False)
         new_state, reward, term, trunc, _ = env.step(action)
         self.update(state, action, float(reward), new_state, term)
         state = new_state

@@ -1,6 +1,6 @@
 import numpy as np
 from gymnasium import Env
-from typing import TypedDict, Unpack
+from typing import TypedDict, Unpack, Callable
 
 # TODO: Parameters doesn't make sense for all models so it probably should be moved to a subclass
 class Parameters(TypedDict):
@@ -18,37 +18,18 @@ class Model:
   def reset(self):
     self.lr, self.dr = self.params["lr"], self.params["dr"]
     self.er, self.er_min, self.er_decay = self.params["er"], self.params["er_min"], self.params["er_decay"]
-    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
+    self.policy = np.zeros(self.state_size, dtype="uint8")
 
-  def __call__(self, state: int, *, training: bool = False) -> int:
-    if training and np.random.uniform(0, 1) < self.er: return np.random.choice(self.action_size)
-    else: return self.q[state].argmax().astype("uint8")
+  def __call__(self, state: int, *, greedy: bool = True) -> int:
+    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.policy[state]
 
-  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False): raise NotImplementedError()
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int: raise NotImplementedError()
-
-  def test(self, env: Env, num_iter: int) -> float:
-    success = 0
+  def test(self, env: Env, num_iter: int = 1, fn: Callable[[int], int] | None = None) -> float:
+    if not callable(fn): fn = self
+    s = 0.0
     for _ in range(num_iter):
       state, _ = env.reset()
       done, trunc, reward = False, False, 0
-      while not (done or trunc): state, reward, done, trunc, _ = env.step(self(state))
-      success += float(reward)
-    return success / num_iter
-
-  def printPolicy(self, env: Env):
-      arrows = { 0: '⇐', 1: '⇓', 2: '⇒', 3: '⇑' }
-      goal = "⊕"
-      wall = " " # visible wall:"▓"
-      v = self.q.max(axis=-1)
-      policy = self.q.argmax(axis=-1)
-      dim = int(np.sqrt(self.state_size))
-      desc = env.unwrapped.desc
-      print("       ╭────╮        ╭────╮   ")
-      print("┍━━━━━━┥ v* ┝━━━━━┯━━┥ π* ┝━━┑")
-      print("│      ╰────╯     │  ╰────╯  │")
-      for y in range(dim):
-          row_v = " ".join(f"{v[y*dim + x]:.1f}" for x in range(dim))
-          row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
-          print(f"│ {row_v} │ {row_pi}  │")
-      print("┕━━━━━━━━━━━━━━━━━┷━━━━━━━━━━┙")
+      while not (done or trunc): state, reward, done, trunc, _ = env.step(fn(state))
+      s += float(reward)
+    return s / num_iter

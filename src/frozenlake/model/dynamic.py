@@ -10,6 +10,7 @@ class DynamicProgramming(Model):
 
   def reset(self): 
     super().reset()
+    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.v = np.zeros(self.state_size, dtype="float32")
     self.last_v = np.zeros(self.state_size, dtype="float32")
 

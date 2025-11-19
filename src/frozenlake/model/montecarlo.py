@@ -7,6 +7,7 @@ from gymnasium import Env
 class MonteCarlo(Model):
   def reset(self):
     super().reset()
+    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.c = np.zeros((self.state_size, self.action_size), dtype=int)
 
   def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
@@ -18,7 +19,7 @@ class MonteCarlo(Model):
     episode = []
     done, trunc = False, False
     while not (done or trunc):
-      action = self(state, training=True)
+      action = self(state, greedy=False)
       new_state, reward, done, trunc, _ = env.step(action)
       episode.append((state, action, reward))
       state = new_state
