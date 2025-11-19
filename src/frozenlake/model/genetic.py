@@ -37,6 +37,8 @@ class Genetic(Model):
         q[s] = np.random.choice(self.action_size)
     return q
 
+  def __call__(self, state: int, *, training: bool = False) -> int: return self.q[state]
+
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     generation = 0
     while generation < max_iter:
@@ -59,6 +61,8 @@ class Genetic(Model):
         new_pop.append(self._mutate(self._crossover(*p)))
       self.pop = np.stack(new_pop)
       generation += 1
+
+      print(f"gen: {generation}; best_idx: {best} -> {self.pop[best]}")
 
     self.q = self.pop[self._fitness(env).argmax()]
 

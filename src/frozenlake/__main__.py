@@ -17,7 +17,7 @@ def test(model: Model, *, num_iter, seed: int | None = None):
 
   env.reset(seed=seed)
   num_iter = model.train(env, num_iter)
-  m.printPolicy(env)
+  # m.printPolicy(env)
   sr = model.test(env, 1000)
   env.close()
 
