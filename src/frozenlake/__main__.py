@@ -1,11 +1,10 @@
-from frozenlake.model import Parameters, Model, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming, Genetic
-import frozenlake.plot as plot
+import random
 import numpy as np
 import gymnasium as gym
 from gymnasium import Env
-from tqdm import tqdm
 import matplotlib.pyplot as plt
-import random
+import frozenlake.plot as plot
+from frozenlake.model import Model, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming, Genetic
 
 SLIPPERY = True
 
@@ -20,23 +19,6 @@ def printPolicy(env: Env, policy: np.ndarray):
         row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
         print(f"│ {row_pi}  │")
     print("┕━━━━━━━━━━┙")
-
-# def printValue(self, env: Env):
-#     arrows = { 0: '⇐', 1: '⇓', 2: '⇒', 3: '⇑' }
-#     goal = "⊕"
-#     wall = " " # visible wall:"▓"
-#     v = self.q.max(axis=-1)
-#     policy = self.q.argmax(axis=-1)
-#     dim = int(np.sqrt(self.state_size))
-#     desc = env.unwrapped.desc
-#     print("       ╭────╮        ╭────╮   ")
-#     print("┍━━━━━━┥ v* ┝━━━━━┯━━┥ π* ┝━━┑")
-#     print("│      ╰────╯     │  ╰────╯  │")
-#     for y in range(dim):
-#         row_v = " ".join(f"{v[y*dim + x]:.1f}" for x in range(dim))
-#         row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
-#         print(f"│ {row_v} │ {row_pi}  │")
-#     print("┕━━━━━━━━━━━━━━━━━┷━━━━━━━━━━┙")
 
 def test(model: Model, *, num_iter, seed: int | None = None):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
@@ -62,14 +44,11 @@ if __name__ == "__main__":
 
   # m = DynamicProgramming(state_size=4*4, action_size=4, probs=probs, **params)
   # m = Genetic(state_size=4*4, action_size=4, population_size=100, mutation_rate=0.08, **params)
-  params = Parameters(lr=0.20,
-                      dr=0.95,
-                      er=1.00, er_min=0.01, er_decay=0.95)
   models = [
-         MonteCarlo(state_size, action_size, lr=0.10, dr=1.00, er=1.00, er_min=0.05, er_decay=0.99995),
-    #           SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
-    #       QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
-    # DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95)
+         MonteCarlo(state_size, action_size,          dr=1.00, er=1.00, er_min=0.05, er_decay=0.99995),
+              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
+          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95),
+    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.95)
   ]
   data = {}
   for model in models:

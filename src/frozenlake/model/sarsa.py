@@ -1,19 +1,20 @@
-from frozenlake.model import Model
+import time
 import numpy as np
 from gymnasium import Env
+from frozenlake.model import Model
 from frozenlake.const import DEBUG, STATS, SAMPLE
-import time
 
 class SARSA(Model):
-  def __call__(self, state: int, *, greedy: bool = True, training: bool = False) -> int:
-    action = self.q[state].argmax() if training else self.policy[state]
-    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else action
-
-  def reset(self):
-    super().reset()
+  def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
+    super().__init__(state_size, action_size)
+    self.lr, self.dr = lr, dr
+    self.er, self.er_min, self.er_decay = er, er_min, er_decay
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
 
-  def update(self, state: int, action: int, reward: float, new_state: int | None = None, new_action: int | None = None, final: bool = False):
+  def action(self, state: int, greedy: bool = True) -> int:
+    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax()
+
+  def update(self, state: int, action: int, reward: float, new_state: int, new_action: int, final: bool):
     target = reward + self.dr * self.q[new_state, new_action] * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
@@ -22,14 +23,14 @@ class SARSA(Model):
     iter_start = time.perf_counter()
     while iter < max_iter:
       state, _ = env.reset()
-      action = self(state)
+      action = self.action(state, greedy=False)
       reward, reward_total = 0.0, 0.0
 
       done, trunc = False, False
       while not (done or trunc):
         new_state, reward, done, trunc, _ = env.step(action)
         reward = float(reward)
-        new_action = self(new_state, greedy=False, training=True)
+        new_action = self.action(new_state, greedy=False)
         self.update(state, action, float(reward), new_state, new_action, done)
         state, action = new_state, new_action
         reward_total += reward

@@ -1,14 +1,19 @@
-from frozenlake.model import Model
+import time
 import numpy as np
 from gymnasium import Env
+from frozenlake.model import Model
 from frozenlake.const import DEBUG, STATS, SAMPLE
-import time
 
 class MonteCarlo(Model):
-  def reset(self):
-    super().reset()
+  def __init__(self, state_size: int, action_size: int, dr: float, er: float, er_min: float, er_decay: float):
+    super().__init__(state_size, action_size)
+    self.dr = dr
+    self.er, self.er_min, self.er_decay = er, er_min, er_decay
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.c = np.zeros((self.state_size, self.action_size), dtype=int)
+
+  def action(self, state: int, greedy: bool = True) -> int:
+    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax()
 
   def update(self, state: int, action: int, reward: float):
     # new_avg = old_avg + (new_value - old_avg) / (n + 1)
@@ -19,7 +24,7 @@ class MonteCarlo(Model):
     episode = []
     done, trunc = False, False
     while not (done or trunc):
-      action = self(state, greedy=False)
+      action = self.action(state, greedy=False)
       new_state, reward, done, trunc, _ = env.step(action)
       episode.append((state, action, reward))
       state = new_state

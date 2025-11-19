@@ -1,15 +1,11 @@
-from .model import Model, Parameters
 import numpy as np
 from gymnasium import Env
-from typing import Unpack
+from frozenlake.model import Model
 
 class DynamicProgramming(Model):
-  def __init__(self, state_size: int, action_size: int, probs: dict[int, dict[int, list[tuple[float, int, float, bool]]]], **params: Unpack[Parameters]):
-    super().__init__(state_size, action_size, **params)
-    self.probs = probs
-
-  def reset(self): 
-    super().reset()
+  def __init__(self, state_size: int, action_size: int, probs: dict[int, dict[int, list[tuple[float, int, float, bool]]]], dr: float):
+    super().__init__(state_size, action_size)
+    self.probs, self.dr = probs, dr
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.v = np.zeros(self.state_size, dtype="float32")
     self.last_v = np.zeros(self.state_size, dtype="float32")
