@@ -1,8 +1,6 @@
-from . import Model
+from frozenlake.model import Model
 import numpy as np
 from gymnasium import Env
-
-# TODO: monte carlo doesn't match Model's structure
 
 class MonteCarlo(Model):
   def reset(self):

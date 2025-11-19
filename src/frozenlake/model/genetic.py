@@ -1,7 +1,9 @@
 import numpy as np
 from typing import Unpack
 from gymnasium import Env
-from .model import Model, Parameters
+from frozenlake.model import Model, Parameters
+from frozenlake.const import DEBUG
+import time
 
 class Genetic(Model):
   def __init__(self, state_size: int, action_size: int, population_size: int, mutation_rate: float, **params: Unpack[Parameters]):
@@ -21,6 +23,8 @@ class Genetic(Model):
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     generation = 0
     while generation < max_iter:
+      iter_start = time.perf_counter()
+
       fitness = self.fitness(env)
       half = self.population_size // 2
       best_half = fitness.argsort()[-half:]
@@ -35,7 +39,10 @@ class Genetic(Model):
       self.pop = np.stack(new_pop)
       generation += 1
 
-      print(f"gen: {generation:>3d}; best_idx: {best:>3d} -> {self.pop[best]}")
+      iter_end = time.perf_counter()
+
+      if DEBUG > 0:
+        print(f"gen: {generation:>3d}; best_idx: {best:>3d} -> {self.pop[best]} | {iter_end - iter_start:.6f} sec")
 
     self.policy = self.pop[self.fitness(env).argmax()]
 
