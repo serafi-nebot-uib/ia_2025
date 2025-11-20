@@ -12,13 +12,14 @@ class QLearning(Model):
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
 
   def action(self, state: int, greedy: bool = True) -> int:
-    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax()
+    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
+    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
 
   def update(self, state: int, action: int, reward: float, new_state: int, final: bool):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
-  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int) -> int:
     iter = 0
     while iter < max_iter:
       iter_start = time.perf_counter()
@@ -52,15 +53,18 @@ class DoubleQLearning(Model):
     self.qb = np.zeros((self.state_size, self.action_size), dtype="float32")
 
   def action(self, state: int, greedy: bool = True) -> int:
-    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return int(np.argmax((self.qa[state] + self.qb[state]) / 2))
+    if not greedy and np.random.uniform() < self.er: 
+      return np.random.choice(self.action_size)
+    else:
+      q = (self.qa[state] + self.qb[state]) / 2
+      return np.random.choice(np.flatnonzero(q == q.max()))
 
   def update(self, state: int, action: int, reward: float, new_state: int, final: bool):
     qa, qb = (self.qa, self.qb) if np.random.uniform() < 0.50 else (self.qb, self.qa)
     target = reward + self.dr * qb[new_state].max() * (not final)
     qa[state, action] += self.lr * (target - qa[state, action])
 
-  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int) -> int:
     iter = 0
     while iter < max_iter:
       iter_start = time.perf_counter()

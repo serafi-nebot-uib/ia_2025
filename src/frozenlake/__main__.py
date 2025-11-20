@@ -60,7 +60,7 @@ if __name__ == "__main__":
 
   data_sr, data_t = {}, {}
   for model in models:
-    sr, ep = test(model, num_iter=40000)
+    sr, ep = test(model, num_iter=20000)
     print(f"sr: {sr:.4f}; ep: {ep}")
     data_sr[model.__class__.__name__] = model.rewards
     data_t[model.__class__.__name__] = model.time

@@ -32,7 +32,7 @@ class MonteCarlo(Model):
       state = new_state
     return episode
 
-  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int) -> int:
     iter = 0
     while iter < max_iter:
       iter_start = time.perf_counter()

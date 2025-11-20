@@ -10,7 +10,7 @@ class Model:
 
   def action(self, state: int, greedy: bool = True) -> int: raise NotImplementedError()
 
-  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int: raise NotImplementedError()
+  def train(self, env: Env, max_iter: int) -> int: raise NotImplementedError()
 
   def train_stats(self, iter: int, reward: float, t: float):
       if DEBUG > 0 or STATS > 0:
@@ -28,6 +28,6 @@ class Model:
     for _ in range(num_iter):
       state, _ = env.reset()
       done, trunc, reward = False, False, 0
-      while not (done or trunc): state, reward, done, trunc, _ = env.step(self.action(state))
+      while not (done or trunc): state, reward, done, trunc, _ = env.step(self.action(state, greedy=True))
       s += float(reward)
     return s / num_iter

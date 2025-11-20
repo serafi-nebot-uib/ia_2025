@@ -12,13 +12,14 @@ class SARSA(Model):
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
 
   def action(self, state: int, greedy: bool = True) -> int:
-    return np.random.choice(self.action_size) if not greedy and np.random.uniform() < self.er else self.q[state].argmax()
+    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
+    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
 
   def update(self, state: int, action: int, reward: float, new_state: int, new_action: int, final: bool):
     target = reward + self.dr * self.q[new_state, new_action] * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
-  def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
+  def train(self, env: Env, max_iter: int) -> int:
     iter = 0
     while iter < max_iter:
       iter_start = time.perf_counter()
