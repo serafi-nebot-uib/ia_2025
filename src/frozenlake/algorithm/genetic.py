@@ -1,10 +1,9 @@
+import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.model import Model
-from frozenlake.const import DEBUG
-import time
+from frozenlake.algorithm import Algorithm
 
-class Genetic(Model):
+class Genetic(Algorithm):
   def __init__(self, state_size: int, action_size: int, population_size: int, mutation_rate: float):
     super().__init__(state_size, action_size)
     self.name = "GEN"

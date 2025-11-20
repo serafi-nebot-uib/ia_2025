@@ -1,4 +1,4 @@
-from .model import *
+from .algorithm import *
 from .qlearning import *
 from .sarsa import *
 from .dynamic import *

@@ -1,9 +1,9 @@
 import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.model import Model
+from frozenlake.algorithm import Algorithm
 
-class DynamicProgramming(Model):
+class DynamicProgramming(Algorithm):
   def __init__(self, state_size: int, action_size: int, probs: dict[int, dict[int, list[tuple[float, int, float, bool]]]], dr: float):
     super().__init__(state_size, action_size)
     self.probs, self.dr = probs, dr

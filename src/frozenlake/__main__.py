@@ -4,7 +4,7 @@ import gymnasium as gym
 from gymnasium import Env
 import matplotlib.pyplot as plt
 import frozenlake.plot as plot
-from frozenlake.model import Model, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming, Genetic
+from frozenlake.algorithm import Algorithm, SARSA, QLearning, DoubleQLearning, MonteCarlo, DynamicProgramming, Genetic
 
 SLIPPERY = True
 
@@ -20,7 +20,7 @@ def printPolicy(env: Env, policy: np.ndarray):
         print(f"│ {row_pi}  │")
     print("┕━━━━━━━━━━┙")
 
-def test(model: Model, *, num_iter, seed: int | None = None):
+def test(model: Algorithm, *, num_iter, seed: int | None = None):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
 
   if seed:
@@ -35,13 +35,6 @@ def test(model: Model, *, num_iter, seed: int | None = None):
   return sr, num_iter
 
 if __name__ == "__main__":
-  """
-  y = 0.995
-
-  0.1 = 0.9995^i
-  log_0.9995 (0.1) = 4604.018797
-  """
-
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
   probs = env.unwrapped.P
   state_size = env.observation_space.n

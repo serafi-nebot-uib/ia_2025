@@ -1,9 +1,9 @@
 import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.model import Model
+from frozenlake.algorithm import Algorithm
 
-class MonteCarlo(Model):
+class MonteCarlo(Algorithm):
   def __init__(self, state_size: int, action_size: int, dr: float, er: float, er_min: float, er_decay: float):
     super().__init__(state_size, action_size)
     self.name = "MC"

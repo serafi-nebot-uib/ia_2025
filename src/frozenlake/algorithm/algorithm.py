@@ -2,7 +2,7 @@ import numpy as np
 from gymnasium import Env
 from frozenlake.const import DEBUG, STATS, SAMPLE
 
-class Model:
+class Algorithm:
   def __init__(self, state_size: int, action_size: int):
     self.name = "N/A"
     self.state_size, self.action_size = state_size, action_size

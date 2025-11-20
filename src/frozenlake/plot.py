@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.axes import Axes
 
 def qtable(desc: np.ndarray, q: np.ndarray):
   fig, (axq, axp) = plt.subplots(nrows=1, ncols=2, figsize=(6 * 2, 6))
@@ -61,9 +62,10 @@ def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
 
   return fig
 
-def sma(data: dict[str, list[float]], m: int): return { name: np.convolve(value, np.ones(m) / m, mode="valid") for name, value in data.items() }
+def sma(data: dict[str, list[float] | np.ndarray], m: int) -> dict[str, list[float] | np.ndarray]:
+  return { name: np.convolve(value, np.ones(m) / m, mode="valid") for name, value in data.items() }
 
-def plot_data(data: dict[str, list[float]], m: int, ax: plt.Axes):
+def plot_data(data: dict[str, list[float] | np.ndarray], m: int, ax: Axes):
   xmax = 0
   for name, y in data.items():
     x = np.arange(len(y)) + m
@@ -71,9 +73,9 @@ def plot_data(data: dict[str, list[float]], m: int, ax: plt.Axes):
     xmax = max(xmax, x.max())
   ax.set_xlim((0, xmax + m))
 
-def success_rate(data: dict[str, list[float]], m: int = 1):
+def success_rate(data: dict[str, list[float] | np.ndarray], m: int = 1):
   fig, ax = plt.subplots(figsize=(8, 6))
-  if m > 1: data = sma(data, m, ax)
+  if m > 1: data = sma(data, m)
   plot_data(data, m, ax)
   ax.set_yticks(np.arange(0, 1.0 + 0.1, 0.1))
   ax.set_ylabel("success rate")
@@ -84,9 +86,9 @@ def success_rate(data: dict[str, list[float]], m: int = 1):
   fig.tight_layout()
   return fig
 
-def train_time(data: dict[str, list[float]], m: int = 1):
+def train_time(data: dict[str, list[float] | np.ndarray], m: int = 1):
   fig, ax = plt.subplots(figsize=(8, 6))
-  if m > 1: data = sma(data, m, ax)
+  if m > 1: data = sma(data, m)
   plot_data(data, m, ax)
   ax.set_ylabel("time (s)")
   ax.set_xlabel("iterations")
