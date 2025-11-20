@@ -48,21 +48,33 @@ if __name__ == "__main__":
   action_size = env.action_space.n
   env.close()
 
-  # m = DynamicProgramming(state_size=4*4, action_size=4, probs=probs, **params)
-  # m = Genetic(state_size=4*4, action_size=4, population_size=100, mutation_rate=0.08, **params)
-  er_decay = 0.9995
   models = [
-         MonteCarlo(state_size, action_size,          dr=0.99, er=1.00, er_min=0.01, er_decay=er_decay),
-              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=er_decay),
-          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=er_decay),
-    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=er_decay)
+    Genetic(state_size, action_size, population_size=100, mutation_rate=0.08),
+    DynamicProgramming(state_size, action_size, probs, 0.95)
+  ]
+  data_sr, data_t = {}, {}
+  for model in models:
+    sr, ep = test(model, num_iter=40)
+    print(f"sr: {sr:.4f}; ep: {ep}")
+    data_sr[model.__class__.__name__] = model.performance
+    data_t[model.__class__.__name__] = model.time
+
+  fig = plot.success_rate(data_sr)
+  fig = plot.train_time(data_t)
+  plt.show()
+
+  models = [
+         MonteCarlo(state_size, action_size,          dr=0.99, er=1.00, er_min=0.01, er_decay=0.9995),
+              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
+          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
+    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995)
   ]
 
   data_sr, data_t = {}, {}
   for model in models:
     sr, ep = test(model, num_iter=20000)
     print(f"sr: {sr:.4f}; ep: {ep}")
-    data_sr[model.__class__.__name__] = model.rewards
+    data_sr[model.__class__.__name__] = model.performance
     data_t[model.__class__.__name__] = model.time
 
   fig = plot.success_rate(data_sr, 1000)

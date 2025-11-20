@@ -61,31 +61,36 @@ def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
 
   return fig
 
-def sma(data: dict[str, list[float]], m: int, ax: plt.Axes):
+def sma(data: dict[str, list[float]], m: int): return { name: np.convolve(value, np.ones(m) / m, mode="valid") for name, value in data.items() }
+
+def plot_data(data: dict[str, list[float]], m: int, ax: plt.Axes):
   xmax = 0
-  for name, reward in data.items():
-    y = np.convolve(reward, np.ones(m) / m, mode="valid")
+  for name, y in data.items():
     x = np.arange(len(y)) + m
     ax.plot(x, y, label=name)
     xmax = max(xmax, x.max())
   ax.set_xlim((0, xmax + m))
 
-def success_rate(data: dict[str, list[float]], m: int):
+def success_rate(data: dict[str, list[float]], m: int = 1):
   fig, ax = plt.subplots(figsize=(8, 6))
-  sma(data, m, ax)
-  ax.set_yticks(np.arange(0, 1.0, 0.1))
+  if m > 1: data = sma(data, m, ax)
+  plot_data(data, m, ax)
+  ax.set_yticks(np.arange(0, 1.0 + 0.1, 0.1))
   ax.set_ylabel("success rate")
   ax.set_xlabel("iterations")
-  fig.suptitle(f"Train Success Rate (SMA {m})", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  agg = f" (SMA {m})" if m > 1 else " "
+  fig.suptitle("Train Success Rate" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend(loc="upper right")
   fig.tight_layout()
   return fig
 
-def train_time(data: dict[str, list[float]], m: int):
+def train_time(data: dict[str, list[float]], m: int = 1):
   fig, ax = plt.subplots(figsize=(8, 6))
-  sma(data, m, ax)
+  if m > 1: data = sma(data, m, ax)
+  plot_data(data, m, ax)
   ax.set_ylabel("time (s)")
   ax.set_xlabel("iterations")
-  fig.suptitle(f"Train Iteration Time (SMA {m})", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  agg = f" (SMA {m})" if m > 1 else " "
+  fig.suptitle("Train Iteration Time" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend(loc="upper right")
   return fig
