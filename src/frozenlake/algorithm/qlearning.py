@@ -1,20 +1,9 @@
 import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.algorithm import Algorithm
+from frozenlake.algorithm import LearningAlgorithm
 
-class QLearning(Algorithm):
-  def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
-    super().__init__(state_size, action_size)
-    self.name = "QL"
-    self.lr, self.dr = lr, dr
-    self.er, self.er_min, self.er_decay = er, er_min, er_decay
-    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
-
-  def action(self, state: int, greedy: bool = True) -> int:
-    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
-
+class QLearning(LearningAlgorithm):
   def update(self, state: int, action: int, reward: float, new_state: int, final: bool):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
@@ -42,22 +31,11 @@ class QLearning(Algorithm):
 
     return iter
 
-class DoubleQLearning(Algorithm):
+class DoubleQLearning(LearningAlgorithm):
   def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
-    super().__init__(state_size, action_size)
-    self.name = "2QL"
-    self.lr, self.dr = lr, dr
-    self.lr, self.dr = lr, dr
-    self.er, self.er_min, self.er_decay = er, er_min, er_decay
+    super().__init__(state_size, action_size, lr, dr, er, er_min, er_decay)
     self.qa = np.zeros((self.state_size, self.action_size), dtype="float32")
     self.qb = np.zeros((self.state_size, self.action_size), dtype="float32")
-
-  def action(self, state: int, greedy: bool = True) -> int:
-    if not greedy and np.random.uniform() < self.er: 
-      return np.random.choice(self.action_size)
-    else:
-      q = (self.qa[state] + self.qb[state]) / 2
-      return np.random.choice(np.flatnonzero(q == q.max()))
 
   def update(self, state: int, action: int, reward: float, new_state: int, final: bool):
     qa, qb = (self.qa, self.qb) if np.random.uniform() < 0.50 else (self.qb, self.qa)
@@ -73,7 +51,7 @@ class DoubleQLearning(Algorithm):
 
       done, trunc = False, False
       while not (done or trunc):
-        action = self.action(state, greedy=False)
+        action = self.action(state, greedy=False, q=(self.qa + self.qb) / 2)
         new_state, reward, done, trunc, _ = env.step(action)
         reward = float(reward)
         self.update(state, action, reward, new_state, done)
@@ -84,5 +62,7 @@ class DoubleQLearning(Algorithm):
       iter += 1
       iter_end = time.perf_counter()
       self.train_stats(iter, reward_total, iter_end - iter_start)
+
+    self.q = (self.qa + self.qb) / 2
 
     return iter

@@ -6,7 +6,6 @@ from frozenlake.algorithm import Algorithm
 class Genetic(Algorithm):
   def __init__(self, state_size: int, action_size: int, population_size: int, mutation_rate: float):
     super().__init__(state_size, action_size)
-    self.name = "GEN"
     self.population_size, self.mutation_rate = population_size, mutation_rate
     self.pop = np.stack([self.random_policy() for _ in range(self.population_size)])
 

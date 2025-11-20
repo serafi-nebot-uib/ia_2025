@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 
-def qtable(desc: np.ndarray, q: np.ndarray):
+def qtable(name: str, q: np.ndarray, map_desc: np.ndarray):
   fig, (axq, axp) = plt.subplots(nrows=1, ncols=2, figsize=(6 * 2, 6))
 
   N = int(np.sqrt(q.shape[0]))
@@ -22,7 +22,7 @@ def qtable(desc: np.ndarray, q: np.ndarray):
 
   for y in range(arrow.shape[0]):
     for x in range(arrow.shape[1]):
-      if desc[y, x] in (b"H", b"G"): continue
+      if map_desc[y, x] in (b"H", b"G"): continue
       for a in range(arrow.shape[2]):
         dx, dy = arrow[y, x, a]
         axq.arrow(x, y, dx, dy,
@@ -34,13 +34,15 @@ def qtable(desc: np.ndarray, q: np.ndarray):
   axp.imshow(v, cmap="Blues")
   for y in range(N):
     for x in range(N):
-      if desc[y, x] in (b"H", b"G"): continue
+      if map_desc[y, x] in (b"H", b"G"): continue
       axp.text(x, y, syms[p[y, x]], ha="center", va="center", fontsize=26, color="black", fontweight="bold")
 
   axq.set_xticks([])
   axq.set_yticks([])
   axp.set_xticks([])
   axp.set_yticks([])
+  fig.suptitle(f"{name} Q Table", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.tight_layout()
 
   return fig
 

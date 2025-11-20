@@ -20,7 +20,7 @@ def printPolicy(env: Env, policy: np.ndarray):
         print(f"│ {row_pi}  │")
     print("┕━━━━━━━━━━┙")
 
-def test(model: Algorithm, *, num_iter, seed: int | None = None):
+def test(alg: Algorithm, *, num_iter, seed: int | None = None):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
 
   if seed:
@@ -28,35 +28,36 @@ def test(model: Algorithm, *, num_iter, seed: int | None = None):
     random.seed(seed)
 
   env.reset(seed=seed)
-  num_iter = model.train(env, num_iter)
-  sr = model.test(env, 1000)
+  num_iter = alg.train(env, num_iter)
+  sr = alg.test(env, 1000)
   env.close()
 
   return sr, num_iter
 
 if __name__ == "__main__":
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
+  desc = env.unwrapped.desc
   probs = env.unwrapped.P
   state_size = env.observation_space.n
   action_size = env.action_space.n
   env.close()
 
-  models = [
-    Genetic(state_size, action_size, population_size=100, mutation_rate=0.08),
-    DynamicProgramming(state_size, action_size, probs, 0.95)
-  ]
-  data_sr, data_t = {}, {}
-  for model in models:
-    sr, ep = test(model, num_iter=40)
-    print(f"sr: {sr:.4f}; ep: {ep}")
-    data_sr[model.__class__.__name__] = model.performance
-    data_t[model.__class__.__name__] = model.time
+  # algs = [
+  #   Genetic(state_size, action_size, population_size=100, mutation_rate=0.08),
+  #   DynamicProgramming(state_size, action_size, probs, 0.95)
+  # ]
+  # data_sr, data_t = {}, {}
+  # for alg in algs:
+  #   sr, ep = test(alg, num_iter=40)
+  #   print(f"sr: {sr:.4f}; ep: {ep}")
+  #   data_sr[alg.__class__.__name__] = alg.performance
+  #   data_t[alg.__class__.__name__] = alg.time
 
-  fig = plot.success_rate(data_sr)
-  fig = plot.train_time(data_t)
-  plt.show()
+  # fig = plot.success_rate(data_sr)
+  # fig = plot.train_time(data_t)
+  # plt.show()
 
-  models = [
+  algs = [
          MonteCarlo(state_size, action_size,          dr=0.99, er=1.00, er_min=0.01, er_decay=0.9995),
               SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
           QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
@@ -64,17 +65,18 @@ if __name__ == "__main__":
   ]
 
   data_sr, data_t = {}, {}
-  for model in models:
-    sr, ep = test(model, num_iter=20000)
+  for alg in algs:
+    sr, ep = test(alg, num_iter=5000)
     print(f"sr: {sr:.4f}; ep: {ep}")
-    data_sr[model.__class__.__name__] = model.performance
-    data_t[model.__class__.__name__] = model.time
+    data_sr[alg.name] = alg.performance
+    data_t[alg.name] = alg.time
 
-  fig = plot.success_rate(data_sr, 1000)
-  fig = plot.train_time(data_t, 1000)
+  # fig = plot.success_rate(data_sr, 1000)
+  # fig = plot.train_time(data_t, 1000)
+  # plt.show()
+  for alg in algs: plot.qtable(alg.name, alg.q, desc)
   plt.show()
 
-  # desc = env.unwrapped.desc
   # plot.policy(m.policy, m.q.max(axis=-1))
   # fig = plot.qtable(desc, m.q)
   # fig.suptitle("QLearning")

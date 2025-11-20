@@ -1,20 +1,9 @@
 import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.algorithm import Algorithm
+from frozenlake.algorithm import LearningAlgorithm
 
-class SARSA(Algorithm):
-  def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
-    super().__init__(state_size, action_size)
-    self.name = "SARSA"
-    self.lr, self.dr = lr, dr
-    self.er, self.er_min, self.er_decay = er, er_min, er_decay
-    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
-
-  def action(self, state: int, greedy: bool = True) -> int:
-    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
-
+class SARSA(LearningAlgorithm):
   def update(self, state: int, action: int, reward: float, new_state: int, new_action: int, final: bool):
     target = reward + self.dr * self.q[new_state, new_action] * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])

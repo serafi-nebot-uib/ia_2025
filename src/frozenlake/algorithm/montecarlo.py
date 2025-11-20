@@ -1,20 +1,12 @@
 import time
 import numpy as np
 from gymnasium import Env
-from frozenlake.algorithm import Algorithm
+from frozenlake.algorithm import LearningAlgorithm
 
-class MonteCarlo(Algorithm):
+class MonteCarlo(LearningAlgorithm):
   def __init__(self, state_size: int, action_size: int, dr: float, er: float, er_min: float, er_decay: float):
-    super().__init__(state_size, action_size)
-    self.name = "MC"
-    self.dr = dr
-    self.er, self.er_min, self.er_decay = er, er_min, er_decay
-    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
+    super().__init__(state_size, action_size, 0.00, dr, er, er_min, er_decay)
     self.c = np.zeros((self.state_size, self.action_size), dtype=int)
-
-  def action(self, state: int, greedy: bool = True) -> int:
-    if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return np.random.choice(np.flatnonzero(self.q[state] == self.q[state].max()))
 
   def update(self, state: int, action: int, g: float):
     # new_avg = old_avg + (new_value - old_avg) / (n + 1)
