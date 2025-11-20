@@ -2,11 +2,11 @@ import time
 import numpy as np
 from gymnasium import Env
 from frozenlake.model import Model
-from frozenlake.const import DEBUG, STATS, SAMPLE
 
 class SARSA(Model):
   def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
     super().__init__(state_size, action_size)
+    self.name = "SARSA"
     self.lr, self.dr = lr, dr
     self.er, self.er_min, self.er_decay = er, er_min, er_decay
     self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
@@ -20,8 +20,8 @@ class SARSA(Model):
 
   def train(self, env: Env, max_iter: int, threshold: float = 1e-9) -> int:
     iter = 0
-    iter_start = time.perf_counter()
     while iter < max_iter:
+      iter_start = time.perf_counter()
       state, _ = env.reset()
       action = self.action(state, greedy=False)
       reward, reward_total = 0.0, 0.0
@@ -37,13 +37,8 @@ class SARSA(Model):
 
       self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
-
-      if DEBUG > 0 or STATS > 0: self.rewards.append(reward_total)
-      if iter % SAMPLE == 0 and DEBUG > 0:
-        iter_end = time.perf_counter()
-        avg = np.mean(self.rewards[-SAMPLE:])
-        print(f"{iter:>7d} | {avg:>4.2f} | {iter_end - iter_start:.6f} sec")
-        iter_start = time.perf_counter()
+      iter_end = time.perf_counter()
+      self.train_stats(iter, reward_total, iter_end - iter_start)
 
     self.policy = self.q.argmax(axis=-1)
 

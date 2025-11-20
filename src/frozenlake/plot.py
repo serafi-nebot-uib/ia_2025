@@ -61,19 +61,31 @@ def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
 
   return fig
 
-def success_rate(data: dict[str, list[float]], m: int):
-  fig, ax = plt.subplots(figsize=(6, 6))
-
+def sma(data: dict[str, list[float]], m: int, ax: plt.Axes):
   xmax = 0
   for name, reward in data.items():
     y = np.convolve(reward, np.ones(m) / m, mode="valid")
     x = np.arange(len(y)) + m
     ax.plot(x, y, label=name)
     xmax = max(xmax, x.max())
-
   ax.set_xlim((0, xmax + m))
+
+def success_rate(data: dict[str, list[float]], m: int):
+  fig, ax = plt.subplots(figsize=(8, 6))
+  sma(data, m, ax)
   ax.set_ylim((0, 1.0))
   ax.set_ylabel("success rate")
   ax.set_xlabel("iterations")
+  fig.suptitle(f"Train Success Rate (SMA {m})", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.legend(loc="upper right")
+  fig.tight_layout()
+  return fig
+
+def train_time(data: dict[str, list[float]], m: int):
+  fig, ax = plt.subplots(figsize=(8, 6))
+  sma(data, m, ax)
+  ax.set_ylabel("time (s)")
+  ax.set_xlabel("iterations")
+  fig.suptitle(f"Train Iteration Time (SMA {m})", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend(loc="upper right")
   return fig
