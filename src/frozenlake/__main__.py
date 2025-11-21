@@ -8,19 +8,37 @@ from frozenlake.algorithm import Algorithm, SARSA, QLearning, DoubleQLearning, M
 
 SLIPPERY = True
 
-def printPolicy(env: Env, policy: np.ndarray):
-    arrows, goal, wall = [ '⇐', '⇓', '⇒', '⇑' ], "⊕", " " # visible wall:"▓"
-    dim = int(np.sqrt(env.observation_space.n))
-    desc = env.unwrapped.desc
-    print("   ╭────╮   ")
-    print("┍━━┥ π* ┝━━┑")
-    print("│  ╰────╯  │")
-    for y in range(dim):
-        row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
-        print(f"│ {row_pi}  │")
-    print("┕━━━━━━━━━━┙")
+env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
+DESC = env.unwrapped.desc
+PROBS = env.unwrapped.P
+STATE_SIZE = env.observation_space.n
+ACTION_SIZE = env.action_space.n
+env.close()
 
-def test(alg: Algorithm, *, num_iter, seed: int | None = None):
+LEARNING = [
+  (MonteCarlo,      { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
+  (SARSA,           { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
+  (QLearning,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
+  (DoubleQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
+]
+
+SEARCH = [
+  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "mutation_rate": 0.08 }),
+  (DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }),
+]
+
+# def printPolicy(env: Env, policy: np.ndarray):
+#     arrows, goal, wall = [ '⇐', '⇓', '⇒', '⇑' ], "⊕", " " # visible wall:"▓"
+#     dim = int(np.sqrt(state_size)
+#     print("   ╭────╮   ")
+#     print("┍━━┥ π* ┝━━┑")
+#     print("│  ╰────╯  │")
+#     for y in range(dim):
+#         row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
+#         print(f"│ {row_pi}  │")
+#     print("┕━━━━━━━━━━┙")
+
+def train_test(alg: Algorithm, *, num_iter, seed: int | None = None):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
 
   if seed:
@@ -34,77 +52,47 @@ def test(alg: Algorithm, *, num_iter, seed: int | None = None):
 
   return sr, num_iter
 
-if __name__ == "__main__":
-  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
-  desc = env.unwrapped.desc
-  probs = env.unwrapped.P
-  state_size = env.observation_space.n
-  action_size = env.action_space.n
-  env.close()
-
-  # algs = [
-  #   Genetic(state_size, action_size, population_size=100, mutation_rate=0.08),
-  #   DynamicProgramming(state_size, action_size, probs, 0.95)
-  # ]
-  # data_sr, data_t = {}, {}
-  # for alg in algs:
-  #   sr, ep = test(alg, num_iter=40)
-  #   print(f"sr: {sr:.4f}; ep: {ep}")
-  #   data_sr[alg.__class__.__name__] = alg.performance
-  #   data_t[alg.__class__.__name__] = alg.time
-
-  # fig = plot.success_rate(data_sr)
-  # fig = plot.train_time(data_t)
-  # plt.show()
-
-  algs = [
-         MonteCarlo(state_size, action_size,          dr=0.99, er=1.00, er_min=0.01, er_decay=0.9995),
-              SARSA(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
-          QLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995),
-    DoubleQLearning(state_size, action_size, lr=0.20, dr=0.95, er=1.00, er_min=0.01, er_decay=0.9995)
-  ]
-
+def train_learning():
+  algs = [c(**p) for c, p in LEARNING]
   data_sr, data_t = {}, {}
   for alg in algs:
-    sr, ep = test(alg, num_iter=5000)
+    sr, ep = train_test(alg, num_iter=5000)
     print(f"sr: {sr:.4f}; ep: {ep}")
     data_sr[alg.name] = alg.performance
     data_t[alg.name] = alg.time
 
-  # fig = plot.success_rate(data_sr, 1000)
-  # fig = plot.train_time(data_t, 1000)
-  # plt.show()
-  for alg in algs: plot.qtable(alg.name, alg.q, desc)
+  plot.success_rate(data_sr, 1000)
+  plot.train_time(data_t, 1000)
+  for alg in algs: plot.qtable(alg.name, alg.q, DESC)
   plt.show()
 
-  # plot.policy(m.policy, m.q.max(axis=-1))
-  # fig = plot.qtable(desc, m.q)
-  # fig.suptitle("QLearning")
-  # fig.tight_layout()
-  # plt.show()
+def train_search():
+  algs = [c(**p) for c, p in SEARCH]
+  data_sr, data_t = {}, {}
+  for alg in algs:
+    sr, ep = train_test(alg, num_iter=40)
+    print(f"sr: {sr:.4f}; ep: {ep}")
+    data_sr[alg.name] = alg.performance
+    data_t[alg.name] = alg.time
 
-  # sr, ep = [], []
-  # for i in tqdm(range(25), desc="test"):
-  #   s, e = test(QLearning(**params))
-  #   sr.append(s)
-  #   ep.append(e)
-  # print(f"avg success rate: {np.mean(sr):.4f}")
-  # fig, ax1 = plt.subplots(figsize=(8, 8))
-  # ax1.plot(np.arange(len(sr)), sr, label="sr", color="blue")
-  # # ax2 = ax1.twinx()
-  # # ax2.plot(np.arange(len(ep)), ep, label="ep", color="red")
-  # plt.legend(loc="upper right")
-  # plt.show()
+  plot.success_rate(data_sr)
+  plot.train_time(data_t)
+  plt.show()
 
-  # view Q table (policy)
-  # requirements:
-  #     - uv pip install matplotlib
-  # ----- for SARSA/QLearning/MonteCarlo
-  # plot.qtable(m.q, 4, 4)
-  # plot.policy(m.q, 4, 4)
-  # ----- for DoubleQLearning
-  # plot.qtable(m.qa, 4, 4)
-  # plot.qtable(m.qb, 4, 4)
+def steps_learning():
+  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
+  algs = [c(**p) for c, p in LEARNING]
+  categories, values = [], []
+  for alg in algs:
+    steps = sum(alg.run(env)[0] for _ in range(1000)) / 1000
+    categories.append(alg.name)
+    values.append(steps)
+  env.close()
+  plt.bar(categories, values)
+  plt.show()
+
+if __name__ == "__main__":
+  steps_learning()
 
   # env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
   # state, _ = env.reset()

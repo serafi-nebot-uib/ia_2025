@@ -22,14 +22,17 @@ class Algorithm:
       time_total = np.sum(self.time[-sample:])
       print(f"{self.name:<15} {iter:>7d} | perf: {perf_avg:>4.2f} | t: {time_total:.6f} s (total) {time_avg:.6f} s (avg)")
 
-  def test(self, env: Env, num_iter: int = 1) -> float:
-    s = 0.0
-    for _ in range(num_iter):
-      state, _ = env.reset()
-      done, trunc, reward = False, False, 0
-      while not (done or trunc): state, reward, done, trunc, _ = env.step(self.action(state, greedy=True))
-      s += float(reward)
-    return s / num_iter
+  def run(self, env: Env) -> tuple[int, float]:
+    state, _ = env.reset()
+    steps, reward_total = 0, 0
+    done, trunc = False, False
+    while not (done or trunc):
+      state, reward, done, trunc, _ = env.step(self.action(state, greedy=True))
+      reward_total += float(reward)
+      steps += 1
+    return steps, reward_total
+
+  def test(self, env: Env, num_iter: int = 1) -> float: return sum(self.run(env)[1] for _ in range(num_iter)) / num_iter
 
 class LearningAlgorithm(Algorithm):
   def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
