@@ -25,11 +25,11 @@ LEARN = [
   (AverageQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
 ]
 
-SEARCH_TRAIN_ITER = 40
+SEARCH_TRAIN_ITER = 20
 SEARCH_TEST_ITER = 1000
 
 SEARCH = [
-  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "mutation_rate": 0.08 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
   (DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
 ]
 
@@ -44,7 +44,7 @@ def test(config: list[tuple[type[Algorithm], dict, int, int]]):
     steps, success = a.test(env, test_iter)
     data[a.name] = {
       "alg": a,
-      "train": { "perf": a.performance, "time": a.time },
+      "train": { "steps": a.steps, "perf": a.performance, "time": a.time },
       "test": { "steps": steps, "perf": success }
     }
 
@@ -56,8 +56,10 @@ if __name__ == "__main__":
   learn_data = test(LEARN)
   # search_data = test(SEARCH)
 
-  plot.success_rate(learn_data, 1000, "train", "perf")
-  plot.train_time(learn_data, 1000, "train", "time")
+  data = learn_data
+  # plot.success_rate(data, 1000, "train", "perf")
+  # plot.train_time(data, 1000, "train", "time")
+  plot.train_steps(data, 1000, "train", "steps")
   # plot.test_steps(learn_data | search_data, "test", "steps")
   # for alg in learn_data.values(): plot.qtable(alg["alg"], DESC)
   plt.show()

@@ -15,7 +15,7 @@ class QLearning(LearningAlgorithm):
       state, _ = env.reset()
       reward, reward_total = 0.0, 0.0
 
-      done, trunc = False, False
+      done, trunc, steps = False, False, 0
       while not (done or trunc):
         action = self.action(state, greedy=False)
         new_state, reward, done, trunc, _ = env.step(action)
@@ -23,11 +23,12 @@ class QLearning(LearningAlgorithm):
         self.update(state, action, reward, new_state, done)
         state = new_state
         reward_total += reward
+        steps += 1
 
       self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
       iter_end = time.perf_counter()
-      self.train_stats(iter, reward_total, iter_end - iter_start)
+      self.train_stats(iter, steps, reward_total, iter_end - iter_start)
 
     return iter
 
@@ -49,7 +50,7 @@ class AverageQLearning(LearningAlgorithm):
       state, _ = env.reset()
       reward, reward_total = 0.0, 0.0
 
-      done, trunc = False, False
+      done, trunc, steps = False, False, 0
       while not (done or trunc):
         action = self.action(state, greedy=False, q=(self.qa + self.qb) / 2)
         new_state, reward, done, trunc, _ = env.step(action)
@@ -57,11 +58,12 @@ class AverageQLearning(LearningAlgorithm):
         self.update(state, action, reward, new_state, done)
         state = new_state
         reward_total += reward
+        steps += 1
 
       self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
       iter_end = time.perf_counter()
-      self.train_stats(iter, reward_total, iter_end - iter_start)
+      self.train_stats(iter, steps, reward_total, iter_end - iter_start)
 
     self.q = (self.qa + self.qb) / 2
 

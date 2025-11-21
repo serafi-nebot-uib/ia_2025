@@ -104,6 +104,17 @@ def train_time(data: dict, m: int = 1, *path: str):
   fig.legend(loc="upper right")
   return fig
 
+def train_steps(data: dict, m: int = 1, *path: str):
+  data = get_data(data, *path)
+  fig, ax = plt.subplots(figsize=(8, 6))
+  for name, values in data.items(): plot_sma(values, name, m, ax)
+  ax.set_ylabel("steps")
+  ax.set_xlabel("iterations")
+  agg = f" (SMA {m})" if m > 1 else " "
+  fig.suptitle("Train Episode Steps" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.legend(loc="upper right")
+  return fig
+
 def test_steps(data: dict, *path: str):
   data = get_data(data, *path)
   fig, ax = plt.subplots(figsize=(8, 6))

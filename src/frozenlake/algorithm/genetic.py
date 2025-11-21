@@ -16,25 +16,31 @@ class Genetic(Algorithm):
 
   def action(self, state: int, greedy: bool = True) -> int: return self.policy[state]
   def random_policy(self) -> np.ndarray: return np.random.randint(self.action_size, size=self.state_size).astype("uint8")
-  def fitness(self, env: Env) -> np.ndarray: return np.array([self.fitness_policy(env, p, 100) for p in self.pop])
   def crossover(self, pa: np.ndarray, pb: np.ndarray) -> np.ndarray: return np.where(np.random.uniform(size=len(pa)) < 0.5, pa, pb)
   def mutate(self, p: np.ndarray) -> np.ndarray: return np.where(np.random.uniform(size=len(p)) >= self.mutation_rate, p, self.random_policy())
 
-  def fitness_policy(self, env: Env, p: np.ndarray, num_iter: int) -> float:
+  def fitness_policy(self, env: Env, p: np.ndarray, num_iter: int) -> tuple[float, float]:
     s = 0.0
+    steps = []
     for _ in range(num_iter):
       state, _ = env.reset()
       done, trunc, reward = False, False, 0
-      while not (done or trunc): state, reward, done, trunc, _ = env.step(p[state])
+      step = 0
+      while not (done or trunc):
+        state, reward, done, trunc, _ = env.step(p[state])
+        step += 1
       s += float(reward)
-    return s / num_iter
+      steps.append(step)
+    return np.mean(steps).item(), s / num_iter
+
+  def fitness(self, env: Env) -> tuple: return tuple(map(np.array, zip(*(self.fitness_policy(env, p, 100) for p in self.pop))))
 
   def train(self, env: Env, num_iter: int) -> int:
     iter = 0
     while iter < num_iter:
       iter_start = time.perf_counter()
 
-      fitness = self.fitness(env)
+      steps, fitness = self.fitness(env)
       best_pop = fitness.argsort()[-self.parents_size:]
       best = best_pop[-1]
 
@@ -48,8 +54,8 @@ class Genetic(Algorithm):
 
       iter += 1
       iter_end = time.perf_counter()
-      self.train_stats(iter, fitness[best].item(), iter_end - iter_start, sample=1)
+      self.train_stats(iter, np.mean(steps), fitness[best].item(), iter_end - iter_start, sample=1)
 
-    self.policy = self.pop[self.fitness(env).argmax()]
+    self.policy = self.pop[self.fitness(env)[1].argmax()]
 
     return iter

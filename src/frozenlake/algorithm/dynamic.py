@@ -27,7 +27,7 @@ class DynamicProgramming(Algorithm):
 
       iter += 1
       iter_end = time.perf_counter()
-      perf = np.mean(self.test(env, num_iter=100)[1]).item()
-      self.train_stats(iter, perf, iter_end - iter_start, sample=1)
+      steps, perf = map(np.mean, self.test(env, num_iter=100))
+      self.train_stats(iter, steps.item(), perf.item(), iter_end - iter_start, sample=1)
 
     return iter

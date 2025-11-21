@@ -30,8 +30,7 @@ class MonteCarlo(LearningAlgorithm):
       iter_start = time.perf_counter()
       episode = self._gen_episode(env) 
 
-      reward_total = 0.0
-      g = 0.0
+      reward_total, g = 0.0, 0.0
       visited = set()
       for state, action, reward in reversed(episode):
         reward_total += reward
@@ -44,6 +43,6 @@ class MonteCarlo(LearningAlgorithm):
       self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
       iter_end = time.perf_counter()
-      self.train_stats(iter, reward_total, iter_end - iter_start)
+      self.train_stats(iter, len(episode), reward_total, iter_end - iter_start)
 
     return num_iter

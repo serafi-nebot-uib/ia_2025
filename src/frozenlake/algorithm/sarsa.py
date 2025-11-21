@@ -16,7 +16,7 @@ class SARSA(LearningAlgorithm):
       action = self.action(state, greedy=False)
       reward, reward_total = 0.0, 0.0
 
-      done, trunc = False, False
+      done, trunc, steps = False, False, 0
       while not (done or trunc):
         new_state, reward, done, trunc, _ = env.step(action)
         reward = float(reward)
@@ -24,11 +24,12 @@ class SARSA(LearningAlgorithm):
         self.update(state, action, float(reward), new_state, new_action, done)
         state, action = new_state, new_action
         reward_total += reward
+        steps += 1
 
       self.er = max(self.er_min, self.er * self.er_decay)
       iter += 1
       iter_end = time.perf_counter()
-      self.train_stats(iter, reward_total, iter_end - iter_start)
+      self.train_stats(iter, steps, reward_total, iter_end - iter_start)
 
     self.policy = self.q.argmax(axis=-1)
 

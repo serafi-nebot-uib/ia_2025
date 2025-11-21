@@ -6,14 +6,15 @@ class Algorithm:
   def __init__(self, state_size: int, action_size: int):
     self.name = self.__class__.__name__
     self.state_size, self.action_size = state_size, action_size
-    self.time, self.performance = [], []
+    self.time, self.performance, self.steps = [], [], []
 
   def action(self, state: int, greedy: bool = True) -> int: raise NotImplementedError()
   def train(self, env: Env, num_iter: int) -> int: raise NotImplementedError()
 
-  def train_stats(self, iter: int, reward: float, t: float, sample: int = SAMPLE):
+  def train_stats(self, iter: int, steps: float, perf: float, t: float, sample: int = SAMPLE):
     if DEBUG > 0 or STATS > 0:
-      self.performance.append(reward)
+      self.steps.append(steps)
+      self.performance.append(perf)
       self.time.append(t)
 
     if DEBUG > 0 and (not sample or iter % sample == 0):
