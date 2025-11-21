@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763726135.1892 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763726136.08488 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763726134.9842 4874 5b5b063a70fc10745278c89df06570cc ""
+["pdflatex"] 1763753611.94013 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763753612.47973 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763753611.23112 5554 9563d9b47c903d3c0f71102aecbed170 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm" 1136768653 1536 3290a75021d32d016616fe527bc9884c ""
@@ -196,10 +196,10 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743237580 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743237537 3345739 7da140f55beb7e0878cefe3b9a895bb4 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "memoria.aux" 1763726135.99949 1840 fbaa390fb4f0c09456fe75bbe6b3a2d4 "pdflatex"
-  "memoria.out" 1763726136.00023 1188 d06b1029cc3f5556828dde7c8a240754 "pdflatex"
-  "memoria.tex" 1763726134.9842 4874 5b5b063a70fc10745278c89df06570cc ""
-  "memoria.toc" 1763726136.00046 720 6cecf9f3fbe51e84676b22a14cb66a66 "pdflatex"
+  "memoria.aux" 1763753612.42883 1720 16d409d2a77173e4f09dc949754ef58a "pdflatex"
+  "memoria.out" 1763753612.4294 1032 33c0eb2e7baee640b2b204a70d884373 "pdflatex"
+  "memoria.tex" 1763753611.23112 5554 9563d9b47c903d3c0f71102aecbed170 ""
+  "memoria.toc" 1763753612.42954 641 e5448632aaa93ce83c650ff7acc5ca0c "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

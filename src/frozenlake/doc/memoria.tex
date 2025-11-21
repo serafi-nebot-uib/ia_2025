@@ -137,7 +137,27 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
 \chapter{Estudi dels resultats}
 \label{ch:results}
 
-\section{Mesura de rendiment}
+\begin{table}[h]
+  \centering
+  \begin{tabular}{| c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+     lr & steps & sr & steps & sr \\
+    \hline
+    0.10 & 44.607 & 0.74  & 44.711 & 0.721 \\
+    0.20 & 44.706 & 0.644 & 45.731 & 0.745 \\
+    0.30 & 44.441 & 0.72  & 45.358 & 0.732 \\
+    0.40 & 46.921 & 0.638 & 45.021 & 0.725 \\
+    0.50 & 46.462 & 0.734 & 43.33  & 0.734 \\
+    0.60 & 28.884 & 0.244 & 44.917 & 0.735 \\
+    0.70 & 62.305 & 0.561 & 42.406 & 0.756 \\
+    0.80 & 61.438 & 0.573 & 44.273 & 0.758 \\
+    0.90 & 8.856  & 0.102 & 45.38  & 0.744 \\
+    1.00 & 7.832  & 0.024 & 7.837  & 0.022 \\
+    \hline
+  \end{tabular}
+\end{table}
 
 % ==========================
 \chapter{Conclusió}
