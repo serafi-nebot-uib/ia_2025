@@ -44,7 +44,7 @@ def test(config: list[tuple[type[Algorithm], dict, int, int]]):
     steps, success = a.test(env, test_iter)
     data[a.name] = {
       "alg": a,
-      "train": { "steps": a.steps, "perf": a.performance, "time": a.time },
+      "train": { "steps": a.steps, "actions": a.actions, "perf": a.performance, "time": a.time },
       "test": { "steps": steps, "perf": success }
     }
 
@@ -57,10 +57,11 @@ if __name__ == "__main__":
   # search_data = test(SEARCH)
 
   data = learn_data
-  # plot.success_rate(data, 1000, "train", "perf")
-  # plot.train_time(data, 1000, "train", "time")
-  plot.train_steps(data, 1000, "train", "steps")
+  # plot.success_rate(data, 1000)
+  # plot.train_time(data, 1000)
+  # plot.train_steps(data, 1000)
   # plot.test_steps(learn_data | search_data, "test", "steps")
+  plot.train_actions(data)
   # for alg in learn_data.values(): plot.qtable(alg["alg"], DESC)
   plt.show()
 

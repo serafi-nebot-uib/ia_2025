@@ -7,6 +7,7 @@ class Algorithm:
     self.name = self.__class__.__name__
     self.state_size, self.action_size = state_size, action_size
     self.time, self.performance, self.steps = [], [], []
+    self.actions = np.zeros(self.action_size, dtype=np.int64)
 
   def action(self, state: int, greedy: bool = True) -> int: raise NotImplementedError()
   def train(self, env: Env, num_iter: int) -> int: raise NotImplementedError()
@@ -21,7 +22,7 @@ class Algorithm:
       perf_avg = np.mean(self.performance[-sample:])
       time_avg = np.mean(self.time[-sample:])
       time_total = np.sum(self.time[-sample:])
-      print(f"{self.name:<15} {iter:>7d} | perf: {perf_avg:>4.2f} | t: {time_total:.6f} s", end="")
+      print(f"{self.name:<16} {iter:>7d} | perf: {perf_avg:>4.2f} | t: {time_total:.6f} s", end="")
       if sample > 1: print(f" (total) {time_avg:.6f} s (avg)", end="")
       print(flush=True)
 
@@ -48,9 +49,9 @@ class LearningAlgorithm(Algorithm):
     super().__init__(state_size, action_size)
     self.lr, self.dr = lr, dr
     self.er, self.er_min, self.er_decay = er, er_min, er_decay
-    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
+    self.q = np.ones((self.state_size, self.action_size), dtype="float32")
 
   def action(self, state: int, greedy: bool = True, q: np.ndarray | None = None) -> int:
     if q is None: q = self.q
     if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return np.random.choice(np.flatnonzero(q[state] == q[state].max()))
+    else: return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))

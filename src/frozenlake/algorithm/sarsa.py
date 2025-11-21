@@ -19,6 +19,7 @@ class SARSA(LearningAlgorithm):
       done, trunc, steps = False, False, 0
       while not (done or trunc):
         new_state, reward, done, trunc, _ = env.step(action)
+        self.actions[action] += 1
         reward = float(reward)
         new_action = self.action(new_state, greedy=False)
         self.update(state, action, float(reward), new_state, new_action, done)

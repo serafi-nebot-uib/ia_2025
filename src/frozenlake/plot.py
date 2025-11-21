@@ -80,8 +80,8 @@ def plot_sma(y: list[float] | np.ndarray, label: str, m: int, ax: Axes):
   ax.plot(x, y, label=label)
   ax.set_xlim((0, x.max() + m))
 
-def success_rate(data: dict, m: int = 1, *path: str):
-  data = get_data(data, *path)
+def train_perf(data: dict, m: int = 1):
+  data = get_data(data, "train", "perf")
   fig, ax = plt.subplots(figsize=(8, 6))
   for name, values in data.items(): plot_sma(values, name, m, ax)
   ax.set_yticks(np.arange(0, 1.0 + 0.1, 0.1))
@@ -93,8 +93,8 @@ def success_rate(data: dict, m: int = 1, *path: str):
   fig.tight_layout()
   return fig
 
-def train_time(data: dict, m: int = 1, *path: str):
-  data = get_data(data, *path)
+def train_time(data: dict, m: int = 1):
+  data = get_data(data, "train", "time")
   fig, ax = plt.subplots(figsize=(8, 6))
   for name, values in data.items(): plot_sma(values, name, m, ax)
   ax.set_ylabel("time (s)")
@@ -104,8 +104,8 @@ def train_time(data: dict, m: int = 1, *path: str):
   fig.legend(loc="upper right")
   return fig
 
-def train_steps(data: dict, m: int = 1, *path: str):
-  data = get_data(data, *path)
+def train_steps(data: dict, m: int = 1):
+  data = get_data(data,"train", "steps")
   fig, ax = plt.subplots(figsize=(8, 6))
   for name, values in data.items(): plot_sma(values, name, m, ax)
   ax.set_ylabel("steps")
@@ -115,12 +115,29 @@ def train_steps(data: dict, m: int = 1, *path: str):
   fig.legend(loc="upper right")
   return fig
 
-def test_steps(data: dict, *path: str):
-  data = get_data(data, *path)
+def train_actions(data: dict):
+  data = get_data(data, "train", "actions")
+  fig, ax = plt.subplots(figsize=(8, 6))
+  width = 0.45
+  
+  # TODO: do not hardcode (get from env?)
+  actions = ["left", "down", "right", "up"]
+  x = np.arange(len(actions))
+  for i, (label, values) in enumerate(data.items()):
+    ax.bar(x + i * len(actions), values, width=width, label=label)
+
+  ax.set_xticks(np.arange(len(actions) * len(data)), actions * len(actions))
+  ax.set_ylabel("number of actions")
+  fig.suptitle("Train Chosen Actions", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.legend()
+  fig.tight_layout()
+
+def test_steps(data: dict):
+  data = get_data(data, "test", "steps")
   fig, ax = plt.subplots(figsize=(8, 6))
   labels, values = zip(*data.items())
   ax.boxplot(values, tick_labels=labels, whis=(0, 100), vert=True)
   ax.set_ylabel("steps")
-  fig.suptitle("Number of steps per episode", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.suptitle("Test Steps in Episode", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.tight_layout()
   return fig

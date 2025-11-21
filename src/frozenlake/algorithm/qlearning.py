@@ -19,6 +19,7 @@ class QLearning(LearningAlgorithm):
       while not (done or trunc):
         action = self.action(state, greedy=False)
         new_state, reward, done, trunc, _ = env.step(action)
+        self.actions[action] += 1
         reward = float(reward)
         self.update(state, action, reward, new_state, done)
         state = new_state
@@ -54,6 +55,7 @@ class AverageQLearning(LearningAlgorithm):
       while not (done or trunc):
         action = self.action(state, greedy=False, q=(self.qa + self.qb) / 2)
         new_state, reward, done, trunc, _ = env.step(action)
+        self.actions[action] += 1
         reward = float(reward)
         self.update(state, action, reward, new_state, done)
         state = new_state

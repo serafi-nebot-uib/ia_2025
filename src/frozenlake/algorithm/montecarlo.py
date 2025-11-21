@@ -33,6 +33,7 @@ class MonteCarlo(LearningAlgorithm):
       reward_total, g = 0.0, 0.0
       visited = set()
       for state, action, reward in reversed(episode):
+        self.actions[action] += 1
         reward_total += reward
         g = reward + self.dr * g
         sa = (state, action)
