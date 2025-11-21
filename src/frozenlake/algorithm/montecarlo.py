@@ -24,9 +24,9 @@ class MonteCarlo(LearningAlgorithm):
       state = new_state
     return episode
 
-  def train(self, env: Env, max_iter: int) -> int:
+  def train(self, env: Env, num_iter: int) -> int:
     iter = 0
-    while iter < max_iter:
+    while iter < num_iter:
       iter_start = time.perf_counter()
       episode = self._gen_episode(env) 
 
@@ -46,4 +46,4 @@ class MonteCarlo(LearningAlgorithm):
       iter_end = time.perf_counter()
       self.train_stats(iter, reward_total, iter_end - iter_start)
 
-    return max_iter
+    return num_iter

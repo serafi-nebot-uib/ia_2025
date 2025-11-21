@@ -15,9 +15,9 @@ class DynamicProgramming(Algorithm):
   def update(self, state: int, action: int):
     self.q[state, action] = sum(prob * (reward + self.dr * self.last_v[new_state]) for (prob, new_state, reward, _) in self.probs[state][action])
 
-  def train(self, env: Env, max_iter: int) -> int:
+  def train(self, env: Env, num_iter: int) -> int:
     iter = 0
-    while iter < max_iter:
+    while iter < num_iter:
       iter_start = time.perf_counter()
 
       self.last_v = np.copy(self.v)
@@ -27,7 +27,7 @@ class DynamicProgramming(Algorithm):
 
       iter += 1
       iter_end = time.perf_counter()
-      perf = self.test(env, num_iter=100)
+      perf = np.mean(self.test(env, num_iter=100)[1]).item()
       self.train_stats(iter, perf, iter_end - iter_start, sample=1)
 
     return iter

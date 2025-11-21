@@ -15,84 +15,52 @@ STATE_SIZE = env.observation_space.n
 ACTION_SIZE = env.action_space.n
 env.close()
 
-LEARNING = [
-  (MonteCarlo,      { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
-  (SARSA,           { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
-  (QLearning,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
-  (DoubleQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }),
+LEARN_TRAIN_ITER = 20000
+LEARN_TEST_ITER = 1000
+
+LEARN = [
+  (MonteCarlo,      { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (SARSA,           { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (QLearning,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (DoubleQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
 ]
+
+SEARCH_TRAIN_ITER = 40
+SEARCH_TEST_ITER = 1000
 
 SEARCH = [
-  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "mutation_rate": 0.08 }),
-  (DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }),
+  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "mutation_rate": 0.08 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+  (DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
 ]
 
-# def printPolicy(env: Env, policy: np.ndarray):
-#     arrows, goal, wall = [ '⇐', '⇓', '⇒', '⇑' ], "⊕", " " # visible wall:"▓"
-#     dim = int(np.sqrt(state_size)
-#     print("   ╭────╮   ")
-#     print("┍━━┥ π* ┝━━┑")
-#     print("│  ╰────╯  │")
-#     for y in range(dim):
-#         row_pi = " ".join(wall if desc[y, x] == b'H' else goal if desc[y, x] == b'G' else arrows[policy[y*dim + x]] for x in range(dim))
-#         print(f"│ {row_pi}  │")
-#     print("┕━━━━━━━━━━┙")
-
-def train_test(alg: Algorithm, *, num_iter, seed: int | None = None):
+def test(config: list[tuple[type[Algorithm], dict, int, int]]):
   env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
 
-  if seed:
-    np.random.seed(seed)
-    random.seed(seed)
+  data = {}
+  for alg, params, train_iter, test_iter in config:
+    a = alg(**params)
 
-  env.reset(seed=seed)
-  num_iter = alg.train(env, num_iter)
-  sr = alg.test(env, 1000)
+    a.train(env, train_iter)
+    steps, success = a.test(env, test_iter)
+    data[a.name] = {
+      "alg": a,
+      "train": { "perf": a.performance, "time": a.time },
+      "test": { "steps": steps, "perf": success }
+    }
+
   env.close()
 
-  return sr, num_iter
-
-def train_learning():
-  algs = [c(**p) for c, p in LEARNING]
-  data_sr, data_t = {}, {}
-  for alg in algs:
-    sr, ep = train_test(alg, num_iter=5000)
-    print(f"sr: {sr:.4f}; ep: {ep}")
-    data_sr[alg.name] = alg.performance
-    data_t[alg.name] = alg.time
-
-  plot.success_rate(data_sr, 1000)
-  plot.train_time(data_t, 1000)
-  for alg in algs: plot.qtable(alg.name, alg.q, DESC)
-  plt.show()
-
-def train_search():
-  algs = [c(**p) for c, p in SEARCH]
-  data_sr, data_t = {}, {}
-  for alg in algs:
-    sr, ep = train_test(alg, num_iter=40)
-    print(f"sr: {sr:.4f}; ep: {ep}")
-    data_sr[alg.name] = alg.performance
-    data_t[alg.name] = alg.time
-
-  plot.success_rate(data_sr)
-  plot.train_time(data_t)
-  plt.show()
-
-def steps_learning():
-  env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode=None)
-  algs = [c(**p) for c, p in LEARNING]
-  categories, values = [], []
-  for alg in algs:
-    steps = sum(alg.run(env)[0] for _ in range(1000)) / 1000
-    categories.append(alg.name)
-    values.append(steps)
-  env.close()
-  plt.bar(categories, values)
-  plt.show()
+  return data
 
 if __name__ == "__main__":
-  steps_learning()
+  learn_data = test(LEARN)
+  search_data = test(SEARCH)
+
+  plot.success_rate(learn_data, 1000, "train", "perf")
+  plot.train_time(learn_data, 1000, "train", "time")
+  plot.test_steps(learn_data | search_data, "test", "steps")
+  for alg in learn_data.values(): plot.qtable(alg["alg"], DESC)
+  plt.show()
 
   # env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
   # state, _ = env.reset()

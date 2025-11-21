@@ -8,9 +8,9 @@ class QLearning(LearningAlgorithm):
     target = reward + self.dr * self.q[new_state].max() * (not final)
     self.q[state, action] += self.lr * (target - self.q[state, action])
 
-  def train(self, env: Env, max_iter: int) -> int:
+  def train(self, env: Env, num_iter: int) -> int:
     iter = 0
-    while iter < max_iter:
+    while iter < num_iter:
       iter_start = time.perf_counter()
       state, _ = env.reset()
       reward, reward_total = 0.0, 0.0
@@ -42,9 +42,9 @@ class DoubleQLearning(LearningAlgorithm):
     target = reward + self.dr * qb[new_state].max() * (not final)
     qa[state, action] += self.lr * (target - qa[state, action])
 
-  def train(self, env: Env, max_iter: int) -> int:
+  def train(self, env: Env, num_iter: int) -> int:
     iter = 0
-    while iter < max_iter:
+    while iter < num_iter:
       iter_start = time.perf_counter()
       state, _ = env.reset()
       reward, reward_total = 0.0, 0.0

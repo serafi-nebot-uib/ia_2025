@@ -1,10 +1,18 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
+from functools import reduce
+from operator import getitem
+from typing import Any
+from frozenlake.algorithm import LearningAlgorithm
 
-def qtable(name: str, q: np.ndarray, map_desc: np.ndarray):
+def get_item(data: dict[str, Any], *path: str) -> Any: return reduce(getitem, path, data)
+def get_data(data: dict[str, Any], *path: str) -> dict: return { k: get_item(data[k], *path) for k in data}
+
+def qtable(alg: LearningAlgorithm, map_desc: np.ndarray):
   fig, (axq, axp) = plt.subplots(nrows=1, ncols=2, figsize=(6 * 2, 6))
 
+  q = alg.q
   N = int(np.sqrt(q.shape[0]))
   v = q.max(axis=-1).reshape(N, N)
   p = q.argmax(axis=-1).reshape(N, N)
@@ -41,7 +49,7 @@ def qtable(name: str, q: np.ndarray, map_desc: np.ndarray):
   axq.set_yticks([])
   axp.set_xticks([])
   axp.set_yticks([])
-  fig.suptitle(f"{name} Q Table", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.suptitle(f"{alg.name} Q Table", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.tight_layout()
 
   return fig
@@ -64,21 +72,18 @@ def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
 
   return fig
 
-def sma(data: dict[str, list[float] | np.ndarray], m: int) -> dict[str, list[float] | np.ndarray]:
-  return { name: np.convolve(value, np.ones(m) / m, mode="valid") for name, value in data.items() }
+def sma(x: list[float] | np.ndarray, m: int) -> np.ndarray: return np.convolve(x, np.ones(m) / m, mode="valid")
 
-def plot_data(data: dict[str, list[float] | np.ndarray], m: int, ax: Axes):
-  xmax = 0
-  for name, y in data.items():
-    x = np.arange(len(y)) + m
-    ax.plot(x, y, label=name)
-    xmax = max(xmax, x.max())
-  ax.set_xlim((0, xmax + m))
+def plot_sma(y: list[float] | np.ndarray, label: str, m: int, ax: Axes):
+  y = sma(y, m)
+  x = np.arange(len(y)) + m
+  ax.plot(x, y, label=label)
+  ax.set_xlim((0, x.max() + m))
 
-def success_rate(data: dict[str, list[float] | np.ndarray], m: int = 1):
+def success_rate(data: dict, m: int = 1, *path: str):
+  data = get_data(data, *path)
   fig, ax = plt.subplots(figsize=(8, 6))
-  if m > 1: data = sma(data, m)
-  plot_data(data, m, ax)
+  for name, values in data.items(): plot_sma(values, name, m, ax)
   ax.set_yticks(np.arange(0, 1.0 + 0.1, 0.1))
   ax.set_ylabel("success rate")
   ax.set_xlabel("iterations")
@@ -88,13 +93,23 @@ def success_rate(data: dict[str, list[float] | np.ndarray], m: int = 1):
   fig.tight_layout()
   return fig
 
-def train_time(data: dict[str, list[float] | np.ndarray], m: int = 1):
+def train_time(data: dict, m: int = 1, *path: str):
+  data = get_data(data, *path)
   fig, ax = plt.subplots(figsize=(8, 6))
-  if m > 1: data = sma(data, m)
-  plot_data(data, m, ax)
+  for name, values in data.items(): plot_sma(values, name, m, ax)
   ax.set_ylabel("time (s)")
   ax.set_xlabel("iterations")
   agg = f" (SMA {m})" if m > 1 else " "
   fig.suptitle("Train Iteration Time" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend(loc="upper right")
+  return fig
+
+def test_steps(data: dict, *path: str):
+  data = get_data(data, *path)
+  fig, ax = plt.subplots(figsize=(8, 6))
+  labels, values = zip(*data.items())
+  ax.boxplot(values, tick_labels=labels, whis=(0, 100), vert=True)
+  ax.set_ylabel("steps")
+  fig.suptitle("Number of steps per episode", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.tight_layout()
   return fig

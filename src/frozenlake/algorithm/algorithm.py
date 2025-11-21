@@ -9,7 +9,7 @@ class Algorithm:
     self.time, self.performance = [], []
 
   def action(self, state: int, greedy: bool = True) -> int: raise NotImplementedError()
-  def train(self, env: Env, max_iter: int) -> int: raise NotImplementedError()
+  def train(self, env: Env, num_iter: int) -> int: raise NotImplementedError()
 
   def train_stats(self, iter: int, reward: float, t: float, sample: int = SAMPLE):
     if DEBUG > 0 or STATS > 0:
@@ -20,7 +20,9 @@ class Algorithm:
       perf_avg = np.mean(self.performance[-sample:])
       time_avg = np.mean(self.time[-sample:])
       time_total = np.sum(self.time[-sample:])
-      print(f"{self.name:<15} {iter:>7d} | perf: {perf_avg:>4.2f} | t: {time_total:.6f} s (total) {time_avg:.6f} s (avg)")
+      print(f"{self.name:<15} {iter:>7d} | perf: {perf_avg:>4.2f} | t: {time_total:.6f} s", end="")
+      if sample > 1: print(f" (total) {time_avg:.6f} s (avg)", end="")
+      print(flush=True)
 
   def run(self, env: Env) -> tuple[int, float]:
     state, _ = env.reset()
@@ -32,7 +34,13 @@ class Algorithm:
       steps += 1
     return steps, reward_total
 
-  def test(self, env: Env, num_iter: int = 1) -> float: return sum(self.run(env)[1] for _ in range(num_iter)) / num_iter
+  def test(self, env: Env, num_iter: int) -> tuple[list[int], list[int]]:
+    steps, success = [], []
+    for _ in range(num_iter):
+      step, reward = self.run(env)
+      steps.append(step)
+      success.append(int(reward > 0))
+    return steps, success
 
 class LearningAlgorithm(Algorithm):
   def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
