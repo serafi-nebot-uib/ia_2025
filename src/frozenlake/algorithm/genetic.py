@@ -1,13 +1,18 @@
 import time
+import math
 import numpy as np
 from gymnasium import Env
 from frozenlake.algorithm import Algorithm
 
 class Genetic(Algorithm):
-  def __init__(self, state_size: int, action_size: int, population_size: int, mutation_rate: float):
+  def __init__(self, state_size: int, action_size: int, population_size: int, selection_pressure: float, mutation_rate: float, culling_rate: float):
     super().__init__(state_size, action_size)
-    self.population_size, self.mutation_rate = population_size, mutation_rate
+    self.population_size, self.selection_pressure, self.mutation_rate = population_size, selection_pressure, mutation_rate
+    self.culling_rate = culling_rate
+    self.parents_size = math.ceil(self.population_size * self.selection_pressure)
+    self.best_size = math.ceil(self.population_size * self.culling_rate)
     self.pop = np.stack([self.random_policy() for _ in range(self.population_size)])
+    self.policy = np.zeros(self.state_size, dtype="uint8")
 
   def action(self, state: int, greedy: bool = True) -> int: return self.policy[state]
   def random_policy(self) -> np.ndarray: return np.random.randint(self.action_size, size=self.state_size).astype("uint8")
@@ -30,11 +35,11 @@ class Genetic(Algorithm):
       iter_start = time.perf_counter()
 
       fitness = self.fitness(env)
-      best_half = fitness.argsort()[-self.population_size // 2:]
-      best = best_half[-1]
+      best_pop = fitness.argsort()[-self.parents_size:]
+      best = best_pop[-1]
 
-      new_pop = [self.pop[best]] # keep the best individual (elitism)
-      parents = self.pop[best_half]
+      new_pop = list(self.pop[best_pop[-self.best_size:]]) # keep the best individuals (elitism)
+      parents = self.pop[best_pop]
 
       while len(new_pop) < self.population_size:
         p = parents[np.random.randint(0, len(parents), 2)]

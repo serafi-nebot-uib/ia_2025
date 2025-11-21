@@ -71,9 +71,66 @@
 \chapter{Introducció}
 \label{ch:intro}
 
+\dots
+
+Investigant diferents algorismes de RL hem trobat el Average Q-learning, que és una extensió del Q-learning que hem vist a classe.
+Ens ha semblat interessant i l'hem inclòs al projecte.
+
+
 % ==========================
-\chapter{Estructura de dades}
+\chapter{Disseny algorismes}
 \label{ch:structure}
+
+\section{Genètic}
+
+\textbf{Individu}
+
+Un individu representa una política $\pi_i(s_t) \in A$ on a cada possible estat se li assigna una acció.
+La popblació d'individus conté, per a cada generació, $n$ individus.
+Per a la primera generació, els gens de tots els individus (cromosomes) s'inicialitzen de forma completament aleatòria.
+
+\textbf{Funció \textit{fitness}}
+
+La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'evalua la política durant 100 episodis i es calcula el promig de vegades que s'ha arribat al destí.
+
+Pel cas particular del \textit{Frozen Lake} totes les recompenses són 0 excepte quan s'arriba al destí, per tant, la funció \textit{fitness} és equivalent al promig de recompenses totals obtingudes al llarg de tots els episodis.
+
+\[
+  \mathit{fitness}({\pi_i}) = \frac{1}{100} \sum\limits_{j = 1}^{100} \sum\limits_{t = 1}^{T} R_t^j
+\]
+
+On $R_t^j$ és la recompensa del període $t$ de l'episodi $j$.
+
+\textbf{Elitisme o \textit{Culling}}
+
+Abans de generar la nova generació es seleccionen els $l = \lceil c \cdot n \rceil$ millors individus que passen directament a la nova generació (la resta es descarten), on $c \in [0, 1]$ és la tasa de \textit{culling}.
+Una $c > 0$ ens garanteix que no es perdin els millors individus amb el pas de les generacions.
+
+\textbf{Selecció}
+
+De tots els individus de cada generació, $n$ en total, només es seleccionen els $k = \lceil \beta \cdot n \rceil$ millors, on $\beta \in (0, 1]$ és el paràmetre de pressió de selecció.
+D'aquesta forma, $\beta$, ens permet escollir quin percentatge de la millor part de la població volem emprar per a generar la pròcima generació.
+
+\textbf{Mutació}
+
+Després de generar cada individu hi ha una petita probabilitat $m$ de mutar-lo de forma aleatòria.
+Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0, 1]$ i es genera un gen aleatori si $p < m$ i l'original si $p \geq m$.
+
+\[
+  \begin{cases}
+    \textrm{original } & \textrm{ si } p \geq m \\
+    \textrm{aleatori } & \textrm{ si } p < m \\
+  \end{cases}
+\]
+
+\section{Programació dinámica}
+
+\section{Monte Carlo}
+
+\section{SARSA}
+
+\section{Q-learning}
+
 \pagebreak
 
 % ==========================

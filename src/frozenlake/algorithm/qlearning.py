@@ -31,7 +31,7 @@ class QLearning(LearningAlgorithm):
 
     return iter
 
-class DoubleQLearning(LearningAlgorithm):
+class AverageQLearning(LearningAlgorithm):
   def __init__(self, state_size: int, action_size: int, lr: float, dr: float, er: float, er_min: float, er_decay: float):
     super().__init__(state_size, action_size, lr, dr, er, er_min, er_decay)
     self.qa = np.zeros((self.state_size, self.action_size), dtype="float32")
