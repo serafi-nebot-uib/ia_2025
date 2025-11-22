@@ -146,20 +146,11 @@ $n$ episodis i després s'evalua la política resultant amb 1000 episodis per a 
 Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
 i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
 
-% \begin{table}
-%   \centering
-%   \begin{tabular}{| c | c | c | c | c | c |}
-%     \hline
-%           & Monte Carlo & SARSA & Q-learning & Prog. Dinámica & Genètic \\
-%     \hline
-%     \textit{lr}                & 0.01   & \\
-%     \textit{dr}                & 0.99   & \\
-%     \textit{er}                & 1.00   & \\
-%     % \textit{er}_\textit{min}   & 0.01   & \\
-%     % \textit{er}_\textit{decay} & 0.9995 & \\
-%     \hline
-%   \end{tabular}
-% \end{table}
+Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els següent paràmetres:
+\begin{itemize}
+  \item $\mathit{dr} = 0.99$: \textit{Discount Rate} o \textit{gamma} als apunts, és el factor de descompte per
+    a la recompensa esperada per a cada passa del mateix episodi.
+\end{itemize}
 
 \begin{minipage}[t]{0.4\textwidth}
   \centering
@@ -195,7 +186,7 @@ i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit
 
 \pagebreak
 
-\begin{minipage}[t]{0.4\textwidth}
+\begin{table}
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -215,10 +206,73 @@ i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit
     1.00 & 11.2490 & 0.1090 & 44.7220 & 0.7600 & 100.000 & 0.0000 \\
     \hline
   \end{tabular}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.3\textwidth}
-\end{minipage}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{| c | c c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    \textit{er} & steps & sr & steps & sr & steps & sr \\
+    \hline
+    0.10 & 24.7740  & 0.2420 & 43.8000 & 0.7430  & 46.1800 & 0.7360 \\
+    0.20 & 27.6060  & 0.1950 & 45.8280 & 0.7440  & 43.3920 & 0.7630 \\
+    0.30 & 38.0640  & 0.6740 & 43.5510 & 0.7550  & 45.3150 & 0.7380 \\
+    0.40 & 30.1160  & 0.5200 & 45.4450 & 0.7440  & 45.6250 & 0.7290 \\
+    0.50 & 40.1320  & 0.7390 & 43.4110 & 0.7570  & 45.3650 & 0.7710 \\
+    0.60 & 30.0940  & 0.2350 & 43.7320 & 0.7640  & 45.3130 & 0.6970 \\
+    0.70 & 40.6120  & 0.7150 & 43.8760 & 0.7380  & 44.4060 & 0.7330 \\
+    0.80 & 40.6070  & 0.7340 & 44.9870 & 0.7380  & 44.1360 & 0.7530 \\
+    0.90 & 41.1670  & 0.7310 & 42.6170 & 0.7520  & 45.2820 & 0.7320 \\
+    1.00 & 41.2560  & 0.7030 & 45.6850 & 0.7440  & 45.0200 & 0.7330 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{| c | c c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    \textit{er min} & steps & sr & steps & sr & steps & sr \\
+    \hline
+    0.10 & 11.1730 & 0.1660 & 40.7290 & 0.7200 & 45.1450 & 0.7380 \\
+    0.20 & 40.7990 & 0.7040 & 39.1340 & 0.7460 & 45.5910 & 0.7680 \\
+    0.30 & 40.7220 & 0.7460 & 41.3910 & 0.7160 & 44.2060 & 0.7570 \\
+    0.40 & 30.2160 & 0.5120 & 41.9450 & 0.7300 & 43.6270 & 0.7450 \\
+    0.50 & 39.6190 & 0.6070 & 39.7820 & 0.6890 & 43.4790 & 0.7480 \\
+    0.60 & 40.5510 & 0.7290 & 42.2630 & 0.7120 & 45.9040 & 0.7170 \\
+    0.70 & 26.8700 & 0.3990 & 23.1390 & 0.2830 & 44.0580 & 0.7150 \\
+    0.80 & 30.4010 & 0.5150 & 39.8010 & 0.7070 & 44.8900 & 0.7240 \\
+    0.90 & 18.4920 & 0.1910 & 36.0990 & 0.6080 & 44.2430 & 0.7470 \\
+    1.00 & 12.9100 & 0.1410 & 24.2430 & 0.3300 & 45.1970 & 0.7510 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}
+  \centering
+  \begin{tabular}{| c | c c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    \textit{er decay} & steps & sr & steps & sr & steps & sr \\
+    \hline
+    0.10 & 8.0950  & 0.0810 &         &        &         &        \\
+    0.20 & 24.4520 & 0.2640 &         &        &         &        \\
+    0.30 & 27.6170 & 0.4670 &         &        &         &        \\
+    0.40 & 30.0460 & 0.2070 &         &        &         &        \\
+    0.50 & 10.5710 & 0.0960 &         &        &         &        \\
+    0.60 & 24.0870 & 0.1480 &         &        &         &        \\
+    0.70 & 13.6050 & 0.1610 &         &        &         &        \\
+    0.80 & 38.2980 & 0.6750 &         &        &         &        \\
+    0.90 & 9.6760  & 0.0970 &         &        &         &        \\
+    1.00 & 39.8340 & 0.6960 &         &        &         &        \\
+    \hline
+  \end{tabular}
+\end{table}
 
 % ==========================
 \chapter{Conclusió}
