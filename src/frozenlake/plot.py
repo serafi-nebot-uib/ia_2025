@@ -75,30 +75,12 @@ def qtable(data: dict, map_desc: np.ndarray):
 
   return figs
 
-# def policy(desc: np.ndarray, p: np.ndarray, v: np.ndarray | None = None):
-#   fig, ax = plt.subplots(figsize=(6, 6))
-
-#   N = int(np.sqrt(len(p)))
-#   if v is None: v = np.zeros_like(p)
-#   ax.imshow(v.reshape(N, N), cmap="Blues")
-
-#   syms = ["←", "↓", "→", "↑"]
-#   for y in range(N):
-#     for x in range(N):
-#       if desc[y, x] in (b"H", b"G"): continue
-#       ax.text(x, y, syms[p[y*N+x]], ha="center", va="center", fontsize=26, color="black", fontweight="bold")
-
-#   ax.set_xticks([])
-#   ax.set_yticks([])
-
-#   return fig
-
 def sma(x: list[float] | np.ndarray, m: int) -> np.ndarray: return np.convolve(x, np.ones(m) / m, mode="valid")
 
-def plot_sma(y: list[float] | np.ndarray, label: str, m: int, ax: Axes):
+def plot_sma(y: list[float] | np.ndarray, label: str, m: int, ax: Axes, **pltopts):
   y = sma(y, m)
   x = np.arange(len(y)) + m
-  ax.plot(x, y, label=label)
+  ax.plot(x, y, label=label, **pltopts)
   ax.set_xlim((0, x.max() + m))
 
 def train_perf(data: dict, m: int = 1):
@@ -133,6 +115,23 @@ def train_steps(data: dict, m: int = 1):
   ax.set_xlabel("iterations")
   agg = f" (SMA {m})" if m > 1 else " "
   fig.suptitle("Train Episode Steps" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.legend(loc="upper right")
+  return fig
+
+def train_steps_time(data: dict, m: int = 1):
+  data_steps = get_data(data,"train", "steps")
+  data_time = get_data(data,"train", "time")
+  fig, axs = plt.subplots(figsize=(8, 6))
+  axs.set_ylabel("steps")
+  axs.set_xlabel("iterations")
+  axt = axs.twinx()
+  axt.set_ylabel("time (s)")
+
+  for name, values in data_steps.items(): plot_sma(values, name, m, axs, linestyle="-")
+  for name, values in data_time.items(): plot_sma(values, name, m, axt, linestyle="--", colors=[])
+
+  agg = f" (SMA {m})" if m > 1 else " "
+  fig.suptitle("Train Episode Steps & Time" + agg, fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend(loc="upper right")
   return fig
 

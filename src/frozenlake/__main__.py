@@ -23,7 +23,7 @@ LEARN_TRAIN_ITER = 20000
 LEARN_TEST_ITER = 1000
 
 LEARN = [
-  (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.95, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, SARSA,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, QLearning,        { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   # (None, AverageQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
@@ -38,20 +38,20 @@ SEARCH = [
 ]
 
 if __name__ == "__main__":
-  data = test(LEARN)
-  # data |= test(SEARCH)
+  # data = test(LEARN)
+  data = test(SEARCH)
 
   # for name in data:
   #   steps = data[name]["test"]["steps"]
   #   perf = data[name]["test"]["perf"]
   #   print(f"{name} | steps: {np.mean(steps):6.4f} | perf: {np.mean(perf):6.4f}")
 
-  # plot.train_perf(data, 1000)
-  # plot.train_time(data, 1000)
-  # plot.train_steps(data, 1000)
+  plot.train_perf(data, 1)
+  plot.train_time(data, 1)
+  plot.train_steps(data, 1)
   plot.train_actions(data)
   # plot.train_actions_history(data, 1000)
-  # plot.test_steps(data)
+  plot.test_steps(data)
   # plot.qtable(data, DESC)
   plt.show()
 

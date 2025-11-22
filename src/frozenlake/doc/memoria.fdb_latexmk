@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763830945.28215 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763830945.95988 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763830945.09034 23855 34ebda869ec8eaae10a6cb2bf10c09b2 ""
+["pdflatex"] 1763832418.51708 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763832419.4475 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763832418.33794 24799 0aedecad5af53ba26eeefe5530317ea0 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -204,10 +204,18 @@
   "img/montecarlo-policy.png" 1763826959.7695 24263 89b715a320b6c5c5dbf171cda4ec7a20 ""
   "img/qlearning-policy.png" 1763826943.54983 24049 d0e34c47e73bfa20322d92104f6f8d3b ""
   "img/sarsa-policy.png" 1763826949.89916 24139 4d1e9efe9feb752d9987dd1b76a38f0e ""
-  "memoria.aux" 1763830945.89996 2251 5f7dd2644f99dc7bdcf1b922b3d9469e "pdflatex"
-  "memoria.out" 1763830945.90058 1580 080547ef2d3a9e118ee603ba3d4498c8 "pdflatex"
-  "memoria.tex" 1763830945.09034 23855 34ebda869ec8eaae10a6cb2bf10c09b2 ""
-  "memoria.toc" 1763830945.90074 896 dce08f3dccbdfc449ba104cfe0ed58fd "pdflatex"
+  "img/train-learn-actions.png" 1763832091.07381 24298 583787586579d3831c6b7b3328107f64 ""
+  "img/train-learn-sr.png" 1763832125.03198 51955 012f534ad253928f288084440c5e33b6 ""
+  "img/train-learn-steps-dist.png" 1763832081.0586 16495 5c7b05ab139969423a2b515dc6e2bdba ""
+  "img/train-learn-steps.png" 1763832100.2158 52247 2bf4b95d5c423c6a02ce569b8552dfce ""
+  "img/train-learn-time.png" 1763832108.87149 54921 ab31448a6c74e9e7117b09d35d0d8581 ""
+  "img/train-search-sr.png" 1763832339.66446 44111 076add2b2dd8d2fd6bd1dfce42246bd0 ""
+  "img/train-search-steps.png" 1763832393.00547 39838 be90d9d685b6fa6ca4607b7658b8f7ad ""
+  "img/train-search-time.png" 1763832364.10505 28884 38d68fa914acc178a13cd5fe01b8e776 ""
+  "memoria.aux" 1763832419.38296 2488 6b67c0570925ef5d3535fc989e573db2 "pdflatex"
+  "memoria.out" 1763832419.38358 1657 bea4b731d739fbad9bfd1e6e2e122388 "pdflatex"
+  "memoria.tex" 1763832418.33794 24799 0aedecad5af53ba26eeefe5530317ea0 ""
+  "memoria.toc" 1763832419.38374 960 325d9b646ad6292ababe16b3eb92e847 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"
