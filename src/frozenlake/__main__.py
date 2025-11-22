@@ -39,16 +39,7 @@ SEARCH = [
 
 if __name__ == "__main__":
   config = [
-    ("dr=0.10", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.10 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.20", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.20 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.30", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.30 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.40", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.40 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.50", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.50 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.60", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.60 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.70", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.70 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.80", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.80 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=0.90", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.90 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-    ("dr=1.00", DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 1.00 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+    ("mutation_rate=0",    Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.00, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
   ]
   data = test(config)
 

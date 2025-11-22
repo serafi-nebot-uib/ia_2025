@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763811540.94979 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763811541.52765 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763811540.39873 18598 300863c8a6a58abcd5a25ad6b0aa031f ""
+["pdflatex"] 1763813876.7283 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763813877.29883 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763813875.96664 20724 a4de6bb6dda7ac1598bfe916d098b4df ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -199,10 +199,10 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743237580 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743237537 3345739 7da140f55beb7e0878cefe3b9a895bb4 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "memoria.aux" 1763811541.46968 2251 da8cb15cb4ebd57b5a320f4fe7872ff8 "pdflatex"
-  "memoria.out" 1763811541.47006 1580 080547ef2d3a9e118ee603ba3d4498c8 "pdflatex"
-  "memoria.tex" 1763811540.39873 18598 300863c8a6a58abcd5a25ad6b0aa031f ""
-  "memoria.toc" 1763811541.47019 896 2f388b37d7d0a418ba9afa6ec772aa50 "pdflatex"
+  "memoria.aux" 1763813877.24106 2251 055a19b7bbb9bb37dd86c715de18c6cb "pdflatex"
+  "memoria.out" 1763813877.24168 1580 080547ef2d3a9e118ee603ba3d4498c8 "pdflatex"
+  "memoria.tex" 1763813875.96664 20724 a4de6bb6dda7ac1598bfe916d098b4df ""
+  "memoria.toc" 1763813877.24183 896 6f73181486b859bb75bc1cdc1408e791 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

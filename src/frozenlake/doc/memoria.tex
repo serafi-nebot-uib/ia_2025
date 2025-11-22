@@ -211,6 +211,8 @@ Monte Carlo, per altra banda, sembla ser molt sensible a petits canvis del parà
 no podem veure un patró clar. A les proves que hem fet durant el desenvolupament sabem que el valor per defecte
 que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, que és el que veiem a la taula amb el valor 1.00), dependent de la inicilització de la semilla del generador de nombres aleatoris.
 
+\vspace*{10pt}\hrule
+
 \begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
@@ -238,6 +240,8 @@ particular de la nostra implementació dels algorismes d'aprenentatge.
 % TODO: explicar argmax() tie-break
 
 Monte Carlo necessita una exploració major a l'inici de l'entrenament per a poder trobar una solució òptima.
+
+\vspace*{10pt}\hrule
 
 \begin{table}[H]
   \centering
@@ -269,6 +273,8 @@ utilitza la millor, ignorant així el factor aleatori.
 Monte Carlo, per altra banda, prefereix una exploració alta mantinguda, però segons els paràmetres per defecte
 que hem triat sabem que millora encara més.
 
+\vspace*{10pt}\hrule
+
 \begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
@@ -296,6 +302,8 @@ alt (el mateix per a $\mathit{er\_decay} = 1.0$) durant tot l'entrenament.
 
 En aquest cas, Monte Carlo obté molt bons resultats quan $\mathit{er\_decay}$ és molt proper a 1.0,
 consistent amb els resultats que hem obtingut amb el valor per defecte.
+
+\vspace*{10pt}\hrule
 
 \begin{table}[H]
   \centering
@@ -354,7 +362,7 @@ amb el pròxim apartat:
   \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\begin{minipage}{0.3\textwidth}
   \centering
   \begin{tabular}{| c | c c |}
     \hline
@@ -369,9 +377,20 @@ amb el pròxim apartat:
     10000 & 41.9850 & 0.7250 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+  Hi ha una tendència molt clara amb la quantitat d'individus dintre de la població: quants més n'hi ha
+  millor és el resultat.
+  
+  Els resultats es saturen i ja no milloren quan s'atraquen als 100 individus. Al ser un entorn molt petit i
+  limitat, tenir una població molt gran no proporciona molta millora. Potser que per a entorns on els individus
+  tenguin més gens una població més gran permeti una població amb més varietat i en consequüència generi millors resultats.
+\end{minipage}
 
-\begin{table}[H]
+\vspace*{10pt}\hrule
+
+\begin{minipage}{0.3\textwidth}
   \centering
   \begin{tabular}{| c | c c |}
     \hline
@@ -391,9 +410,18 @@ amb el pròxim apartat:
     1.00 & 41.8970 & 0.7410 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+  Resultats bàsicament idèntics. Només hi ha un \textit{Survival Rate} per davall dels altres que porbablement
+  sigui degut a la inicialització de la semilla del generador de nombres aleatoris.
 
-\begin{table}[H]
+  Al igual que la mida de la població, segurament amb un problema més complex hi hauria una variació major.
+\end{minipage}
+
+\vspace*{10pt}\hrule
+
+\begin{minipage}{0.3\textwidth}
   \centering
   \begin{tabular}{| c | c c |}
     \hline
@@ -401,6 +429,7 @@ amb el pròxim apartat:
     \hline
     \textit{mutation\_rate} & steps & sr \\
     \hline
+    0.00 & 42.5690 & 0.7660 \\
     0.10 & 41.9430 & 0.7370 \\
     0.20 & 41.2760 & 0.7230 \\
     0.30 & 41.9580 & 0.7210 \\
@@ -413,9 +442,16 @@ amb el pròxim apartat:
     1.00 & 23.2970 & 0.2750 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+  Resultats molt millors per a un $\mathit{mutation\_rate}$ menor. Té sentit perquè com major sigui aquest 
+  valor més s'atraca a ser una cerca aleatoria.
+\end{minipage}
 
-\begin{table}[H]
+\vspace*{10pt}\hrule
+
+\begin{minipage}{0.3\textwidth}
   \centering
   \begin{tabular}{| c | c c |}
     \hline
@@ -423,6 +459,7 @@ amb el pròxim apartat:
     \hline
     \textit{culling\_rate} & steps & sr \\
     \hline
+    0.00 & 41.7680 & 0.7070 \\
     0.10 & 38.1680 & 0.7420 \\
     0.20 & 44.6360 & 0.7440 \\
     0.30 & 41.5580 & 0.7150 \\
@@ -435,7 +472,14 @@ amb el pròxim apartat:
     1.00 & 41.0240 & 0.6990 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+  Resultats básicament constants. Al igual que la mida de la població i la pressió de selecció, aquest és un
+  entorn massa senzill i amb algún de més complexe potser es vegessin els canvis.
+\end{minipage}
+
+\vspace*{10pt}\hrule
 
 Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\mathit{dr} = 0.95$
 (\textit{Discount Rate} o \textit{gamma} als apuunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
@@ -456,7 +500,9 @@ amb el pròxim apartat:
   \end{tabular}
 \end{table}
 
-\begin{table}[H]
+\vspace*{10pt}\hrule
+
+\begin{minipage}{0.3\textwidth}
   \centering
   \begin{tabular}{| c | c c |}
     \hline
@@ -476,7 +522,14 @@ amb el pròxim apartat:
     1.00 & 40.0280 & 0.7500 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+  Els resultats es mantenen constants del 0.10 fins al 0.80 i despés milloren bastant i es saturen a partir del 0.90.
+  Un \textit{Discount Rate} major té sentit perque al estar explorant tots els estats possibles ens interessa
+  mantenir tota la informació (sabem que el resultat és correcte perque els hem explorat tots).
+\end{minipage}
+\vspace*{10pt}\hrule
 
 % ==========================
 \chapter{Análisi polítiques obtingudes}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  22 NOV 2025 12:39
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  22 NOV 2025 13:17
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -756,6 +756,31 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
 [7]
+Overfull \hbox (47.19539pt too wide) in paragraph at lines 367--380
+ [][] 
+ []
+
+
+Overfull \hbox (60.69562pt too wide) in paragraph at lines 395--413
+ [][] 
+ []
+
+
+Overfull \hbox (41.34534pt too wide) in paragraph at lines 426--445
+ [][] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 448--450
+[]\OT1/cmr/m/n/12 Resultats molt mil-lors per a un
+ []
+
+
+Underfull \hbox (badness 1215) in paragraph at lines 448--450
+[]$ \OT1/cmr/m/n/12 menor. T^^Se sen-tit perqu^^Re
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (10.0pt): 
@@ -765,6 +790,11 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
 [8]
+Overfull \hbox (29.34525pt too wide) in paragraph at lines 456--475
+ [][] 
+ []
+
+
 
 
 Package fancyhdr Warning: \headheight is too small (10.0pt): 
@@ -774,20 +804,29 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
 [9]
+
+
+Package fancyhdr Warning: \headheight is too small (10.0pt): 
+(fancyhdr)                Make it at least 57.17911pt, for example:
+(fancyhdr)                \setlength{\headheight}{57.17911pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
+
+[10]
 Chapter 4.
-
-
-[10
-
-]
-Chapter 5.
 
 
 [11
 
 ]
+Chapter 5.
+
 
 [12
+
+]
+
+[13
 
 ] (./memoria.aux)
  ***********
@@ -798,18 +837,18 @@ Package rerunfilecheck Info: File `memoria.out' has not changed.
 (rerunfilecheck)             Checksum: 080547EF2D3A9E118EE603BA3D4498C8;1580.
  ) 
 Here is how much of TeX's memory you used:
- 28276 strings out of 473190
- 566359 string characters out of 5715800
+ 28279 strings out of 473190
+ 566426 string characters out of 5715800
  1004486 words of memory out of 5000000
- 51048 multiletter control sequences out of 15000+600000
+ 51050 multiletter control sequences out of 15000+600000
  570332 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  98i,14n,105p,487b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on memoria.pdf (14 pages, 162457 bytes).
+Output written on memoria.pdf (15 pages, 164908 bytes).
 PDF statistics:
- 240 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
- 27 named destinations out of 1000 (max. 500000)
+ 244 PDF objects out of 1000 (max. 8388607)
+ 175 compressed objects within 2 object streams
+ 28 named destinations out of 1000 (max. 500000)
  253 words of extra memory for PDF output out of 10000 (max. 10000000)
 
