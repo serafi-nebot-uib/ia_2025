@@ -12,6 +12,7 @@
 \usepackage{relsize}
 \usepackage{enumitem}
 \usepackage{float}
+\usepackage{graphicx}
 \usepackage[most]{tcolorbox}
 
 % Page setup
@@ -534,6 +535,70 @@ amb el pròxim apartat:
 % ==========================
 \chapter{Análisi polítiques obtingudes}
 \label{ch:policy}
+
+A continuació es mostren les polítiques per a cada un dels algorismes representada amb dos gràfics.
+El gràfic de l'esquerra mostra la taula Q.
+El color de cada cel·la representa el valor de la recompensa esperada per a aquell estat (blau més fort implica una recompensa major) i les fletxes
+representen les accions amb la seva llargària proporcional al seu valor (una fletxa més llarga té una recompensa 
+esperada més alta que d'una de petita). El gràfic de la dreta mostra el mateix però només amb la fletxa de més valor
+per a poder distinguir quina és la millor opció.
+
+\begin{figure}[htbp]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=0.55\textwidth]{img/montecarlo-policy.png}
+    \includegraphics[width=0.55\textwidth]{img/sarsa-policy.png}
+  }
+\end{figure}
+
+\begin{figure}[htbp]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=0.55\textwidth]{img/qlearning-policy.png}
+    \includegraphics[width=0.55\textwidth]{img/dynamic-policy.png}
+  }
+\end{figure}
+
+A primera vista, el que ressalta més és la distribució dels valors sobre el mapa.
+\begin{itemize}
+  \item Monte Carlo sembla prioritzar un camí molt més que l'altre (primer moviment per avall enlloc de la dreta).
+  \item SARSA té la mateix preferència que Monte Carlo però menys axagerada.
+  \item Q-learning té les recompenses molt repartides, producte de la seva naturalesa optimista.
+  \item Programació Dinámica centra les recompenses al voltant del destí.
+  % TODO: perquè prog. dinamica fa això?
+\end{itemize}
+
+El que pot semblar poc intuïtiu és la millor acció que trien els algorismes. Per exemple, no n'hi ha cap que
+per a l'estat anterior del final (el que està marcat amb més valor; abaix a la dreta) indiqui l'accio que duu directament cap
+al destí com a la millor.
+
+Això és degut a que hi ha major probabilitat de lliscar que fer l'acció escollida:
+
+\begin{align*}
+  p(\mathrm{dreta}) = p(\mathrm{amunt}) = p(\mathrm{avall}) = \frac{1}{3} \implies p(\mathrm{amunt} \cup \mathrm{avall}) = \frac{2}{3} > \frac{1}{3} = p(\mathrm{dreta})
+\end{align*}
+
+Exactament el mateix passa amb els estats adjacents a forats, ja que alguns models trien l'opció que duu
+directament al forat com a la millor.
+
+% TODO: acabar aquest apartat o deixar-lo sense fer
+% Un darrer punt a comentar és la diferència que hi ha entre les possibles accions de cada estat:
+% \begin{itemize}
+%   \item Monte Carlo és molt decisiu a l'hora de triar quina opció és la millor.
+%   \item SARSA 
+%   \item Q-learning 
+%   \item Programació Dinámica
+% \end{itemize}
+
+El darrer algorisme, el Genètic, al calcular directament la política i no calcular els valors d'estat-acció
+només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un análisi tant detallat. Però és
+interessant veure com, sense calcular els valors d'estat-acció i només utilitzant la \"força bruta\", s'arriba
+a una política pràcticament idèntica a molts dels altres algorismes.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.45\textwidth]{img/genetic-policy.png}
+\end{figure}
 
 % ==========================
 \chapter{Conclusió}

@@ -6,9 +6,8 @@ class Algorithm:
   def __init__(self, state_size: int, action_size: int):
     self.name = self.__class__.__name__
     self.state_size, self.action_size = state_size, action_size
-    self.time, self.performance, self.steps = [], [], []
+    self.time, self.performance, self.steps, self.actions_history = [], [], [], []
     self.actions = np.zeros(self.action_size, dtype=np.int64)
-    self.actions_history = []
 
   def action(self, state: int, greedy: bool = True) -> int: raise NotImplementedError()
   def train(self, env: Env, num_iter: int) -> int: raise NotImplementedError()
@@ -56,6 +55,5 @@ class LearningAlgorithm(Algorithm):
   def action(self, state: int, greedy: bool = True, q: np.ndarray | None = None) -> int:
     if q is None: q = self.q
     if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else:
-      # return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))
-      return q[state].argmax()
+    else: return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))
+      # return q[state].argmax()

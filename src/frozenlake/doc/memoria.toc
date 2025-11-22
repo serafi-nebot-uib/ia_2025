@@ -9,4 +9,4 @@
 \contentsline {section}{\numberline {3.1}Algorismes d'aprenentatge}{4}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Algorismes de cerca}{7}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Análisi polítiques obtingudes}{11}{chapter.4}%
-\contentsline {chapter}{\numberline {5}Conclusió}{12}{chapter.5}%
+\contentsline {chapter}{\numberline {5}Conclusió}{13}{chapter.5}%

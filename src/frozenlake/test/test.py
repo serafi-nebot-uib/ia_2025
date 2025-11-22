@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 import gymnasium as gym
-from frozenlake.algorithm import Algorithm, LearningAlgorithm
+from frozenlake.algorithm import Algorithm, Genetic
 
 def test(config: list[tuple[str | None, type[Algorithm], dict, int, int]]):
   env = gym.make("FrozenLake-v1", is_slippery=True, render_mode=None)
@@ -28,7 +28,8 @@ def test(config: list[tuple[str | None, type[Algorithm], dict, int, int]]):
         "perf": list(map(int, success))
       }
     }
-    if isinstance(a, LearningAlgorithm): data[name]["q"] = [[float(c) for c in r] for r in a.q]
+    if isinstance(a, Genetic): data[name]["policy"] = list(map(int, a.policy))
+    else: data[name]["q"] = [[float(c) for c in r] for r in a.q]
 
   env.close()
 
