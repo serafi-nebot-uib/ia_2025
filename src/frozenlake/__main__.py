@@ -19,14 +19,14 @@ STATE_SIZE = env.observation_space.n
 ACTION_SIZE = env.action_space.n
 env.close()
 
-LEARN_TRAIN_ITER = 20000
+LEARN_TRAIN_ITER = 10000
 LEARN_TEST_ITER = 1000
 
 LEARN = [
-  (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-  (None, SARSA,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-  (None, QLearning,        { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-  # (AverageQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  # (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  # (None, SARSA,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (None, QLearning,        { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 0.10, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  # (None, AverageQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
 ]
 
 SEARCH_TRAIN_ITER = 20
@@ -38,24 +38,21 @@ SEARCH = [
 ]
 
 if __name__ == "__main__":
-  config = [
-    ("mutation_rate=0",    Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.00, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-  ]
-  data = test(config)
+  data = test(LEARN)
 
-  for name in data:
-    steps = data[name]["test"]["steps"]
-    perf = data[name]["test"]["perf"]
-    print(f"{name} | steps: {np.mean(steps):6.4f} | perf: {np.mean(perf):6.4f}")
+  # for name in data:
+  #   steps = data[name]["test"]["steps"]
+  #   perf = data[name]["test"]["perf"]
+  #   print(f"{name} | steps: {np.mean(steps):6.4f} | perf: {np.mean(perf):6.4f}")
 
-  # figs = []
-  # figs.append(plot.train_perf(data, 1000))
-  # figs.append(plot.train_time(data, 1000))
-  # figs.append(plot.train_steps(data, 1000))
-  # plot.train_actions(data)
+  # plot.train_perf(data, 1000)
+  # plot.train_time(data, 1000)
+  # plot.train_steps(data, 1000)
+  plot.train_actions(data)
+  plot.train_actions_history(data, 1000)
   # figs.append(plot.test_steps(data))
   # # for alg in learn_data.values(): plot.qtable(alg["alg"], DESC)
-  # plt.show()
+  plt.show()
 
   # env = gym.make("FrozenLake-v1", is_slippery=SLIPPERY, render_mode="human")
   # state, _ = env.reset()

@@ -116,7 +116,7 @@ def train_steps(data: dict, m: int = 1):
   return fig
 
 def train_actions(data: dict):
-  data = get_data(data, "train", "actions")
+  data = get_data(data, "train", "actions", "total")
   fig, ax = plt.subplots(figsize=(8, 6))
   width = 0.45
   
@@ -126,11 +126,34 @@ def train_actions(data: dict):
   for i, (label, values) in enumerate(data.items()):
     ax.bar(x + i * len(actions), values, width=width, label=label)
 
-  ax.set_xticks(np.arange(len(actions) * len(data)), actions * len(actions))
+  ax.set_xticks(np.arange(len(actions) * len(data)), actions * len(data))
   ax.set_ylabel("number of actions")
   fig.suptitle("Train Chosen Actions", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
   fig.legend()
   fig.tight_layout()
+
+def train_actions_history(data: dict, m: int):
+  data = get_data(data, "train", "actions", "history")
+  actions = ["left", "down", "right", "up"]
+  fig, ax = plt.subplots(figsize=(8, 6))
+  for i, (label, values) in enumerate(data.items()):
+    v = np.array(values)
+    v = v.reshape(v.shape[0] // m, -1, v.shape[1]).mean(axis=1)
+    ax.imshow(v)
+  # ax.set_xticklabels(actions)
+  ax.set_ylabel("number of iterations")
+  
+  # # TODO: do not hardcode (get from env?)
+  # actions = ["left", "down", "right", "up"]
+  # x = np.arange(len(actions))
+  # for i, (label, values) in enumerate(data.items()):
+  #   ax.bar(x + i * len(actions), values, width=width, label=label)
+
+  # ax.set_xticks(np.arange(len(actions) * len(data)), actions * len(actions))
+  # ax.set_ylabel("number of actions")
+  # fig.suptitle("Train Chosen Actions", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  # fig.legend()
+  # fig.tight_layout()
 
 def test_steps(data: dict):
   data = get_data(data, "test", "steps")

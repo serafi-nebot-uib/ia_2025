@@ -16,7 +16,10 @@ def test(config: list[tuple[str | None, type[Algorithm], dict, int, int]]):
     data[name] = {
       "train": {
         "steps": list(map(float, a.steps)),
-        "actions": list(map(int, a.actions)),
+        "actions": {
+          "total": list(map(int, a.actions)),
+          "history": [list(map(int, r)) for r in a.actions_history],
+        },
         "perf": list(map(float, a.performance)),
         "time": list(map(float, a.time))
       },
