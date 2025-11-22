@@ -14,7 +14,6 @@
 \usepackage{float}
 \usepackage[most]{tcolorbox}
 
-
 % Page setup
 % \geometry{margin=1in}
 \onehalfspacing
@@ -142,12 +141,14 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
 A continuació es mostra com diferents variacions dels paràmetres de cada un dels models afecta als resultats.
 
 Per a cada configuració dels paràmetres, cada un dels algorismes primer passa per a la fase d'entranament de
-$n$ episodis i després s'evalua la política resultant amb 1000 episodis per a contrarestar el factor estocàstic de l'entorn.
+$n$ iteracions i després s'evalua la política resultant amb 1000 episodis per a contrarestar el factor estocàstic de l'entorn.
 
 Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
 i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
 
 \section{Algorismes d'aprenentatge}
+
+Per a tota aquesta secció el nombre d'episodis d'entrenament $n = 20000$.
 
 Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els següent paràmetres:
 \begin{itemize}
@@ -177,19 +178,6 @@ amb el pròxim apartat:
     \hline
   \end{tabular}
 \end{table}
-
-% \begin{table}[H]
-%   \centering
-%   \begin{tabular}{| c c | c c | c c | c c | c c |}
-%     \hline
-%     \multicolumn{2}{|c|}{Genètic} & \multicolumn{2}{|c|}{Prog. Dinámica} \\
-%     \hline
-%     steps & sr & steps & sr  \\
-%     \hline
-%     \\
-%     \hline
-%   \end{tabular}
-% \end{table}
 
 A continuació es mostren els resultats de totes les variacions de cada un dels paràmetres:
 
@@ -338,9 +326,163 @@ son molt propers a 1. Això té sentit perque significa que per a cada actualitz
 corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
 (s'arriba a un máxim local enlloc d'un màxim global).
 
+\section{Algorismes de cerca}
+
+Per a l'agorisme Genètic tenim els següent paràmetres:
+\begin{itemize}
+  \item $\mathit{population\_size} = 100$: Nombre total d'individus a la població per a cada generació.
+  \item $\mathit{selection\_pressure} = 0.50$: Percentatge de la població que es selecciona per a generar
+  la pròxima generació, la resta es descarten.
+  \item $\mathit{mutation\_rate} = 0.08$: Probabilitat de mutar cada un dels gens de cada individu nou generat.
+  \item $\mathit{culling\_rate} = 0.01$: Percentatge de la població que passa directament a la següent generació
+  (també conegut com a elitisme).
+\end{itemize}
+
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
+amb el pròxim apartat:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c c |}
+    \hline
+    \multicolumn{2}{|c|}{Genètic} \\
+    \hline
+    steps & sr \\
+    \hline
+    \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Genètic} \\
+    \hline
+    \textit{population\_size} & steps & sr \\
+    \hline
+    10    &     &     \\
+    100   &     &     \\
+    1000  &     &     \\
+    10000 &     &     \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Genètic} \\
+    \hline
+    \textit{selection\_pressure} & steps & sr \\
+    \hline
+    0.10 &        &       \\
+    0.20 &        &       \\
+    0.30 &        &       \\
+    0.40 &        &       \\
+    0.50 &        &       \\
+    0.60 &        &       \\
+    0.70 &        &       \\
+    0.80 &        &       \\
+    0.90 &        &       \\
+    1.00 &        &       \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Genètic} \\
+    \hline
+    \textit{mutation\_rate} & steps & sr \\
+    \hline
+    0.10 &        &       \\
+    0.20 &        &       \\
+    0.30 &        &       \\
+    0.40 &        &       \\
+    0.50 &        &       \\
+    0.60 &        &       \\
+    0.70 &        &       \\
+    0.80 &        &       \\
+    0.90 &        &       \\
+    1.00 &        &       \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Genètic} \\
+    \hline
+    \textit{culling\_rate} & steps & sr \\
+    \hline
+    0.10 &        &       \\
+    0.20 &        &       \\
+    0.30 &        &       \\
+    0.40 &        &       \\
+    0.50 &        &       \\
+    0.60 &        &       \\
+    0.70 &        &       \\
+    0.80 &        &       \\
+    0.90 &        &       \\
+    1.00 &        &       \\
+    \hline
+  \end{tabular}
+\end{table}
+
+Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\mathit{dr} = 0.95$
+(\textit{Discount Rate} o \textit{gamma} als apuunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
+
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
+amb el pròxim apartat:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c c |}
+    \hline
+    \multicolumn{2}{|c|}{Prog. Dinámica} \\
+    \hline
+    steps & sr \\
+    \hline
+    \\
+    \hline
+  \end{tabular}
+\end{table}
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Prog. Dinámica} \\
+    \hline
+    \textit{dr} & steps & sr \\
+    \hline
+    0.10 &        &       \\
+    0.20 &        &       \\
+    0.30 &        &       \\
+    0.40 &        &       \\
+    0.50 &        &       \\
+    0.60 &        &       \\
+    0.70 &        &       \\
+    0.80 &        &       \\
+    0.90 &        &       \\
+    1.00 &        &       \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
 % ==========================
 \chapter{Conclusió}
 \label{ch:conclusion}
+
+No basta es temps.
 
 \cleardoublepage
 \thispagestyle{empty} % sense número de pàgina

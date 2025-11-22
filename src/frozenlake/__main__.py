@@ -33,22 +33,16 @@ SEARCH_TRAIN_ITER = 20
 SEARCH_TEST_ITER = 1000
 
 SEARCH = [
-  (Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
-  (DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+  (None, Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+  (None, DynamicProgramming, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "probs": PROBS, "dr": 0.95 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
 ]
 
 if __name__ == "__main__":
   config = [
-    ("er_min=0.10", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.10, "er": 1.00, "er_min": 0.10, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.20", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.20, "er": 1.00, "er_min": 0.20, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.30", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.30, "er": 1.00, "er_min": 0.30, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.40", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.40, "er": 1.00, "er_min": 0.40, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.50", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.50, "er": 1.00, "er_min": 0.50, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.60", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.60, "er": 1.00, "er_min": 0.60, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.70", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.70, "er": 1.00, "er_min": 0.70, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.80", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.80, "er": 1.00, "er_min": 0.80, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=0.90", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.90, "er": 1.00, "er_min": 0.90, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("er_min=1.00", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 1.00, "er": 1.00, "er_min": 1.00, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("pop_size=10",    Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 10, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+    ("pop_size=100",   Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 100, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+    ("pop_size=1000",  Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 1000, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
+    ("pop_size=10000", Genetic, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "population_size": 10000, "selection_pressure": 0.50, "mutation_rate": 0.08, "culling_rate": 1/100 }, SEARCH_TRAIN_ITER, SEARCH_TEST_ITER),
   ]
   data = test(config)
 
