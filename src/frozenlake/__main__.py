@@ -39,18 +39,18 @@ SEARCH = [
 
 if __name__ == "__main__":
   config = [
-    ("dr=0.10", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.10, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.20", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.20, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.30", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.30, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.40", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.40, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.50", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.50, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.60", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.60, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.70", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.70, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.80", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.80, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=0.90", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.90, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("dr=1.00", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 1.00, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.10", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.10, "er": 1.00, "er_min": 0.10, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.20", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.20, "er": 1.00, "er_min": 0.20, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.30", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.30, "er": 1.00, "er_min": 0.30, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.40", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.40, "er": 1.00, "er_min": 0.40, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.50", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.50, "er": 1.00, "er_min": 0.50, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.60", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.60, "er": 1.00, "er_min": 0.60, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.70", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.70, "er": 1.00, "er_min": 0.70, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.80", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.80, "er": 1.00, "er_min": 0.80, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=0.90", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.90, "er": 1.00, "er_min": 0.90, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("er_min=1.00", MonteCarlo, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 1.00, "er": 1.00, "er_min": 1.00, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   ]
-  data = test(LEARN)
+  data = test(config)
 
   for name in data:
     steps = data[name]["test"]["steps"]

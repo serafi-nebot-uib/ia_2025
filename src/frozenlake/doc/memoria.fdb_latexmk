@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763806336.95217 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763806337.50028 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763806336.77906 12302 86269c7c830320dc2c46118cd6616939 ""
+["pdflatex"] 1763809315.13862 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763809316.08667 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763809313.98043 14625 7eb09be6d093afe64d7176b0ccb3c9a0 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -130,6 +130,7 @@
   "/usr/local/texlive/2025/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1579991033 13886 d1306dcf79a944f6988e688c1785f9ce ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/etoolbox/etoolbox.sty" 1739306980 46850 d87daedc2abdc653769a6f1067849fe0 ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty" 1739048179 31715 19e60610b63819fe670dfa1cd84a4e94 ""
+  "/usr/local/texlive/2025/texmf-dist/tex/latex/float/float.sty" 1137110151 6749 16d2656a1984957e674b149555f1ea1d ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/geometry/geometry.sty" 1578002852 41601 9cf6c5257b1bc7af01a58859749dd37a ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/color.cfg" 1459978653 1213 620bba36b25224fa9b7e1ccb4ecb76fd ""
   "/usr/local/texlive/2025/texmf-dist/tex/latex/graphics-cfg/graphics.cfg" 1465944070 1224 978390e9c2234eab29404bc21b268d1e ""
@@ -198,10 +199,10 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743237580 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743237537 3345739 7da140f55beb7e0878cefe3b9a895bb4 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "memoria.aux" 1763806337.4472 1847 064aa918cc4cdf57418396e5c7505c71 "pdflatex"
-  "memoria.out" 1763806337.44778 1215 da7b01534635f5da85206819c04a3122 "pdflatex"
-  "memoria.tex" 1763806336.77906 12302 86269c7c830320dc2c46118cd6616939 ""
-  "memoria.toc" 1763806337.44798 726 81e4651fafe0799ed97ddbcd2db9b04d "pdflatex"
+  "memoria.aux" 1763809315.99124 1851 1216cff3a28213a1ab0c7c263f92fcaf "pdflatex"
+  "memoria.out" 1763809315.99199 1223 9415ca8c371e9f306003e551c649ad08 "pdflatex"
+  "memoria.tex" 1763809313.98043 14625 7eb09be6d093afe64d7176b0ccb3c9a0 ""
+  "memoria.toc" 1763809315.99219 728 125695f967e77c9cc497f44f5ae14513 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

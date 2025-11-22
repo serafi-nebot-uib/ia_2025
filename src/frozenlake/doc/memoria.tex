@@ -11,6 +11,7 @@
 \usepackage{titlesec}
 \usepackage{relsize}
 \usepackage{enumitem}
+\usepackage{float}
 \usepackage[most]{tcolorbox}
 
 
@@ -135,7 +136,7 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
 \pagebreak
 
 % ==========================
-\chapter{Estudi dels resultats}
+\chapter{Estudi dels paràmetres}
 \label{ch:results}
 
 A continuació es mostra com diferents variacions dels paràmetres de cada un dels models afecta als resultats.
@@ -145,20 +146,6 @@ $n$ episodis i després s'evalua la política resultant amb 1000 episodis per a 
 
 Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
 i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
-
-\begin{table}[ht]
-  \centering
-  \begin{tabular}{| c c | c c | c c | c c | c c |}
-    \hline
-    \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} & \multicolumn{2}{|c|}{Genètic} & \multicolumn{2}{|c|}{Prog. Dinámica} \\
-    \hline
-    steps & sr & steps & sr & steps & sr & steps & sr & steps & sr \\
-    \hline
-    41.3870 & 0.7030 & 44.3640 & 0.7320 & 44.1830 & 0.7300 & & & & \\
-    \hline
-  \end{tabular}
-\end{table}
-
 
 \section{Algorismes d'aprenentatge}
 
@@ -172,7 +159,41 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
 \end{itemize}
 
-\begin{table}[ht]
+Per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.01$ (\textit{Learning Rate} o \textit{alpha} als apunts)
+que és el factor d'apranentatge.
+
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
+amb el pròxim apartat:
+
+\begin{table}[H]
+  \centering
+  \begin{tabular}{| c c | c c | c c |}
+    \hline
+    \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    steps & sr & steps & sr & steps & sr  \\
+    \hline
+    41.3870 & 0.7030 & 44.3640 & 0.7320 & 44.1830 & 0.7300 \\
+    \hline
+  \end{tabular}
+\end{table}
+
+% \begin{table}[H]
+%   \centering
+%   \begin{tabular}{| c c | c c | c c | c c | c c |}
+%     \hline
+%     \multicolumn{2}{|c|}{Genètic} & \multicolumn{2}{|c|}{Prog. Dinámica} \\
+%     \hline
+%     steps & sr & steps & sr  \\
+%     \hline
+%     \\
+%     \hline
+%   \end{tabular}
+% \end{table}
+
+A continuació es mostren els resultats de totes les variacions de cada un dels paràmetres:
+
+\begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -194,7 +215,15 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+SARSA i Q-learning es comporten de forma molt similar i prefereixen un $\mathit{dr}$ molt proper a 1,
+exceptuant el cas $\mathit{dr} = 1.00$ on Q-learning es veu molt afectat i no arriba cap vegada al destí en totes les
+1000 iteracions de prova.
+
+Monte Carlo, per altra banda, sembla ser molt sensible a petits canvis del paràmetre i, per aquesta prova limitada,
+no podem veure un patró clar. A les proves que hem fet durant el desenvolupament sabem que el valor per defecte
+que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, que és el que veiem a la taula amb el valor 1.00), dependent de la inicilització de la semilla del generador de nombres aleatoris.
+
+\begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -216,7 +245,13 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+SARSA i Q-learning no es veuen afectats pel valor de $\mathit{er}$.  Això és degut a una característica
+particular de la nostra implementació dels algorismes d'aprenentatge.
+% TODO: explicar argmax() tie-break
+
+Monte Carlo necessita una exploració major a l'inici de l'entrenament per a poder trobar una solució òptima.
+
+\begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -224,21 +259,29 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
     \hline
     \textit{er\_min} & steps & sr & steps & sr & steps & sr \\
     \hline
-    0.10 & 11.1730 & 0.1660 & 40.7290 & 0.7200 & 45.1450 & 0.7380 \\
-    0.20 & 40.7990 & 0.7040 & 39.1340 & 0.7460 & 45.5910 & 0.7680 \\
-    0.30 & 40.7220 & 0.7460 & 41.3910 & 0.7160 & 44.2060 & 0.7570 \\
-    0.40 & 30.2160 & 0.5120 & 41.9450 & 0.7300 & 43.6270 & 0.7450 \\
-    0.50 & 39.6190 & 0.6070 & 39.7820 & 0.6890 & 43.4790 & 0.7480 \\
-    0.60 & 40.5510 & 0.7290 & 42.2630 & 0.7120 & 45.9040 & 0.7170 \\
-    0.70 & 26.8700 & 0.3990 & 23.1390 & 0.2830 & 44.0580 & 0.7150 \\
-    0.80 & 30.4010 & 0.5150 & 39.8010 & 0.7070 & 44.8900 & 0.7240 \\
-    0.90 & 18.4920 & 0.1910 & 36.0990 & 0.6080 & 44.2430 & 0.7470 \\
-    1.00 & 12.9100 & 0.1410 & 24.2430 & 0.3300 & 45.1970 & 0.7510 \\
+    0.10 & 6.3470  & 0.0660 & 40.7290 & 0.7200 & 45.1450 & 0.7380 \\
+    0.20 & 10.7840 & 0.0900 & 39.1340 & 0.7460 & 45.5910 & 0.7680 \\
+    0.30 & 27.8450 & 0.2690 & 41.3910 & 0.7160 & 44.2060 & 0.7570 \\
+    0.40 & 6.7520  & 0.0980 & 41.9450 & 0.7300 & 43.6270 & 0.7450 \\
+    0.50 & 12.3250 & 0.1870 & 39.7820 & 0.6890 & 43.4790 & 0.7480 \\
+    0.60 & 11.2170 & 0.1170 & 42.2630 & 0.7120 & 45.9040 & 0.7170 \\
+    0.70 & 9.0570  & 0.1260 & 23.1390 & 0.2830 & 44.0580 & 0.7150 \\
+    0.80 & 32.8600 & 0.5210 & 39.8010 & 0.7070 & 44.8900 & 0.7240 \\
+    0.90 & 24.2700 & 0.3700 & 36.0990 & 0.6080 & 44.2430 & 0.7470 \\
+    1.00 & 34.0410 & 0.4590 & 24.2430 & 0.3300 & 45.1970 & 0.7510 \\
     \hline
   \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+Q-learning no es veu afectat en absolut i SARSA negativament per a valors alts de $\mathit{er\_min}$.
+Per tant, una exploració alta al final de la fase d'entrenament perjudica molt a SARSA probablement degut
+a que per a calcular la correcció de la recompensa esperada SARSA utilitza l'acció realitzada i Q-learning sempre
+utilitza la millor, ignorant així el factor aleatori.
+
+Monte Carlo, per altra banda, prefereix una exploració alta mantinguda, però segons els paràmetres per defecte
+que hem triat sabem que millora encara més.
+
+\begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -260,11 +303,13 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   \end{tabular}
 \end{table}
 
-\pagebreak
-Finalment, per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.01$ (\textit{Learning Rate} o \textit{alpha} als apunts)
-que és el factor d'apranentatge
+Una altre vegada, Q-learning no es veu afectat en absolut i SARSA només quan es manté el factor d'exploració
+alt (el mateix per a $\mathit{er\_decay} = 1.0$) durant tot l'entrenament.
 
-\begin{table}[ht]
+En aquest cas, Monte Carlo obté molt bons resultats quan $\mathit{er\_decay}$ és molt proper a 1.0,
+consistent amb els resultats que hem obtingut amb el valor per defecte.
+
+\begin{table}[H]
   \centering
   \begin{tabular}{| c | c c | c c |}
     \hline

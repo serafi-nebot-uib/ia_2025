@@ -49,7 +49,7 @@ class LearningAlgorithm(Algorithm):
     super().__init__(state_size, action_size)
     self.lr, self.dr = lr, dr
     self.er, self.er_min, self.er_decay = er, er_min, er_decay
-    self.q = np.ones((self.state_size, self.action_size), dtype="float32")
+    self.q = np.zeros((self.state_size, self.action_size), dtype="float32")
 
   def action(self, state: int, greedy: bool = True, q: np.ndarray | None = None) -> int:
     if q is None: q = self.q

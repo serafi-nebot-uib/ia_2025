@@ -112,6 +112,8 @@ INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/relsize/relsize.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/relsize/relsize.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/enumitem/enumitem.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/float/float.sty
+INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/float/float.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/tcolorbox/tcolorbox.sty
 INPUT /usr/local/texlive/2025/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
