@@ -39,23 +39,23 @@ SEARCH = [
 
 if __name__ == "__main__":
   config = [
-    ("lr=0.10", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.20", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.20, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.30", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.30, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.40", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.40, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.50", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.50, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.60", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.60, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.70", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.70, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.80", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.80, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=0.90", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.90, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-    ("lr=1.00", QLearning,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 1.00, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.10", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.10, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.20", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.20, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.30", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.30, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.40", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.40, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.50", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.50, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.60", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.60, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.70", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.70, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.80", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.80, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=0.90", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 0.90, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+    ("dr=1.00", QLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.01, "dr": 1.00, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   ]
   data = test(config)
 
   for name in data:
     steps = data[name]["test"]["steps"]
     perf = data[name]["test"]["perf"]
-    print(f"{name} | steps: {np.mean(steps)} | perf: {np.mean(perf)}")
+    print(f"{name} | steps: {np.mean(steps):6.4f} | perf: {np.mean(perf):6.4f}")
 
   # figs = []
   # figs.append(plot.train_perf(data, 1000))

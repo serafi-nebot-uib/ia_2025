@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763753611.94013 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763753612.47973 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763753611.23112 5554 9563d9b47c903d3c0f71102aecbed170 ""
+["pdflatex"] 1763802794.29616 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763802794.84615 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763802794.23208 8338 48cb0de18298f2938cb060735868f919 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm" 1136768653 1536 3290a75021d32d016616fe527bc9884c ""
@@ -196,10 +196,10 @@
   "/usr/local/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1743237580 5467155 19efa205003f9ecad95fbbaa6ff24da1 ""
   "/usr/local/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1743237537 3345739 7da140f55beb7e0878cefe3b9a895bb4 ""
   "/usr/local/texlive/2025/texmf.cnf" 1741450484 577 418a7058ec8e006d8704f60ecd22c938 ""
-  "memoria.aux" 1763753612.42883 1720 16d409d2a77173e4f09dc949754ef58a "pdflatex"
-  "memoria.out" 1763753612.4294 1032 33c0eb2e7baee640b2b204a70d884373 "pdflatex"
-  "memoria.tex" 1763753611.23112 5554 9563d9b47c903d3c0f71102aecbed170 ""
-  "memoria.toc" 1763753612.42954 641 e5448632aaa93ce83c650ff7acc5ca0c "pdflatex"
+  "memoria.aux" 1763802794.79395 1720 0e5e49a4a196846c5a47998c75fab9f2 "pdflatex"
+  "memoria.out" 1763802794.79453 1032 33c0eb2e7baee640b2b204a70d884373 "pdflatex"
+  "memoria.tex" 1763802794.23208 8338 48cb0de18298f2938cb060735868f919 ""
+  "memoria.toc" 1763802794.79469 641 01b36f23965e56eedb730f7169043143 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

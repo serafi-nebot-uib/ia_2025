@@ -25,8 +25,9 @@
 \fancyhf{}
 \fancyhead[L]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{Pràctica 2 - Aprenentatge per reforç}} % \fancyhead[L]{Your Report Title}
 \fancyhead[R]{\vspace{1.5cm}\raisebox{-40pt}[0pt][0pt]{\thepage}} % \fancyhead[R]{\thepage}
-% \setlength{\headheight}{15pt} %\setlength{\headheight}{10pt}
-% \setlength{\headsep}{40pt}
+
+\setlength{\headheight}{10pt} %\setlength{\headheight}{10pt}
+\setlength{\headsep}{70pt}
 
 % Title setup
 \titleformat{\chapter}[display]
@@ -137,13 +138,36 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
 \chapter{Estudi dels resultats}
 \label{ch:results}
 
-\begin{table}[h]
+A continuació es mostra com diferents variacions dels paràmetres de cada un dels models afecta als resultats.
+
+Per a cada configuració dels paràmetres, cada un dels algorismes primer passa per a la fase d'entranament de
+$n$ episodis i després s'evalua la política resultant amb 1000 episodis per a contrarestar el factor estocàstic de l'entorn.
+
+Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
+i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
+
+% \begin{table}
+%   \centering
+%   \begin{tabular}{| c | c | c | c | c | c |}
+%     \hline
+%           & Monte Carlo & SARSA & Q-learning & Prog. Dinámica & Genètic \\
+%     \hline
+%     \textit{lr}                & 0.01   & \\
+%     \textit{dr}                & 0.99   & \\
+%     \textit{er}                & 1.00   & \\
+%     % \textit{er}_\textit{min}   & 0.01   & \\
+%     % \textit{er}_\textit{decay} & 0.9995 & \\
+%     \hline
+%   \end{tabular}
+% \end{table}
+
+\begin{minipage}[t]{0.4\textwidth}
   \centering
   \begin{tabular}{| c | c c | c c |}
     \hline
       & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-     lr & steps & sr & steps & sr \\
+    \textit{lr} & steps & sr & steps & sr \\
     \hline
     0.10 & 44.607 & 0.74  & 44.711 & 0.721 \\
     0.20 & 44.706 & 0.644 & 45.731 & 0.745 \\
@@ -157,7 +181,44 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
     1.00 & 7.832  & 0.024 & 7.837  & 0.022 \\
     \hline
   \end{tabular}
-\end{table}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\textwidth}
+  Podem veure que SARSA és molt més sensible al \textit{Learning Rate} que Q-learning,
+  ja que aquest darrer es manté igual al llarg de totes les combinacions.
+
+  Per a valors molt grans de \textit{lr} ambdós tenen resultats molt pobres, sobretot quan
+  son molt propers a 1. Això té sentit perque significa que per a cada actualització de la política s'està
+  corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
+  (s'arriba a un máxim local enlloc d'un màxim global).
+\end{minipage}
+
+\pagebreak
+
+\begin{minipage}[t]{0.4\textwidth}
+  \centering
+  \begin{tabular}{| c | c c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    \textit{dr} & steps & sr & steps & sr & steps & sr \\
+    \hline
+    0.10 & 13.4970 & 0.1060 & 9.2340  & 0.0620 & 9.2420  & 0.1120 \\
+    0.20 & 7.8380  & 0.0470 & 8.5430  & 0.1010 & 7.3150  & 0.0470 \\
+    0.30 & 7.5250  & 0.0650 & 16.0000 & 0.1760 & 6.2980  & 0.0600 \\
+    0.40 & 10.9760 & 0.0860 & 20.9020 & 0.1790 & 14.2070 & 0.1560 \\
+    0.50 & 35.9780 & 0.6950 & 14.5330 & 0.1570 & 21.9130 & 0.2800 \\
+    0.60 & 10.0380 & 0.0930 & 33.7380 & 0.5140 & 22.0330 & 0.2630 \\
+    0.70 & 9.1360  & 0.0890 & 16.2900 & 0.2180 & 30.5880 & 0.4590 \\
+    0.80 & 33.2870 & 0.4890 & 26.8600 & 0.3900 & 27.9760 & 0.4460 \\
+    0.90 & 30.6570 & 0.5020 & 41.5030 & 0.6280 & 41.8290 & 0.7180 \\
+    1.00 & 11.2490 & 0.1090 & 44.7220 & 0.7600 & 100.000 & 0.0000 \\
+    \hline
+  \end{tabular}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.3\textwidth}
+\end{minipage}
 
 % ==========================
 \chapter{Conclusió}
