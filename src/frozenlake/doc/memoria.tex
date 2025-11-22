@@ -146,47 +146,33 @@ $n$ episodis i després s'evalua la política resultant amb 1000 episodis per a 
 Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
 i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
 
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{| c c | c c | c c | c c | c c |}
+    \hline
+    \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} & \multicolumn{2}{|c|}{Genètic} & \multicolumn{2}{|c|}{Prog. Dinámica} \\
+    \hline
+    steps & sr & steps & sr & steps & sr & steps & sr & steps & sr \\
+    \hline
+    41.3870 & 0.7030 & 44.3640 & 0.7320 & 44.1830 & 0.7300 & & & & \\
+    \hline
+  \end{tabular}
+\end{table}
+
+
+\section{Algorismes d'aprenentatge}
+
 Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els següent paràmetres:
 \begin{itemize}
   \item $\mathit{dr} = 0.99$: \textit{Discount Rate} o \textit{gamma} als apunts, és el factor de descompte per
     a la recompensa esperada per a cada passa del mateix episodi.
+  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o \textit{epsilon} als apunts, és el factor d'exploració per a una política \textit{epsilon-greedy}.
+  \item $\mathit{er\_min} = 0.01$: \textit{Exploration Rate Minimum} és el mínim permès del valor $\mathit{er}$.
+  \item $\mathit{er\_decay} = 0.9995$: \textit{Exploration Rate Decay} és el factor de descens del paràmetre $\mathit{er}$.
+  A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
 \end{itemize}
 
-\begin{minipage}[t]{0.4\textwidth}
-  \centering
-  \begin{tabular}{| c | c c | c c |}
-    \hline
-      & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
-    \hline
-    \textit{lr} & steps & sr & steps & sr \\
-    \hline
-    0.10 & 44.607 & 0.74  & 44.711 & 0.721 \\
-    0.20 & 44.706 & 0.644 & 45.731 & 0.745 \\
-    0.30 & 44.441 & 0.72  & 45.358 & 0.732 \\
-    0.40 & 46.921 & 0.638 & 45.021 & 0.725 \\
-    0.50 & 46.462 & 0.734 & 43.33  & 0.734 \\
-    0.60 & 28.884 & 0.244 & 44.917 & 0.735 \\
-    0.70 & 62.305 & 0.561 & 42.406 & 0.756 \\
-    0.80 & 61.438 & 0.573 & 44.273 & 0.758 \\
-    0.90 & 8.856  & 0.102 & 45.38  & 0.744 \\
-    1.00 & 7.832  & 0.024 & 7.837  & 0.022 \\
-    \hline
-  \end{tabular}
-\end{minipage}
-\hfill
-\begin{minipage}[t]{0.5\textwidth}
-  Podem veure que SARSA és molt més sensible al \textit{Learning Rate} que Q-learning,
-  ja que aquest darrer es manté igual al llarg de totes les combinacions.
-
-  Per a valors molt grans de \textit{lr} ambdós tenen resultats molt pobres, sobretot quan
-  son molt propers a 1. Això té sentit perque significa que per a cada actualització de la política s'està
-  corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
-  (s'arriba a un máxim local enlloc d'un màxim global).
-\end{minipage}
-
-\pagebreak
-
-\begin{table}
+\begin{table}[ht]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -194,21 +180,21 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
     \hline
     \textit{dr} & steps & sr & steps & sr & steps & sr \\
     \hline
-    0.10 & 13.4970 & 0.1060 & 9.2340  & 0.0620 & 9.2420  & 0.1120 \\
-    0.20 & 7.8380  & 0.0470 & 8.5430  & 0.1010 & 7.3150  & 0.0470 \\
-    0.30 & 7.5250  & 0.0650 & 16.0000 & 0.1760 & 6.2980  & 0.0600 \\
-    0.40 & 10.9760 & 0.0860 & 20.9020 & 0.1790 & 14.2070 & 0.1560 \\
-    0.50 & 35.9780 & 0.6950 & 14.5330 & 0.1570 & 21.9130 & 0.2800 \\
-    0.60 & 10.0380 & 0.0930 & 33.7380 & 0.5140 & 22.0330 & 0.2630 \\
-    0.70 & 9.1360  & 0.0890 & 16.2900 & 0.2180 & 30.5880 & 0.4590 \\
-    0.80 & 33.2870 & 0.4890 & 26.8600 & 0.3900 & 27.9760 & 0.4460 \\
-    0.90 & 30.6570 & 0.5020 & 41.5030 & 0.6280 & 41.8290 & 0.7180 \\
-    1.00 & 11.2490 & 0.1090 & 44.7220 & 0.7600 & 100.000 & 0.0000 \\
+    0.10 & 15.3360 & 0.2110 & 9.2340  & 0.0620 & 9.2420  & 0.1120 \\
+    0.20 & 9.2610  & 0.1030 & 8.5430  & 0.1010 & 7.3150  & 0.0470 \\
+    0.30 & 6.9370  & 0.1010 & 16.0000 & 0.1760 & 6.2980  & 0.0600 \\
+    0.40 & 8.4560  & 0.1020 & 20.9020 & 0.1790 & 14.2070 & 0.1560 \\
+    0.50 & 10.0620 & 0.1180 & 14.5330 & 0.1570 & 21.9130 & 0.2800 \\
+    0.60 & 6.1020  & 0.0750 & 33.7380 & 0.5140 & 22.0330 & 0.2630 \\
+    0.70 & 35.7620 & 0.5640 & 16.2900 & 0.2180 & 30.5880 & 0.4590 \\
+    0.80 & 18.2380 & 0.2030 & 26.8600 & 0.3900 & 27.9760 & 0.4460 \\
+    0.90 & 8.5550  & 0.0670 & 41.5030 & 0.6280 & 41.8290 & 0.7180 \\
+    1.00 & 26.0580 & 0.3240 & 44.7220 & 0.7600 & 100.000 & 0.0000 \\
     \hline
   \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[ht]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
@@ -230,13 +216,13 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[ht]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{er min} & steps & sr & steps & sr & steps & sr \\
+    \textit{er\_min} & steps & sr & steps & sr & steps & sr \\
     \hline
     0.10 & 11.1730 & 0.1660 & 40.7290 & 0.7200 & 45.1450 & 0.7380 \\
     0.20 & 40.7990 & 0.7040 & 39.1340 & 0.7460 & 45.5910 & 0.7680 \\
@@ -252,27 +238,60 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[ht]
   \centering
   \begin{tabular}{| c | c c | c c | c c |}
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{er decay} & steps & sr & steps & sr & steps & sr \\
+    \textit{er\_decay} & steps & sr & steps & sr & steps & sr \\
     \hline
-    0.10 & 8.0950  & 0.0810 &         &        &         &        \\
-    0.20 & 24.4520 & 0.2640 &         &        &         &        \\
-    0.30 & 27.6170 & 0.4670 &         &        &         &        \\
-    0.40 & 30.0460 & 0.2070 &         &        &         &        \\
-    0.50 & 10.5710 & 0.0960 &         &        &         &        \\
-    0.60 & 24.0870 & 0.1480 &         &        &         &        \\
-    0.70 & 13.6050 & 0.1610 &         &        &         &        \\
-    0.80 & 38.2980 & 0.6750 &         &        &         &        \\
-    0.90 & 9.6760  & 0.0970 &         &        &         &        \\
-    1.00 & 39.8340 & 0.6960 &         &        &         &        \\
+    0.10 & 8.0950  & 0.0810 & 45.0600 & 0.7450 & 44.2680 & 0.7310 \\
+    0.20 & 24.4520 & 0.2640 & 44.3870 & 0.7490 & 44.5310 & 0.7350 \\
+    0.30 & 27.6170 & 0.4670 & 44.1920 & 0.7530 & 45.1240 & 0.7410 \\
+    0.40 & 30.0460 & 0.2070 & 44.2520 & 0.7570 & 44.5730 & 0.7040 \\
+    0.50 & 10.5710 & 0.0960 & 43.6780 & 0.7320 & 43.7620 & 0.7330 \\
+    0.60 & 24.0870 & 0.1480 & 43.4670 & 0.7380 & 43.2330 & 0.7310 \\
+    0.70 & 13.6050 & 0.1610 & 45.8600 & 0.7550 & 45.3060 & 0.7320 \\
+    0.80 & 38.2980 & 0.6750 & 46.0460 & 0.7290 & 42.9090 & 0.7590 \\
+    0.90 & 9.6760  & 0.0970 & 44.9890 & 0.7380 & 44.9960 & 0.7310 \\
+    1.00 & 39.8340 & 0.6960 & 22.6820 & 0.3380 & 44.5930 & 0.7470 \\
     \hline
   \end{tabular}
 \end{table}
+
+\pagebreak
+Finalment, per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.01$ (\textit{Learning Rate} o \textit{alpha} als apunts)
+que és el factor d'apranentatge
+
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{| c | c c | c c |}
+    \hline
+      & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
+    \hline
+    \textit{lr} & steps & sr & steps & sr \\
+    \hline
+    0.10 & 44.607 & 0.74  & 44.711 & 0.721 \\
+    0.20 & 44.706 & 0.644 & 45.731 & 0.745 \\
+    0.30 & 44.441 & 0.72  & 45.358 & 0.732 \\
+    0.40 & 46.921 & 0.638 & 45.021 & 0.725 \\
+    0.50 & 46.462 & 0.734 & 43.33  & 0.734 \\
+    0.60 & 28.884 & 0.244 & 44.917 & 0.735 \\
+    0.70 & 62.305 & 0.561 & 42.406 & 0.756 \\
+    0.80 & 61.438 & 0.573 & 44.273 & 0.758 \\
+    0.90 & 8.856  & 0.102 & 45.38  & 0.744 \\
+    1.00 & 7.832  & 0.024 & 7.837  & 0.022 \\
+    \hline
+  \end{tabular}
+\end{table}
+Podem veure que SARSA és molt més sensible al \textit{Learning Rate} que Q-learning,
+ja que aquest darrer es manté igual al llarg de totes les combinacions.
+
+Per a valors molt grans de \textit{lr} ambdós tenen resultats molt pobres, sobretot quan
+son molt propers a 1. Això té sentit perque significa que per a cada actualització de la política s'està
+corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
+(s'arriba a un máxim local enlloc d'un màxim global).
 
 % ==========================
 \chapter{Conclusió}
