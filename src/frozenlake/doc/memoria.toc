@@ -10,6 +10,8 @@
 \contentsline {chapter}{\numberline {3}Estudi dels paràmetres}{5}{chapter.3}%
 \contentsline {section}{\numberline {3.1}Algorismes d'aprenentatge}{5}{section.3.1}%
 \contentsline {section}{\numberline {3.2}Algorismes de cerca}{9}{section.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}Genètic}{9}{subsection.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}Programació dinámica}{11}{subsection.3.2.2}%
 \contentsline {chapter}{\numberline {4}Anàlisi rendiment}{13}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Anàlisi polítiques}{16}{chapter.5}%
 \contentsline {chapter}{\numberline {6}Conclusió}{19}{chapter.6}%

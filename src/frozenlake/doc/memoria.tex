@@ -159,7 +159,7 @@ introduïr un \textit{tie-break} aleatori.
 Hem decidit que un individu representi una política $\pi_i(S_t) \in \mathbb{A}(S_t)$ enlloc que tota una taula
 d'estat-acció $Q(S, A) \in \mathbb{R}$ perquè l'espai que ocupa i el temps d'execució son molt menors.
 
-La popblació d'individus conté, per a cada generació, \textit{population\_size} individus.
+La població d'individus conté, per a cada generació, \textit{population\_size} individus.
 Per a la primera generació, els gens de tots els individus s'inicialitzen de forma completament aleatòria.
 
 \textbf{Funció \textit{fitness}}
@@ -243,11 +243,11 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
   A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
 \end{itemize}
 
-Per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.01$ (\textit{Learning Rate} o \textit{alpha} als apunts)
+Per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.10$ (\textit{Learning Rate} o \textit{alpha} als apunts)
 que és el factor d'apranentatge.
 
-Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
-amb el pròxim apartat:
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
+amb el pròxim apartat on es mostren els resultats de totes les variacions de cada un dels paràmetres:
 
 \begin{table}[H]
   \centering
@@ -262,7 +262,7 @@ amb el pròxim apartat:
   \end{tabular}
 \end{table}
 
-A continuació es mostren els resultats de totes les variacions de cada un dels paràmetres:
+\vspace*{10pt}\hrule
 
 \begin{table}[H]
   \centering
@@ -292,7 +292,7 @@ exceptuant el cas $\mathit{dr} = 1.00$ on Q-learning es veu molt afectat i no ar
 
 Monte Carlo, per altra banda, sembla ser molt sensible a petits canvis del paràmetre i, per aquesta prova limitada,
 no podem veure un patró clar. A les proves que hem fet durant el desenvolupament sabem que el valor per defecte
-que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, que és el que veiem a la taula amb el valor 1.00), dependent de la inicilització de la semilla del generador de nombres aleatoris.
+que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, que és el que veiem a la taula amb el valor 1.00), dependent de la inicilització de la llavor del generador de nombres aleatoris.
 
 \vspace*{10pt}\hrule
 
@@ -353,7 +353,7 @@ i el segon amb \textit{tie-break on}):
 A simple vista es veu que hi ha una diferència abismal. Quan el \textit{tie-break} està desactivat i l'exploració
 és molt baixa l'acció \textit{left} esta desproporcionadament afavorida. Quan el \textit{tie-break} està activat
 l'elecció de les accions està molt més distribuïda. La raó perque encara hi ha una preferència sobre les accions \textit{left} i
-\textit{up} es discuteix a l'apartat d'Anlàlisi de les polítiques.
+\textit{up} es discuteix a l'apartat d'Anàlisi de les polítiques.
 
 \vspace*{10pt}\hrule
 
@@ -450,6 +450,8 @@ corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'a
 
 \section{Algorismes de cerca}
 
+\subsection{Genètic}
+
 Per a l'agorisme Genètic tenim els següent paràmetres:
 \begin{itemize}
   \item $\mathit{population\_size} = 100$: Nombre total d'individus a la població per a cada generació.
@@ -460,7 +462,7 @@ Per a l'agorisme Genètic tenim els següent paràmetres:
   (també conegut com a elitisme).
 \end{itemize}
 
-Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
 amb el pròxim apartat:
 
 \begin{table}[H]
@@ -527,8 +529,8 @@ amb el pròxim apartat:
 \end{minipage}
 \hfill
 \begin{minipage}{0.5\textwidth}
-  Resultats bàsicament idèntics. Només hi ha un \textit{Survival Rate} per davall dels altres que porbablement
-  sigui degut a la inicialització de la semilla del generador de nombres aleatoris.
+  Resultats bàsicament idèntics. Només hi ha un \textit{Survival Rate} per davall dels altres que probablement
+  sigui degut a la inicialització de la llavor del generador de nombres aleatoris.
 
   Al igual que la mida de la població, segurament amb un problema més complex hi hauria una variació major.
 \end{minipage}
@@ -593,12 +595,12 @@ amb el pròxim apartat:
   entorn massa senzill i amb algún de més complexe potser es vegessin els canvis.
 \end{minipage}
 
-\vspace*{10pt}\hrule
+\subsection{Programació dinámica}
 
 Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\mathit{dr} = 0.95$
-(\textit{Discount Rate} o \textit{gamma} als apuunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
+(\textit{Discount Rate} o \textit{gamma} als apunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
 
-Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comprar
+Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
 amb el pròxim apartat:
 
 \begin{table}[H]
@@ -680,7 +682,7 @@ perque la quantitat de punts de dades és molt baix.
 
 A partir de les provem que hem anat realitzant durant el desenvolupament sabem que el punt de saturació
 de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}. Això depenèn
-de la inicialització de la semilla del generador de nombres aleatoris i no sabem molt bé com, o si es pot,
+de la inicialització de la llavor del generador de nombres aleatoris i no sabem molt bé com, o si es pot,
 evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent resultat.
 
 \begin{figure}[H]
@@ -706,7 +708,7 @@ mètriques també estan vinculades al \textit{Success Rate} que hem vist abans.
 
 Pel cas de la Programació Dinámica el temps d'execució de cada iteració d'entrenament és despreciable i es manté
 constant a uns $65 \mu s$. Això és degut a que aquest algorisme no crida a l'entorn de \textit{Frozen Lake} de
-Gynmasium ja que només necessita la matriu de probabilitats de transició per a cada estat.
+Gymnasium ja que només necessita la matriu de probabilitats de transició per a cada estat.
 
 \begin{figure}[H]
   \noindent
@@ -746,9 +748,9 @@ per a poder distinguir quina és la millor opció.
 A primera vista, el que ressalta més és la distribució dels valors sobre el mapa.
 \begin{itemize}
   \item Monte Carlo sembla prioritzar un camí molt més que l'altre (primer moviment per avall enlloc de la dreta).
-  \item SARSA té la mateix preferència que Monte Carlo però menys axagerada.
+  \item SARSA té la mateix preferència que Monte Carlo però menys exagerada.
   \item Q-learning té les recompenses molt repartides, producte de la seva naturalesa optimista.
-  \item Programació Dinámica centra les recompenses al voltant del destí.
+  \item Programació Dinámica les recompenses són més altes a prop del destí i decreixen ràpidament a m'esura que s'allunya.
   % TODO: perquè prog. dinamica fa això?
 \end{itemize}
 
@@ -777,9 +779,9 @@ dels altres és impossible saber aquesta dada).
 \end{figure}
 
 Es veu clarament que per a tots els algorismes hi ha una preferència sobre l'acció \textit{left} seguit de l'acció
-\textit{up}. Si ho raonam, té sentit que sigui així perque l'episodi sempre comença a d'alt de tot a l'esquerra i,
-com que sortir-se del tauler no provoca el fi de l'episodi, és preferible anar cap a defora (\textit{left} o \textit{up})
-i així evitar caure a un forat en el cas de que es llisqui.
+\textit{up}. Si ho raonam, té sentit que sigui així perque l'episodi sempre comença a d'alt de tot a l'esquerra
+i tots els forats estan abaix a la dreta i com que sortir-se del tauler no provoca el fi de l'episodi és preferible
+anar cap a defora (\textit{left} o \textit{up}) i així evitar caure a un forat en el cas de que es llisqui.
 
 El darrer algorisme, el Genètic, al calcular directament la política i no calcular els valors d'estat-acció
 només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un análisi tant detallat. Però és
