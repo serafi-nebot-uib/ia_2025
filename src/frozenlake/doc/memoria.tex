@@ -73,6 +73,43 @@
 \chapter{Introducció}
 \label{ch:intro}
 
+En aquesta pràctica hem explorat i implementat diversos algorismes d'aprenentatge per reforç i de cerca a
+l'entorn de \textit{Frozen Lake} de Gymnasium amb l'opció \textit{slippery} activada.
+
+A n'aquest entorn un agent ha de travessar un llac gelat evitant forats per arribar a una
+meta. L'opció \textit{slippery} afegeix un problema estocàstic que provoca que les accions tenen només un
+33 \% de probabilitat d'executar-se correctament i la resta fan lliscar l'agent en direccions paral·leles.
+
+L'objectiu principal ha estat comparar el comportament i la sensibilitat als paràmetres dels algorismes
+implementats:
+
+\begin{minipage}[t]{0.48\textwidth}
+  \textbf{Algorismes d'aprenentatge}
+  \begin{itemize}
+    \item Monte Carlo
+    \item SARSA
+    \item Q-learning
+  \end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.48\textwidth}
+  \textbf{Algorismes de cerca}
+  \begin{itemize}
+    \item Programació Dinàmica
+    \item Genètic
+  \end{itemize}
+\end{minipage}
+
+Hem analitzat com influeixen paràmetres com el factor de descompte $\mathit{dr}$ (\textit{Discount Rate},
+també conegut com $\gamma$), la taxa d'exploració $\mathit{er}$ (\textit{Exploration Rate}, també conegut com
+$\epsilon$) i el seu decaïment, la taxa d'aprenentatge $\mathit{lr}$ (\textit{Learning Rate}, també conegut com $\alpha$) i, en el cas dels algorismes evolutius,
+la mida de la població, la pressió de selecció, la taxa de mutació i l'elitisme. També hem estudiat l'impacte
+d'una decisió de disseny aparentment menor | l'ús d'un tie-break aleatori quan diverses accions tenen el mateix
+valor Q | que ha resultat ser clau per evitar biaixos greus en l'exploració inicial.
+
+A més, hem comparat el rendiment durant l'entrenament, l'evolució de la taxa d'èxit (\textit{Survival Rate}) i la qualitat de les
+polítiques finals, observant comportaments inesperats (polítiques que semblen contraintuïtives però que són
+òptimes donat el factor estocàstic).
 
 % ==========================
 \chapter{Disseny algorismes}
@@ -200,7 +237,7 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
 \begin{itemize}
   \item $\mathit{dr} = 0.99$: \textit{Discount Rate} o \textit{gamma} als apunts, és el factor de descompte per
     a la recompensa esperada per a cada passa del mateix episodi.
-  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o \textit{epsilon} als apunts, és el factor d'exploració per a una política \textit{epsilon-greedy}.
+  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o $\epsilon$ als apunts, és el factor d'exploració per a una política $\epsilon\mathit{-greedy}$.
   \item $\mathit{er\_min} = 0.01$: \textit{Exploration Rate Minimum} és el mínim permès del valor $\mathit{er}$.
   \item $\mathit{er\_decay} = 0.9995$: \textit{Exploration Rate Decay} és el factor de descens del paràmetre $\mathit{er}$.
   A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
@@ -625,7 +662,7 @@ Primer de tot, anem a analitzar l'evolució del rendiment de la política durant
 Per fer-ho, utilitzam el \textit{Success Rate} que és el nombre promig de vegades que s'arriba al destí
 al llarg d'uns quants episodis. Pels algorismes d'aprenentatge s'utilitza el promig de vegades que s'ha arribat
 al destí dintre la finestra i pels algorismes de cerca s'evalua la política 100 vegades després de cada iteració
-d'entrenament (ambdós utilitzan una política \textit{epsilon-greedy}; excepte per l'algorisme genètic).
+d'entrenament (ambdós utilitzan una política $\epsilon\mathit{-greedy}$; excepte per l'algorisme genètic).
 
 \begin{figure}[H]
   \noindent

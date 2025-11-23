@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  23 NOV 2025 16:54
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  23 NOV 2025 17:12
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -708,8 +708,8 @@ Chapter 1.
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.78 \chapter
-             {Disseny algorismes} [1
+l.115 \chapter
+              {Disseny algorismes} [1
 
 ]
 Chapter 2.
@@ -754,22 +754,22 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 <img/train-tie-break-off.png, id=172, 578.16pt x 433.62pt>
 File: img/train-tie-break-off.png Graphic file (type png)
 <use img/train-tie-break-off.png>
-Package pdftex.def Info: img/train-tie-break-off.png  used on input line 296.
+Package pdftex.def Info: img/train-tie-break-off.png  used on input line 333.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-tie-break-on.png, id=174, 578.16pt x 433.62pt>
 File: img/train-tie-break-on.png Graphic file (type png)
 <use img/train-tie-break-on.png>
-Package pdftex.def Info: img/train-tie-break-on.png  used on input line 296.
+Package pdftex.def Info: img/train-tie-break-on.png  used on input line 333.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-tie-break-off-dist.png, id=175, 1084.05pt x 361.35pt>
 File: img/train-tie-break-off-dist.png Graphic file (type png)
 <use img/train-tie-break-off-dist.png>
-Package pdftex.def Info: img/train-tie-break-off-dist.png  used on input line 306.
+Package pdftex.def Info: img/train-tie-break-off-dist.png  used on input line 343.
 (pdftex.def)             Requested size: 455.24411pt x 151.74942pt.
 <img/train-tie-break-on-dist.png, id=176, 1084.05pt x 361.35pt>
 File: img/train-tie-break-on-dist.png Graphic file (type png)
 <use img/train-tie-break-on-dist.png>
-Package pdftex.def Info: img/train-tie-break-on-dist.png  used on input line 313.
+Package pdftex.def Info: img/train-tie-break-on-dist.png  used on input line 350.
 (pdftex.def)             Requested size: 455.24411pt x 151.74942pt.
 
 
@@ -799,27 +799,27 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
 [9]
-Overfull \hbox (47.19539pt too wide) in paragraph at lines 444--457
+Overfull \hbox (47.19539pt too wide) in paragraph at lines 481--494
  [][] 
  []
 
 
-Overfull \hbox (60.69562pt too wide) in paragraph at lines 472--490
+Overfull \hbox (60.69562pt too wide) in paragraph at lines 509--527
  [][] 
  []
 
 
-Overfull \hbox (41.34534pt too wide) in paragraph at lines 503--522
+Overfull \hbox (41.34534pt too wide) in paragraph at lines 540--559
  [][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 525--527
+Underfull \hbox (badness 10000) in paragraph at lines 562--564
 []\OT1/cmr/m/n/12 Resultats molt mil-lors per a un
  []
 
 
-Underfull \hbox (badness 1215) in paragraph at lines 525--527
+Underfull \hbox (badness 1215) in paragraph at lines 562--564
 []$ \OT1/cmr/m/n/12 menor. T^^Se sen-tit perqu^^Re
  []
 
@@ -833,7 +833,7 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
 [10]
-Overfull \hbox (29.34525pt too wide) in paragraph at lines 533--552
+Overfull \hbox (29.34525pt too wide) in paragraph at lines 570--589
  [][] 
  []
 
@@ -858,19 +858,19 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 [12]
 Chapter 4.
 
-Overfull \hbox (8.09274pt too wide) in paragraph at lines 615--618
+Overfull \hbox (8.09274pt too wide) in paragraph at lines 652--655
 \OT1/cmr/m/n/12 Com que els a els al-go-rismes d'aprenentatge ne-ces-siten una quan-ti-tat molt el-e-vada d'episodis
  []
 
 <img/train-learn-sr.png, id=207, 578.16pt x 433.62pt>
 File: img/train-learn-sr.png Graphic file (type png)
 <use img/train-learn-sr.png>
-Package pdftex.def Info: img/train-learn-sr.png  used on input line 635.
+Package pdftex.def Info: img/train-learn-sr.png  used on input line 672.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-search-sr.png, id=208, 578.16pt x 436.5108pt>
 File: img/train-search-sr.png Graphic file (type png)
 <use img/train-search-sr.png>
-Package pdftex.def Info: img/train-search-sr.png  used on input line 635.
+Package pdftex.def Info: img/train-search-sr.png  used on input line 672.
 (pdftex.def)             Requested size: 250.38564pt x 189.04141pt.
 
 
@@ -880,27 +880,27 @@ Package pdftex.def Info: img/train-search-sr.png  used on input line 635.
 <img/train-montecarlo-time-x5.png, id=215, 578.16pt x 433.62pt>
 File: img/train-montecarlo-time-x5.png Graphic file (type png)
 <use img/train-montecarlo-time-x5.png>
-Package pdftex.def Info: img/train-montecarlo-time-x5.png  used on input line 653.
+Package pdftex.def Info: img/train-montecarlo-time-x5.png  used on input line 690.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-learn-time.png, id=216, 578.16pt x 433.62pt>
 File: img/train-learn-time.png Graphic file (type png)
 <use img/train-learn-time.png>
-Package pdftex.def Info: img/train-learn-time.png  used on input line 667.
+Package pdftex.def Info: img/train-learn-time.png  used on input line 704.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-learn-steps.png, id=217, 578.16pt x 433.62pt>
 File: img/train-learn-steps.png Graphic file (type png)
 <use img/train-learn-steps.png>
-Package pdftex.def Info: img/train-learn-steps.png  used on input line 667.
+Package pdftex.def Info: img/train-learn-steps.png  used on input line 704.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-search-time.png, id=218, 578.16pt x 433.62pt>
 File: img/train-search-time.png Graphic file (type png)
 <use img/train-search-time.png>
-Package pdftex.def Info: img/train-search-time.png  used on input line 679.
+Package pdftex.def Info: img/train-search-time.png  used on input line 716.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/train-search-steps.png, id=219, 578.16pt x 433.62pt>
 File: img/train-search-steps.png Graphic file (type png)
 <use img/train-search-steps.png>
-Package pdftex.def Info: img/train-search-steps.png  used on input line 679.
+Package pdftex.def Info: img/train-search-steps.png  used on input line 716.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 
 
@@ -925,22 +925,22 @@ Chapter 5.
 <img/montecarlo-policy.png, id=233, 867.24pt x 433.62pt>
 File: img/montecarlo-policy.png Graphic file (type png)
 <use img/montecarlo-policy.png>
-Package pdftex.def Info: img/montecarlo-policy.png  used on input line 698.
+Package pdftex.def Info: img/montecarlo-policy.png  used on input line 735.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
 <img/sarsa-policy.png, id=234, 867.24pt x 433.62pt>
 File: img/sarsa-policy.png Graphic file (type png)
 <use img/sarsa-policy.png>
-Package pdftex.def Info: img/sarsa-policy.png  used on input line 698.
+Package pdftex.def Info: img/sarsa-policy.png  used on input line 735.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
 <img/qlearning-policy.png, id=235, 867.24pt x 433.62pt>
 File: img/qlearning-policy.png Graphic file (type png)
 <use img/qlearning-policy.png>
-Package pdftex.def Info: img/qlearning-policy.png  used on input line 706.
+Package pdftex.def Info: img/qlearning-policy.png  used on input line 743.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
 <img/dynamic-policy.png, id=236, 867.24pt x 433.62pt>
 File: img/dynamic-policy.png Graphic file (type png)
 <use img/dynamic-policy.png>
-Package pdftex.def Info: img/dynamic-policy.png  used on input line 706.
+Package pdftex.def Info: img/dynamic-policy.png  used on input line 743.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
 
 
@@ -949,12 +949,12 @@ Package pdftex.def Info: img/dynamic-policy.png  used on input line 706.
  <./img/montecarlo-policy.png> <./img/sarsa-policy.png> <./img/qlearning-policy.png> <./img/dynamic-policy.png>]
 File: img/train-tie-break-on.png Graphic file (type png)
 <use img/train-tie-break-on.png>
-Package pdftex.def Info: img/train-tie-break-on.png  used on input line 739.
+Package pdftex.def Info: img/train-tie-break-on.png  used on input line 776.
 (pdftex.def)             Requested size: 273.14923pt x 204.86006pt.
 <img/genetic-policy.png, id=245, 433.62pt x 433.62pt>
 File: img/genetic-policy.png Graphic file (type png)
 <use img/genetic-policy.png>
-Package pdftex.def Info: img/genetic-policy.png  used on input line 754.
+Package pdftex.def Info: img/genetic-policy.png  used on input line 791.
 (pdftex.def)             Requested size: 204.85846pt x 204.86006pt.
 
 
@@ -969,12 +969,12 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 <img/test-steps-dist-mc-high.png, id=251, 578.16pt x 433.62pt>
 File: img/test-steps-dist-mc-high.png Graphic file (type png)
 <use img/test-steps-dist-mc-high.png>
-Package pdftex.def Info: img/test-steps-dist-mc-high.png  used on input line 767.
+Package pdftex.def Info: img/test-steps-dist-mc-high.png  used on input line 804.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 <img/test-steps-dist-mc-low.png, id=252, 578.16pt x 433.62pt>
 File: img/test-steps-dist-mc-low.png Graphic file (type png)
 <use img/test-steps-dist-mc-low.png>
-Package pdftex.def Info: img/test-steps-dist-mc-low.png  used on input line 767.
+Package pdftex.def Info: img/test-steps-dist-mc-low.png  used on input line 804.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 
 
@@ -1022,7 +1022,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  98i,14n,105p,487b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on memoria.pdf (23 pages, 732176 bytes).
+Output written on memoria.pdf (23 pages, 734061 bytes).
 PDF statistics:
  364 PDF objects out of 1000 (max. 8388607)
  240 compressed objects within 3 object streams
