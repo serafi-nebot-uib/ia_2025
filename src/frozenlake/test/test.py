@@ -43,10 +43,3 @@ def schedule_test(config, env_config):
   with Pool(THREADS) as pool:
     for d in pool.starmap(test, params): data.update(d)
   return data
-
-def test_save(name, config):
-  p = Path("data/" + name + ".json")
-  if not p.parent.exists(): p.parent.mkdir()
-  with p.open("w") as f:
-    data = test(config)
-    json.dump(data, f)

@@ -566,9 +566,9 @@ la programació dinámica inclús es podria especular que la millor és lineal, 
 perque la quantitat de punts de dades és molt baix.
 
 A partir de les provem que hem anat realitzant durant el desenvolupament sabem que el punt de saturació
-de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}, depenent de la inicialització
-de la semilla del generador de nombres aleatoris. Per exemple, si realitzam l'entrenament de l'algorisme 5
-vegades obtenim el següent resultat.
+de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}. Això depenèn
+de la inicialització de la semilla del generador de nombres aleatoris i no sabem molt bé com, o si es pot,
+evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent resultat.
 
 \begin{figure}[htbp]
   \noindent
@@ -578,7 +578,11 @@ vegades obtenim el següent resultat.
   }
 \end{figure}
 
-
+Una altra mètrica a mirar és el temps de cada iteració del bucle d'entrenament, que està directament relacionat
+amb el nombre de passes que es realitzen a cada episodi. Com que al principi de l'entrenament la política és
+aleatòria els episodis acaben molt aviat perque quan es cau a un forat aquest acaba. Així com l'algorisme millora
+la política i s'evita caure als forats es permeten fer més passes i allargar l'episodi. Per tant, aquestes dues
+mètriques també estan vinculades al \textit{Success Rate} que hem vist abans.
 
 \begin{figure}[htbp]
   \noindent
@@ -588,19 +592,15 @@ vegades obtenim el següent resultat.
   }
 \end{figure}
 
+Pel cas de la Programació Dinámica el temps d'execució de cada iteració d'entrenament és despreciable i es manté
+constant a uns $65 \mu s$. Això és degut a que aquest algorisme no crida a l'entorn de \textit{Frozen Lake} de
+Gynmasium ja que només necessita la matriu de probabilitats de transició per a cada estat.
+
 \begin{figure}[htbp]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/train-search-time.png}
     \includegraphics[width=0.55\textwidth]{img/train-search-steps.png}
-  }
-\end{figure}
-
-\begin{figure}[htbp]
-  \noindent
-  \makebox[\textwidth][c]{
-    \includegraphics[width=0.55\textwidth]{img/train-learn-actions.png}
-    \includegraphics[width=0.55\textwidth]{img/train-learn-steps-dist.png}
   }
 \end{figure}
 
@@ -664,13 +664,30 @@ directament al forat com a la millor.
 
 El darrer algorisme, el Genètic, al calcular directament la política i no calcular els valors d'estat-acció
 només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un análisi tant detallat. Però és
-interessant veure com, sense calcular els valors d'estat-acció i només utilitzant la \"força bruta\", s'arriba
+interessant veure com, sense calcular els valors d'estat-acció i només utilitzant la ``força bruta'', s'arriba
 a una política pràcticament idèntica a molts dels altres algorismes.
 
 \begin{figure}[htbp]
   \centering
   \includegraphics[width=0.45\textwidth]{img/genetic-policy.png}
 \end{figure}
+
+També pot ser interessant analitzar la quantitat de passes realitzades per a cada algorisme al llarg de 100 episodis.
+Es mostren dues versions per tal de mostrar com afecta la qualitat de la política amb el nombre de passes per episodi.
+El gràfic de l'esquerra perntany a una execució on totes les polítiques aconsegueixen un \textit{Success Rate}
+del 0.70 i a la dreta on Monte Carlo només ha aconseguit un 0.10 i la resta es mantenen igual.
+
+\begin{figure}[htbp]
+  \noindent
+  \makebox[\textwidth][c]{
+  \includegraphics[width=0.55\textwidth]{img/test-steps-dist-mc-high.png}
+  \includegraphics[width=0.55\textwidth]{img/test-steps-dist-mc-low.png}
+  }
+\end{figure}
+
+Es veu clarament que una millor política implica més passes (per les mateixes raons comentades a l'apartat d'Anàlisi del rendiment).
+Curiosament, SARSA i Q-learning semblen generar unes polítiques lleugerament més conservadores (més passes significa que s'ha anat més
+alerta a caure).
 
 % ==========================
 \chapter{Conclusió}

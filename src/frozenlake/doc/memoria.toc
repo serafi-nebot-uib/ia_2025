@@ -10,4 +10,4 @@
 \contentsline {section}{\numberline {3.2}Algorismes de cerca}{7}{section.3.2}%
 \contentsline {chapter}{\numberline {4}Anàlisi rendiment}{11}{chapter.4}%
 \contentsline {chapter}{\numberline {5}Anàlisi polítiques}{14}{chapter.5}%
-\contentsline {chapter}{\numberline {6}Conclusió}{16}{chapter.6}%
+\contentsline {chapter}{\numberline {6}Conclusió}{17}{chapter.6}%
