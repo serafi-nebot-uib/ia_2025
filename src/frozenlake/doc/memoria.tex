@@ -250,11 +250,25 @@ que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, q
   \end{tabular}
 \end{table}
 
-SARSA i Q-learning no es veuen afectats pel valor de $\mathit{er}$.  Això és degut a una característica
-particular de la nostra implementació dels algorismes d'aprenentatge.
-% TODO: explicar argmax() tie-break
-
 Monte Carlo necessita una exploració major a l'inici de l'entrenament per a poder trobar una solució òptima.
+
+SARSA i Q-learning no es veuen afectats pel valor de $\mathit{er}$. Això és degut a que la nostra implementació
+d'aquests algorismes utilitza un \textit{tie-break} aleatori. Si tornam a entrenar els algorismes amb $\mathit{er} = 0.10$
+però activant/desactivant el \textit{tie-break} i graficam la distribució de les vegades que s'ha escollit cada acció
+durant la fase d'entrenament tenim (esquerra \textit{tie-break off}, dreta \textit{tie-break on}):
+
+\begin{figure}[H]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=0.55\textwidth]{img/train-tie-break-off.png}
+    \includegraphics[width=0.55\textwidth]{img/train-tie-break-on.png}
+  }
+\end{figure}
+
+A simple vista es veu que hi ha una diferència abismal. Quan el \textit{tie-break} està desactivat i l'exploració
+és molt baixa l'acció \textit{left} esta desproporcionadament afavorida. Quan el \textit{tie-break} està activat
+l'elecció de les accions està molt més distribuïda. La raó perque envara hi ha una preferència sobre les accions \textit{left} i
+\textit{up} es discuteix a l'apartat d'Anlàlisi de les polítiques.
 
 \vspace*{10pt}\hrule
 
@@ -565,7 +579,7 @@ al llarg d'uns quants episodis. Pels algorismes d'aprenentatge s'utilitza el pro
 al destí dintre la finestra i pels algorismes de cerca s'evalua la política 100 vegades després de cada iteració
 d'entrenament (ambdós utilitzan una política \textit{epsilon-greedy}; excepte per l'algorisme genètic).
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/train-learn-sr.png}
@@ -584,10 +598,9 @@ de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}
 de la inicialització de la semilla del generador de nombres aleatoris i no sabem molt bé com, o si es pot,
 evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent resultat.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
-    % TODO: afegir monte carlo x5
     \includegraphics[width=0.55\textwidth]{img/train-montecarlo-time-x5.png}
   }
 \end{figure}
@@ -598,7 +611,7 @@ aleatòria els episodis acaben molt aviat perque quan es cau a un forat aquest a
 la política i s'evita caure als forats es permeten fer més passes i allargar l'episodi. Per tant, aquestes dues
 mètriques també estan vinculades al \textit{Success Rate} que hem vist abans.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/train-learn-time.png}
@@ -610,7 +623,7 @@ Pel cas de la Programació Dinámica el temps d'execució de cada iteració d'en
 constant a uns $65 \mu s$. Això és degut a que aquest algorisme no crida a l'entorn de \textit{Frozen Lake} de
 Gynmasium ja que només necessita la matriu de probabilitats de transició per a cada estat.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/train-search-time.png}
@@ -629,7 +642,7 @@ representen les accions amb la seva llargària proporcional al seu valor (una fl
 esperada més alta que d'una de petita). El gràfic de la dreta mostra el mateix però només amb la fletxa de més valor
 per a poder distinguir quina és la millor opció.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/montecarlo-policy.png}
@@ -637,7 +650,7 @@ per a poder distinguir quina és la millor opció.
   }
 \end{figure}
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
     \includegraphics[width=0.55\textwidth]{img/qlearning-policy.png}
@@ -667,21 +680,28 @@ Això és degut a que hi ha major probabilitat de lliscar que fer l'acció escol
 Exactament el mateix passa amb els estats adjacents a forats, ja que alguns models trien l'opció que duu
 directament al forat com a la millor.
 
-% TODO: acabar aquest apartat o deixar-lo sense fer
-% Un darrer punt a comentar és la diferència que hi ha entre les possibles accions de cada estat:
-% \begin{itemize}
-%   \item Monte Carlo és molt decisiu a l'hora de triar quina opció és la millor.
-%   \item SARSA 
-%   \item Q-learning 
-%   \item Programació Dinámica
-% \end{itemize}
+Per a profunditzar un poc més sobre aques fenòmen anem a analitzar la quantitat de vegades que l'algorisme
+tria una determinada acció durant la fase de l'entrenament (només es mostren els algorismes d'aprenentatge perque
+dels altres és impossible saber aquesta dada).
+
+\begin{figure}[H]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=0.6\textwidth]{img/train-tie-break-on.png}
+  }
+\end{figure}
+
+Es veu clarament que per a tots els algorismes hi ha una preferència sobre l'acció \textit{left} seguit de l'acció
+\textit{up}. Si ho raonam, té sentit que sigui així perque l'episodi sempre comença a d'alt de tot a l'esquerra i,
+com que sortir-se del tauler no provoca el fi de l'episodi, és preferible anar cap a defora (\textit{left} o \textit{up})
+i així evitar caure a un forat en el cas de que es llisqui.
 
 El darrer algorisme, el Genètic, al calcular directament la política i no calcular els valors d'estat-acció
 només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un análisi tant detallat. Però és
 interessant veure com, sense calcular els valors d'estat-acció i només utilitzant la ``força bruta'', s'arriba
 a una política pràcticament idèntica a molts dels altres algorismes.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \centering
   \includegraphics[width=0.45\textwidth]{img/genetic-policy.png}
 \end{figure}
@@ -691,7 +711,7 @@ Es mostren dues versions per tal de mostrar com afecta la qualitat de la políti
 El gràfic de l'esquerra perntany a una execució on totes les polítiques aconsegueixen un \textit{Success Rate}
 del 0.70 i a la dreta on Monte Carlo només ha aconseguit un 0.10 i la resta es mantenen igual.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
   \noindent
   \makebox[\textwidth][c]{
   \includegraphics[width=0.55\textwidth]{img/test-steps-dist-mc-high.png}

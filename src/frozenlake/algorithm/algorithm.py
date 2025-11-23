@@ -1,6 +1,6 @@
 import numpy as np
 from gymnasium import Env
-from frozenlake.const import DEBUG, STATS, SAMPLE
+from frozenlake.const import DEBUG, STATS, SAMPLE, RAND_TIE_BREAK
 
 class Algorithm:
   def __init__(self, state_size: int, action_size: int):
@@ -55,6 +55,7 @@ class LearningAlgorithm(Algorithm):
   def action(self, state: int, greedy: bool = True, q: np.ndarray | None = None) -> int:
     if q is None: q = self.q
     if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else:
+    if RAND_TIE_BREAK:
       return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))
-      # return q[state].argmax()
+    else:
+      return q[state].argmax()
