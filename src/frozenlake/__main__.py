@@ -6,7 +6,7 @@ import numpy as np
 import gymnasium as gym
 from gymnasium import Env
 import matplotlib.pyplot as plt
-import frozenlake.plot as plot
+import frozenlake.test.plot as plot
 from frozenlake.algorithm import Algorithm, SARSA, QLearning, AverageQLearning, MonteCarlo, DynamicProgramming, Genetic
 from frozenlake.test.test import test
 
