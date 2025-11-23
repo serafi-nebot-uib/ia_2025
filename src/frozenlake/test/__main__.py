@@ -18,7 +18,7 @@ LEARN_TEST_ITER = 1000
 LEARN_AGGREGATION_WINDOW = 1000
 
 LEARN = [
-  (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.95, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
+  (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, SARSA,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, QLearning,        { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
 ]
@@ -42,6 +42,7 @@ if __name__ == "__main__":
     plot.train_time(learn_data, LEARN_AGGREGATION_WINDOW)
     plot.train_steps(learn_data, LEARN_AGGREGATION_WINDOW)
     plot.train_actions(learn_data)
+    plot.train_actions_history(learn_data)
 
   if len(search_data) > 0:
     plot.train_perf(search_data)

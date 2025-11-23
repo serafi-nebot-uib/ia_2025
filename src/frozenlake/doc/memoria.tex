@@ -265,9 +265,26 @@ durant la fase d'entrenament tenim (esquerra \textit{tie-break off}, dreta \text
   }
 \end{figure}
 
+També podem graficar l'evolució de la distribució al llarg de l'entrenament (el primer amb \textit{tie-break off}
+i el segon amb \textit{tie-break on}):
+
+\begin{figure}[H]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=\textwidth]{img/train-tie-break-off-dist.png}
+  }
+\end{figure}
+
+\begin{figure}[H]
+  \noindent
+  \makebox[\textwidth][c]{
+    \includegraphics[width=\textwidth]{img/train-tie-break-on-dist.png}
+  }
+\end{figure}
+
 A simple vista es veu que hi ha una diferència abismal. Quan el \textit{tie-break} està desactivat i l'exploració
 és molt baixa l'acció \textit{left} esta desproporcionadament afavorida. Quan el \textit{tie-break} està activat
-l'elecció de les accions està molt més distribuïda. La raó perque envara hi ha una preferència sobre les accions \textit{left} i
+l'elecció de les accions està molt més distribuïda. La raó perque encara hi ha una preferència sobre les accions \textit{left} i
 \textit{up} es discuteix a l'apartat d'Anlàlisi de les polítiques.
 
 \vspace*{10pt}\hrule

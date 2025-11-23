@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763899648.08126 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763899649.10784 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763899647.83976 33116 a62c27748e29f72a34cbeff52172f9f0 ""
+["pdflatex"] 1763911758.20318 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763911759.26478 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763911756.9153 33568 be2fcb5954464a7a5ac3a68f89949799 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcbx1200.tfm" 1136768653 1536 c09172c8f235393e6235bb4758357c41 ""
@@ -218,12 +218,14 @@
   "img/train-search-sr.png" 1763887544.92658 39352 ecb39e33003e9e3af26e5be6757c8ab7 ""
   "img/train-search-steps.png" 1763887562.32439 38677 d17b999f9defc4e1d3c62b94346d3f59 ""
   "img/train-search-time.png" 1763887556.11889 26452 b8fce7716f2a7c992e9cba2c3388abfc ""
-  "img/train-tie-break-off.png" 1763895601.36942 23167 48cb5f7b78027f3fe832d7d822820ce0 ""
-  "img/train-tie-break-on.png" 1763895671.42916 20079 01798e8d36ba055a41163844ad54a349 ""
-  "memoria.aux" 1763899649.03935 2947 177388466780f1fcbb5399e919a5be0b "pdflatex"
-  "memoria.out" 1763899649.03998 2102 1417c1fb26dc5ed9dcb800eded30825e "pdflatex"
-  "memoria.tex" 1763899647.83976 33116 a62c27748e29f72a34cbeff52172f9f0 ""
-  "memoria.toc" 1763899649.04013 1171 04748636fd619292d664b366cc4200df "pdflatex"
+  "img/train-tie-break-off-dist.png" 1763911443.50432 33575 f09c11757dfb7320c1aeb432bd9d85a5 ""
+  "img/train-tie-break-off.png" 1763911435.52116 23213 124c9cb721874195c58ee3501fadf22d ""
+  "img/train-tie-break-on-dist.png" 1763911391.33429 46015 68f0c4a078f0fbc0cb0de34d53f0016b ""
+  "img/train-tie-break-on.png" 1763911369.9219 20104 3b6c75c2baf51e6c746a7028a645748e ""
+  "memoria.aux" 1763911759.19367 2947 8e1d8da7caebbd0823e38df76b078308 "pdflatex"
+  "memoria.out" 1763911759.1943 2102 1417c1fb26dc5ed9dcb800eded30825e "pdflatex"
+  "memoria.tex" 1763911756.9153 33568 be2fcb5954464a7a5ac3a68f89949799 ""
+  "memoria.toc" 1763911759.19445 1171 9516db0db5fdcf8a15f5d68e376e0e54 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

@@ -4,6 +4,7 @@ from matplotlib.axes import Axes
 from functools import reduce
 from operator import getitem
 from typing import Any
+import math
 
 def get_item(data: dict[str, Any], *path: str) -> Any: return reduce(getitem, path, data)
 def get_data(data: dict[str, Any], *path: str) -> dict: return { k: get_item(data[k], *path) for k in data}
@@ -151,28 +152,26 @@ def train_actions(data: dict):
   fig.legend()
   fig.tight_layout()
 
-def train_actions_history(data: dict, m: int):
+def train_actions_history(data: dict):
   data = get_data(data, "train", "actions", "history")
   actions = ["left", "down", "right", "up"]
-  fig, ax = plt.subplots(figsize=(8, 6))
-  for i, (label, values) in enumerate(data.items()):
-    v = np.array(values)
-    v = v.reshape(v.shape[0] // m, -1, v.shape[1]).mean(axis=1)
-    ax.imshow(v)
-  # ax.set_xticklabels(actions)
-  ax.set_ylabel("number of iterations")
-  
-  # # TODO: do not hardcode (get from env?)
-  # actions = ["left", "down", "right", "up"]
-  # x = np.arange(len(actions))
-  # for i, (label, values) in enumerate(data.items()):
-  #   ax.bar(x + i * len(actions), values, width=width, label=label)
+  ncols = 3
+  nrows = math.ceil(len(data) / ncols)
+  print(nrows, ncols)
+  fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(5 * ncols, 5 * nrows))
 
-  # ax.set_xticks(np.arange(len(actions) * len(data)), actions * len(actions))
-  # ax.set_ylabel("number of actions")
-  # fig.suptitle("Train Chosen Actions", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
-  # fig.legend()
-  # fig.tight_layout()
+  for (label, values), ax in zip(data.items(), axs):
+    y = np.array(values)
+    y = y / y.sum(axis=-1, keepdims=True)
+    y = y.transpose()
+    ax.stackplot(np.arange(y.shape[1]), y)
+    ax.set_title(label)
+    ax.set_xlabel("iterations")
+
+  fig.legend(labels=actions)
+  fig.suptitle("Train Action History Distribution", fontsize=16, fontweight="bold", color="black", ha="center", va="top")
+  fig.tight_layout()
+  return fig
 
 def test_steps(data: dict):
   data = get_data(data, "test", "steps")
