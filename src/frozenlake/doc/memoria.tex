@@ -536,6 +536,21 @@ amb el pròxim apartat:
 \chapter{Anàlisi rendiment}
 \label{ch:results}
 
+Com que els a els algorismes d'aprenentatge necessiten una quantitat molt elevada d'episodis per a la fase
+d'entrenament i els de cerca en necessiten molt menys (en l'ordre de 1000x menys) es separen aquestes dues categories
+amb dues gràfiques diferents.
+
+A més, el algorismes d'aprenentatge al necessitar moltes iteracions cal realitzar qualque tipus d'agregació
+dels valors per a poder obtenir una senyal interpretable.
+Hem decidit utilitzar una mitjana mòvil dels darrers 1000 valors. En els casos on s'utilitzi s'indica al títol
+del gràfic amb l'acrònim SMA (\textit{Simple Moving Average}) seguit del valor de la finestra.
+
+Primer de tot, anem a analitzar l'evolució del rendiment de la política durant el procés d'entrenament.
+Per fer-ho, utilitzam el \textit{Success Rate} que és el nombre promig de vegades que s'arriba al destí
+al llarg d'uns quants episodis. Pels algorismes d'aprenentatge s'utilitza el promig de vegades que s'ha arribat
+al destí dintre la finestra i pels algorismes de cerca s'evalua la política 100 vegades després de cada iteració
+d'entrenament (ambdós utilitzan una política \textit{epsilon-greedy}; excepte per l'algorisme genètic).
+
 \begin{figure}[htbp]
   \noindent
   \makebox[\textwidth][c]{
@@ -543,6 +558,27 @@ amb el pròxim apartat:
     \includegraphics[width=0.55\textwidth]{img/train-search-sr.png}
   }
 \end{figure}
+
+Podem veure com tots els algorismes començen amb un \textit{Success Rate} molt baix degut a que la seva política
+és completament aleatoria i no aconsegueixen arribar al destí, milloren molt ràpidament i arriben a un punt de
+saturació a partir d'un cert nombre d'iteracions a partir del qual ja no milloren més. En el cas particular de
+la programació dinámica inclús es podria especular que la millor és lineal, però tampoc ho podem afirmar
+perque la quantitat de punts de dades és molt baix.
+
+A partir de les provem que hem anat realitzant durant el desenvolupament sabem que el punt de saturació
+de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}, depenent de la inicialització
+de la semilla del generador de nombres aleatoris. Per exemple, si realitzam l'entrenament de l'algorisme 5
+vegades obtenim el següent resultat.
+
+\begin{figure}[htbp]
+  \noindent
+  \makebox[\textwidth][c]{
+    % TODO: afegir monte carlo x5
+    \includegraphics[width=0.55\textwidth]{img/train-montecarlo-time-x5.png}
+  }
+\end{figure}
+
+
 
 \begin{figure}[htbp]
   \noindent

@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763832418.51708 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763832419.4475 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763832418.33794 24799 0aedecad5af53ba26eeefe5530317ea0 ""
+["pdflatex"] 1763888422.27695 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763888423.23498 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763888422.09023 27046 7da1d712d0cec8b5e06549c3f6b7eb37 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -209,13 +209,14 @@
   "img/train-learn-steps-dist.png" 1763832081.0586 16495 5c7b05ab139969423a2b515dc6e2bdba ""
   "img/train-learn-steps.png" 1763832100.2158 52247 2bf4b95d5c423c6a02ce569b8552dfce ""
   "img/train-learn-time.png" 1763832108.87149 54921 ab31448a6c74e9e7117b09d35d0d8581 ""
-  "img/train-search-sr.png" 1763832339.66446 44111 076add2b2dd8d2fd6bd1dfce42246bd0 ""
-  "img/train-search-steps.png" 1763832393.00547 39838 be90d9d685b6fa6ca4607b7658b8f7ad ""
-  "img/train-search-time.png" 1763832364.10505 28884 38d68fa914acc178a13cd5fe01b8e776 ""
-  "memoria.aux" 1763832419.38296 2488 6b67c0570925ef5d3535fc989e573db2 "pdflatex"
-  "memoria.out" 1763832419.38358 1657 bea4b731d739fbad9bfd1e6e2e122388 "pdflatex"
-  "memoria.tex" 1763832418.33794 24799 0aedecad5af53ba26eeefe5530317ea0 ""
-  "memoria.toc" 1763832419.38374 960 325d9b646ad6292ababe16b3eb92e847 "pdflatex"
+  "img/train-montecarlo-time-x5.png" 1763888389.49323 71164 3e822d36ea0c73571ddd214247edff92 ""
+  "img/train-search-sr.png" 1763887544.92658 39352 ecb39e33003e9e3af26e5be6757c8ab7 ""
+  "img/train-search-steps.png" 1763887562.32439 38677 d17b999f9defc4e1d3c62b94346d3f59 ""
+  "img/train-search-time.png" 1763887556.11889 26452 b8fce7716f2a7c992e9cba2c3388abfc ""
+  "memoria.aux" 1763888423.17574 2488 a578699cfde01a5ced1fb026f3e35340 "pdflatex"
+  "memoria.out" 1763888423.17637 1657 bea4b731d739fbad9bfd1e6e2e122388 "pdflatex"
+  "memoria.tex" 1763888422.09023 27046 7da1d712d0cec8b5e06549c3f6b7eb37 ""
+  "memoria.toc" 1763888423.17653 960 9b39b9bb18af1df5966986d7e3440966 "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

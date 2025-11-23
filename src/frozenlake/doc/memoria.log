@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  22 NOV 2025 18:26
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (TeX Live 2025) (preloaded format=pdflatex 2025.3.29)  23 NOV 2025 10:00
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -814,51 +814,62 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 
 [10]
 Chapter 4.
+
+Overfull \hbox (8.09274pt too wide) in paragraph at lines 539--542
+\OT1/cmr/m/n/12 Com que els a els al-go-rismes d'aprenentatge ne-ces-siten una quan-ti-tat molt el-e-vada d'episodis
+ []
+
 <img/train-learn-sr.png, id=169, 578.16pt x 433.62pt>
 File: img/train-learn-sr.png Graphic file (type png)
 <use img/train-learn-sr.png>
-Package pdftex.def Info: img/train-learn-sr.png  used on input line 544.
+Package pdftex.def Info: img/train-learn-sr.png  used on input line 559.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-search-sr.png, id=171, 578.16pt x 433.62pt>
+<img/train-search-sr.png, id=171, 578.16pt x 436.5108pt>
 File: img/train-search-sr.png Graphic file (type png)
 <use img/train-search-sr.png>
-Package pdftex.def Info: img/train-search-sr.png  used on input line 544.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-learn-time.png, id=172, 578.16pt x 433.62pt>
-File: img/train-learn-time.png Graphic file (type png)
-<use img/train-learn-time.png>
-Package pdftex.def Info: img/train-learn-time.png  used on input line 552.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-learn-steps.png, id=173, 578.16pt x 433.62pt>
-File: img/train-learn-steps.png Graphic file (type png)
-<use img/train-learn-steps.png>
-Package pdftex.def Info: img/train-learn-steps.png  used on input line 552.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-search-time.png, id=174, 578.16pt x 433.62pt>
-File: img/train-search-time.png Graphic file (type png)
-<use img/train-search-time.png>
-Package pdftex.def Info: img/train-search-time.png  used on input line 560.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-search-steps.png, id=175, 578.16pt x 433.62pt>
-File: img/train-search-steps.png Graphic file (type png)
-<use img/train-search-steps.png>
-Package pdftex.def Info: img/train-search-steps.png  used on input line 560.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-learn-actions.png, id=176, 578.16pt x 433.62pt>
-File: img/train-learn-actions.png Graphic file (type png)
-<use img/train-learn-actions.png>
-Package pdftex.def Info: img/train-learn-actions.png  used on input line 568.
-(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
-<img/train-learn-steps-dist.png, id=177, 578.16pt x 433.62pt>
-File: img/train-learn-steps-dist.png Graphic file (type png)
-<use img/train-learn-steps-dist.png>
-Package pdftex.def Info: img/train-learn-steps-dist.png  used on input line 568.
+Package pdftex.def Info: img/train-search-sr.png  used on input line 559.
+(pdftex.def)             Requested size: 250.38564pt x 189.04141pt.
+<img/train-montecarlo-time-x5.png, id=172, 578.16pt x 433.62pt>
+File: img/train-montecarlo-time-x5.png Graphic file (type png)
+<use img/train-montecarlo-time-x5.png>
+Package pdftex.def Info: img/train-montecarlo-time-x5.png  used on input line 578.
 (pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
 
 
 [11
 
- <./img/train-learn-sr.png> <./img/train-search-sr.png> <./img/train-learn-time.png> <./img/train-learn-steps.png>]
+ <./img/train-learn-sr.png> <./img/train-search-sr.png>]
+<img/train-learn-time.png, id=181, 578.16pt x 433.62pt>
+File: img/train-learn-time.png Graphic file (type png)
+<use img/train-learn-time.png>
+Package pdftex.def Info: img/train-learn-time.png  used on input line 588.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+<img/train-learn-steps.png, id=182, 578.16pt x 433.62pt>
+File: img/train-learn-steps.png Graphic file (type png)
+<use img/train-learn-steps.png>
+Package pdftex.def Info: img/train-learn-steps.png  used on input line 588.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+<img/train-search-time.png, id=183, 578.16pt x 433.62pt>
+File: img/train-search-time.png Graphic file (type png)
+<use img/train-search-time.png>
+Package pdftex.def Info: img/train-search-time.png  used on input line 596.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+<img/train-search-steps.png, id=184, 578.16pt x 433.62pt>
+File: img/train-search-steps.png Graphic file (type png)
+<use img/train-search-steps.png>
+Package pdftex.def Info: img/train-search-steps.png  used on input line 596.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+<img/train-learn-actions.png, id=185, 578.16pt x 433.62pt>
+File: img/train-learn-actions.png Graphic file (type png)
+<use img/train-learn-actions.png>
+Package pdftex.def Info: img/train-learn-actions.png  used on input line 604.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+<img/train-learn-steps-dist.png, id=186, 578.16pt x 433.62pt>
+File: img/train-learn-steps-dist.png Graphic file (type png)
+<use img/train-learn-steps-dist.png>
+Package pdftex.def Info: img/train-learn-steps-dist.png  used on input line 604.
+(pdftex.def)             Requested size: 250.38564pt x 187.78949pt.
+
 
 
 Package fancyhdr Warning: \headheight is too small (10.0pt): 
@@ -867,37 +878,46 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
-[12 <./img/train-search-time.png> <./img/train-search-steps.png> <./img/train-learn-actions.png> <./img/train-learn-steps-dist.png>]
+[12 <./img/train-montecarlo-time-x5.png> <./img/train-learn-time.png> <./img/train-learn-steps.png>]
+
+
+Package fancyhdr Warning: \headheight is too small (10.0pt): 
+(fancyhdr)                Make it at least 57.17911pt, for example:
+(fancyhdr)                \setlength{\headheight}{57.17911pt}.
+(fancyhdr)                You might also make \topmargin smaller:
+(fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
+
+[13 <./img/train-search-time.png> <./img/train-search-steps.png> <./img/train-learn-actions.png> <./img/train-learn-steps-dist.png>]
 Chapter 5.
-<img/montecarlo-policy.png, id=196, 867.24pt x 433.62pt>
+<img/montecarlo-policy.png, id=202, 867.24pt x 433.62pt>
 File: img/montecarlo-policy.png Graphic file (type png)
 <use img/montecarlo-policy.png>
-Package pdftex.def Info: img/montecarlo-policy.png  used on input line 587.
+Package pdftex.def Info: img/montecarlo-policy.png  used on input line 623.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
-<img/sarsa-policy.png, id=197, 867.24pt x 433.62pt>
+<img/sarsa-policy.png, id=203, 867.24pt x 433.62pt>
 File: img/sarsa-policy.png Graphic file (type png)
 <use img/sarsa-policy.png>
-Package pdftex.def Info: img/sarsa-policy.png  used on input line 587.
+Package pdftex.def Info: img/sarsa-policy.png  used on input line 623.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
-<img/qlearning-policy.png, id=198, 867.24pt x 433.62pt>
+<img/qlearning-policy.png, id=204, 867.24pt x 433.62pt>
 File: img/qlearning-policy.png Graphic file (type png)
 <use img/qlearning-policy.png>
-Package pdftex.def Info: img/qlearning-policy.png  used on input line 595.
+Package pdftex.def Info: img/qlearning-policy.png  used on input line 631.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
-<img/dynamic-policy.png, id=199, 867.24pt x 433.62pt>
+<img/dynamic-policy.png, id=205, 867.24pt x 433.62pt>
 File: img/dynamic-policy.png Graphic file (type png)
 <use img/dynamic-policy.png>
-Package pdftex.def Info: img/dynamic-policy.png  used on input line 595.
+Package pdftex.def Info: img/dynamic-policy.png  used on input line 631.
 (pdftex.def)             Requested size: 250.38564pt x 125.1908pt.
 
 
-[13
+[14
 
  <./img/montecarlo-policy.png> <./img/sarsa-policy.png> <./img/qlearning-policy.png> <./img/dynamic-policy.png>]
-<img/genetic-policy.png, id=208, 433.62pt x 433.62pt>
+<img/genetic-policy.png, id=214, 433.62pt x 433.62pt>
 File: img/genetic-policy.png Graphic file (type png)
 <use img/genetic-policy.png>
-Package pdftex.def Info: img/genetic-policy.png  used on input line 636.
+Package pdftex.def Info: img/genetic-policy.png  used on input line 672.
 (pdftex.def)             Requested size: 204.85846pt x 204.86006pt.
 
 
@@ -908,15 +928,15 @@ Package fancyhdr Warning: \headheight is too small (10.0pt):
 (fancyhdr)                You might also make \topmargin smaller:
 (fancyhdr)                \addtolength{\topmargin}{-47.17911pt}.
 
-[14 <./img/genetic-policy.png>]
+[15 <./img/genetic-policy.png>]
 Chapter 6.
 
 
-[15
+[16
 
 ]
 
-[16
+[17
 
 ] (./memoria.aux)
  ***********
@@ -927,18 +947,18 @@ Package rerunfilecheck Info: File `memoria.out' has not changed.
 (rerunfilecheck)             Checksum: BEA4B731D739FBAD9BFD1E6E2E122388;1657.
  ) 
 Here is how much of TeX's memory you used:
- 28383 strings out of 473190
- 569448 string characters out of 5715800
+ 28391 strings out of 473190
+ 569727 string characters out of 5715800
  1004517 words of memory out of 5000000
- 51150 multiletter control sequences out of 15000+600000
+ 51157 multiletter control sequences out of 15000+600000
  570332 words of font info for 78 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 98i,14n,105p,487b,469s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 98i,14n,105p,487b,471s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmbxti10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb></usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb>
-Output written on memoria.pdf (18 pages, 524503 bytes).
+Output written on memoria.pdf (19 pages, 573790 bytes).
 PDF statistics:
- 289 PDF objects out of 1000 (max. 8388607)
- 191 compressed objects within 2 object streams
- 32 named destinations out of 1000 (max. 500000)
- 326 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 296 PDF objects out of 1000 (max. 8388607)
+ 195 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 331 words of extra memory for PDF output out of 10000 (max. 10000000)
 

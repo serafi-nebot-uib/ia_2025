@@ -27,20 +27,20 @@ class Algorithm:
       if sample > 1: print(f" (total) {time_avg:.6f} s (avg)", end="")
       print(flush=True)
 
-  def run(self, env: Env) -> tuple[int, float]:
+  def run(self, env: Env, greedy: bool = True) -> tuple[int, float]:
     state, _ = env.reset()
     steps, reward_total = 0, 0
     done, trunc = False, False
     while not (done or trunc):
-      state, reward, done, trunc, _ = env.step(self.action(state, greedy=True))
+      state, reward, done, trunc, _ = env.step(self.action(state, greedy=greedy))
       reward_total += float(reward)
       steps += 1
     return steps, reward_total
 
-  def test(self, env: Env, num_iter: int) -> tuple[list[int], list[int]]:
+  def test(self, env: Env, num_iter: int, greedy: bool = True) -> tuple[list[int], list[int]]:
     steps, success = [], []
     for _ in range(num_iter):
-      step, reward = self.run(env)
+      step, reward = self.run(env, greedy)
       steps.append(step)
       success.append(int(reward > 0))
     return steps, success
