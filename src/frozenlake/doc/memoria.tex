@@ -78,50 +78,6 @@
 \chapter{Disseny algorismes}
 \label{ch:design}
 
-\section{Genètic}
-
-\textbf{Individu}
-
-Un individu representa una política $\pi_i(s_t) \in A$ on a cada possible estat se li assigna una acció.
-La popblació d'individus conté, per a cada generació, $n$ individus.
-Per a la primera generació, els gens de tots els individus (cromosomes) s'inicialitzen de forma completament aleatòria.
-
-\textbf{Funció \textit{fitness}}
-
-La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'evalua la política durant 100 episodis i es calcula el promig de vegades que s'ha arribat al destí.
-
-Pel cas particular del \textit{Frozen Lake} totes les recompenses són 0 excepte quan s'arriba al destí, per tant, la funció \textit{fitness} és equivalent al promig de recompenses totals obtingudes al llarg de tots els episodis.
-
-\[
-  \mathit{fitness}({\pi_i}) = \frac{1}{100} \sum\limits_{j = 1}^{100} \sum\limits_{t = 1}^{T} R_t^j
-\]
-
-On $R_t^j$ és la recompensa del període $t$ de l'episodi $j$.
-
-\textbf{Elitisme o \textit{Culling}}
-
-Abans de generar la nova generació es seleccionen els $l = \lceil c \cdot n \rceil$ millors individus que passen directament a la nova generació (la resta es descarten), on $c \in [0, 1]$ és la tasa de \textit{culling}.
-Una $c > 0$ ens garanteix que no es perdin els millors individus amb el pas de les generacions.
-
-\textbf{Selecció}
-
-De tots els individus de cada generació, $n$ en total, només es seleccionen els $k = \lceil \beta \cdot n \rceil$ millors, on $\beta \in (0, 1]$ és el paràmetre de pressió de selecció.
-D'aquesta forma, $\beta$, ens permet escollir quin percentatge de la millor part de la població volem emprar per a generar la pròcima generació.
-
-\textbf{Mutació}
-
-Després de generar cada individu hi ha una petita probabilitat $m$ de mutar-lo de forma aleatòria.
-Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0, 1]$ i es genera un gen aleatori si $p < m$ i l'original si $p \geq m$.
-
-\[
-  \begin{cases}
-    \textrm{original } & \textrm{ si } p \geq m \\
-    \textrm{aleatori } & \textrm{ si } p < m \\
-  \end{cases}
-\]
-
-\section{Programació dinámica}
-
 \section{Algorismes Aprenentatge}
 
 Un aspecte particular de la nostra implementació d'aquest tipus d'algorismes és la forma en que es selecciona
@@ -136,7 +92,7 @@ El tema és que nosaltres inicialitzam la taula $Q(\cdot, \cdot) \leftarrow 0$
 el que implica que les primeres iteracions totes les accions tenen el mateix valor. Això és un problema perque
 la implementació de $\arg\max$ de Numpy sempre retornara el primer element màxim. En el nostre cas les accions
 estan prioritzades en el següent ordre $\{\mathrm{left}, \mathrm{down}, \mathrm{right}, \mathrm{up}\}$.
-Per preocupació de que aquesta preferencia pugui provocar una alteració en les polítiques resultants hem decidit
+Per preocupació de que aquesta preferencia pugui provocar un biaix en les polítiques resultants hem decidit
 introduïr un \textit{tie-break} aleatori.
 
 \[
@@ -144,10 +100,85 @@ introduïr un \textit{tie-break} aleatori.
 \]
 
 \subsection{Monte Carlo}
+
 \subsection{SARSA}
+
+\[
+  Q(S, A) \leftarrow Q(S, A) + \alpha [R + \gamma Q(S', A') - Q(S, A)]
+\]
+
 \subsection{Q-learning}
 
-\pagebreak
+\[
+  Q(S, A) \leftarrow Q(S, A) + \alpha [R + \gamma \max_a Q(S', a) - Q(S, A)]
+\]
+
+\section{Algorismes Cerca}
+
+\subsection{Genètic}
+
+\textbf{Individu}
+
+Hem decidit que un individu representi una política $\pi_i(S_t) \in \mathbb{A}(S_t)$ enlloc que tota una taula
+d'estat-acció $Q(S, A) \in \mathbb{R}$ perquè l'espai que ocupa i el temps d'execució son molt menors.
+
+La popblació d'individus conté, per a cada generació, \textit{population\_size} individus.
+Per a la primera generació, els gens de tots els individus s'inicialitzen de forma completament aleatòria.
+
+\textbf{Funció \textit{fitness}}
+
+La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'evalua la política durant 100
+episodis i es calcula el promig de vegades que s'ha arribat al destí.
+
+Pel cas particular del \textit{Frozen Lake} totes les recompenses són 0 excepte quan s'arriba al destí,
+per tant, la funció \textit{fitness} és equivalent al promig de recompenses totals obtingudes al llarg de tots
+els episodis (\textit{Success Rate}).
+
+\[
+  \mathit{fitness}({\pi_i}) = \frac{1}{100} \sum\limits_{j = 1}^{100} \sum\limits_{t = 1}^{T} R_t^j
+\]
+
+On $R_t^j$ és la recompensa del període $t$ de l'episodi $j$.
+
+\textbf{Elitisme o \textit{Culling}}
+
+Abans de generar la nova generació es seleccionen els millors individus que passen directament a la nova generació
+(la resta es descarten). La quantitat d'individus es calcula de la següent forma:
+
+\[
+  \mathit{best\_size} = \lceil \mathit{culling\_rate} \cdot \mathit{population_size} \rceil
+\]
+
+On $\mathit{culling\_rate} \in [0, 1]$ és la tasa de \textit{culling}.
+Un $\mathit{culling\_rate} > 0$ ens garanteix que no es perdin els millors individus amb el pas de les generacions.
+
+\textbf{Selecció}
+
+De tots els individus de cada generació (\textit{population\_size}) només es seleccionen els \textit{parents\_size} millors:
+
+\[
+  \mathit{parents\_size} = \lceil \mathit{selection\_pressure} \cdot \mathit{population\_size} \rceil
+\]
+
+On $\mathit{selection\_pressure} \in (0, 1]$ és el paràmetre de pressió de selecció.
+D'aquesta forma, $\mathit{selection\_pressure}$, ens permet escollir quin percentatge de la millor part de la població volem
+emprar per a generar la pròxima generació.
+
+\textbf{Mutació}
+
+Després de generar cada individu hi ha una petita probabilitat $\mathit{mutation\_rate}$ de mutar cada gen de forma aleatòria.
+
+\[
+  \mathit{nou\_gen} =
+  \begin{cases}
+    \textrm{original } & \textrm{ si } p \geq \mathit{mutation\_rate} \\
+    \textrm{aleatori } & \textrm{ si } p < \mathit{mutation\_rate} \\
+  \end{cases}
+\]
+
+On $p \in [0, 1]$ és un nombre aleatori generat per a cada gen.
+
+\subsection{Programació dinámica}
 
 % ==========================
 \chapter{Estudi dels paràmetres}
@@ -794,7 +825,7 @@ Al llarg del desenvolupament del projecte hem emprat les següents intel·ligèn
 \begin{center}
 \vspace*{5cm} % espai superior
 
-{\LARGE \textbf{Pràctica Bloc I}}\\[1em]
+{\LARGE \textbf{Pràctica II}}\\[1em]
 {\Large Intel·ligència Artificial}\\[4cm]
 
 {\large Aprenentatge per reforç}\\[5cm]

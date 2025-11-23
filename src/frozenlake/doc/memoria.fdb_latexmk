@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763911758.20318 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763911759.26478 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763911756.9153 33568 be2fcb5954464a7a5ac3a68f89949799 ""
+["pdflatex"] 1763913244.32094 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763913245.42242 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763913244.15152 34224 d7c7d55d6c8051e57460cc1dbcaf7608 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcbx1200.tfm" 1136768653 1536 c09172c8f235393e6235bb4758357c41 ""
@@ -39,7 +39,9 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb" 1248133631 35660 fb24af7afbadb71801619f1415838111 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1200.pfb" 1215737283 140176 d4962f948b4cc0adf4d3dde77a128c95 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2488.pfb" 1215737283 135938 299ac3a69892db3b7674a8b2543b0a77 ""
@@ -222,10 +224,10 @@
   "img/train-tie-break-off.png" 1763911435.52116 23213 124c9cb721874195c58ee3501fadf22d ""
   "img/train-tie-break-on-dist.png" 1763911391.33429 46015 68f0c4a078f0fbc0cb0de34d53f0016b ""
   "img/train-tie-break-on.png" 1763911369.9219 20104 3b6c75c2baf51e6c746a7028a645748e ""
-  "memoria.aux" 1763911759.19367 2947 8e1d8da7caebbd0823e38df76b078308 "pdflatex"
-  "memoria.out" 1763911759.1943 2102 1417c1fb26dc5ed9dcb800eded30825e "pdflatex"
-  "memoria.tex" 1763911756.9153 33568 be2fcb5954464a7a5ac3a68f89949799 ""
-  "memoria.toc" 1763911759.19445 1171 9516db0db5fdcf8a15f5d68e376e0e54 "pdflatex"
+  "memoria.aux" 1763913245.35105 3084 d2f4fdf4142b9d23ffa693190d778a32 "pdflatex"
+  "memoria.out" 1763913245.35171 2254 266fae26955e27a89c9c87fe6e5597e6 "pdflatex"
+  "memoria.tex" 1763913244.15152 34224 d7c7d55d6c8051e57460cc1dbcaf7608 ""
+  "memoria.toc" 1763913245.35186 1267 25931a0eb3aa76dc956175fc29abc33c "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"
