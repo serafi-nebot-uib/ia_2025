@@ -4,7 +4,6 @@ from matplotlib.axes import Axes
 from functools import reduce
 from operator import getitem
 from typing import Any
-from frozenlake.algorithm import LearningAlgorithm
 
 def get_item(data: dict[str, Any], *path: str) -> Any: return reduce(getitem, path, data)
 def get_data(data: dict[str, Any], *path: str) -> dict: return { k: get_item(data[k], *path) for k in data}

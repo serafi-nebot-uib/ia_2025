@@ -1,16 +1,16 @@
 import gymnasium as gym
 import matplotlib.pyplot as plt
-from frozenlake.algorithm import Algorithm, SARSA, QLearning, AverageQLearning, MonteCarlo, DynamicProgramming, Genetic
 from frozenlake.test import schedule_test, plot
+from frozenlake.algorithm import SARSA, QLearning, MonteCarlo, DynamicProgramming, Genetic
 
 SLIPPERY = True
 
 env_conf = { "id": "FrozenLake-v1", "is_slippery": SLIPPERY, "render_mode": None }
 env = gym.make(**env_conf)
-DESC = env.unwrapped.desc
-PROBS = env.unwrapped.P
-STATE_SIZE = env.observation_space.n
-ACTION_SIZE = env.action_space.n
+DESC = env.unwrapped.desc # type: ignore[attr-defined]
+PROBS = env.unwrapped.P # type: ignore[attr-defined]
+STATE_SIZE = env.observation_space.n # type: ignore[attr-defined]
+ACTION_SIZE = env.action_space.n # type: ignore[attr-defined]
 env.close()
 
 LEARN_TRAIN_ITER = 20000
@@ -21,7 +21,6 @@ LEARN = [
   (None, MonteCarlo,       { "state_size": STATE_SIZE, "action_size": ACTION_SIZE,             "dr": 0.95, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, SARSA,            { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
   (None, QLearning,        { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
-  # (None, AverageQLearning, { "state_size": STATE_SIZE, "action_size": ACTION_SIZE, "lr": 0.10, "dr": 0.99, "er": 1.00, "er_min": 0.01, "er_decay": 0.9995 }, LEARN_TRAIN_ITER, LEARN_TEST_ITER),
 ]
 
 SEARCH_TRAIN_ITER = 20
@@ -43,7 +42,6 @@ if __name__ == "__main__":
     plot.train_time(learn_data, LEARN_AGGREGATION_WINDOW)
     plot.train_steps(learn_data, LEARN_AGGREGATION_WINDOW)
     plot.train_actions(learn_data)
-    plot.train_actions_history(learn_data, LEARN_AGGREGATION_WINDOW)
 
   if len(search_data) > 0:
     plot.train_perf(search_data)

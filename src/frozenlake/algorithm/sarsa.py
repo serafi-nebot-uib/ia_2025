@@ -1,5 +1,4 @@
 import time
-import numpy as np
 from gymnasium import Env
 from frozenlake.algorithm import LearningAlgorithm
 
@@ -21,8 +20,8 @@ class SARSA(LearningAlgorithm):
         new_state, reward, done, trunc, _ = env.step(action)
         self.actions[action] += 1
         reward = float(reward)
-        new_action = self.action(new_state, greedy=False)
-        self.update(state, action, float(reward), new_state, new_action, done)
+        new_action = self.action(new_state, greedy=False) # epsilon-greedy action selection
+        self.update(state, action, float(reward), new_state, new_action, done) # update the Q table
         state, action = new_state, new_action
         reward_total += reward
         steps += 1
@@ -31,7 +30,5 @@ class SARSA(LearningAlgorithm):
       iter += 1
       iter_end = time.perf_counter()
       self.train_stats(iter, steps, reward_total, iter_end - iter_start)
-
-    self.policy = self.q.argmax(axis=-1)
 
     return iter
