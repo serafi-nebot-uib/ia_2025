@@ -55,5 +55,6 @@ class LearningAlgorithm(Algorithm):
   def action(self, state: int, greedy: bool = True, q: np.ndarray | None = None) -> int:
     if q is None: q = self.q
     if not greedy and np.random.uniform() < self.er: return np.random.choice(self.action_size)
-    else: return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))
+    else:
+      return np.random.choice(np.flatnonzero(np.isclose(q[state], q[state].max())))
       # return q[state].argmax()

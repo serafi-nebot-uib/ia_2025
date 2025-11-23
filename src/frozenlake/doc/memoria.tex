@@ -73,11 +73,6 @@
 \chapter{Introducció}
 \label{ch:intro}
 
-\dots
-
-Investigant diferents algorismes de RL hem trobat el Average Q-learning, que és una extensió del Q-learning que hem vist a classe.
-Ens ha semblat interessant i l'hem inclòs al projecte.
-
 
 % ==========================
 \chapter{Disseny algorismes}
@@ -127,11 +122,30 @@ Per fer-ho, per a cada gen de l'individu es genera un nombre aleatori $p \in [0,
 
 \section{Programació dinámica}
 
-\section{Monte Carlo}
+\section{Algorismes Aprenentatge}
 
-\section{SARSA}
+Un aspecte particular de la nostra implementació d'aquest tipus d'algorismes és la forma en que es selecciona
+l'acció a realitzar donat un estat. Donada una taula d'estat-acció $Q(s, a) \in \mathbb{R}$ es genera una
+política $\pi(s) \in \mathbb{A}(s)$ de la següent forma:
 
-\section{Q-learning}
+\[
+  \pi(S_t) \leftarrow \arg\max_a Q(S_t, a), \forall S_t \in \mathbb{S}
+\]
+
+El tema és que nosaltres inicialitzam la taula $Q(\cdot, \cdot) \leftarrow 0$
+el que implica que les primeres iteracions totes les accions tenen el mateix valor. Això és un problema perque
+la implementació de $\arg\max$ de Numpy sempre retornara el primer element màxim. En el nostre cas les accions
+estan prioritzades en el següent ordre $\{\mathrm{left}, \mathrm{down}, \mathrm{right}, \mathrm{up}\}$.
+Per preocupació de que aquesta preferencia pugui provocar una alteració en les polítiques resultants hem decidit
+introduïr un \textit{tie-break} aleatori.
+
+\[
+\pi(S_t) \sim \operatorname{Unif}\!\left(\arg\max_a Q(S_t, a) \right), \forall S_t \in \mathbb{S}
+\]
+
+\subsection{Monte Carlo}
+\subsection{SARSA}
+\subsection{Q-learning}
 
 \pagebreak
 

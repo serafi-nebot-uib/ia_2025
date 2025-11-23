@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763893152.70165 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763893153.64933 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763893152.52115 28689 c0aceaf024a7c0e6b3ad6f1b70343bea ""
+["pdflatex"] 1763894804.77103 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763894805.7223 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763894804.5903 29567 30d6abe225ef216575a1f2bb6b92b5b6 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -38,6 +38,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb" 1215737283 136101 f533469f523533d38317ab5729d00c8a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb" 1215737283 131078 d96015a2fa5c350129e933ca070b2484 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1728.pfb" 1215737283 131438 3aa300b3e40e5c8ba7b4e5c6cebc5dd6 ""
@@ -213,10 +214,10 @@
   "img/train-search-sr.png" 1763887544.92658 39352 ecb39e33003e9e3af26e5be6757c8ab7 ""
   "img/train-search-steps.png" 1763887562.32439 38677 d17b999f9defc4e1d3c62b94346d3f59 ""
   "img/train-search-time.png" 1763887556.11889 26452 b8fce7716f2a7c992e9cba2c3388abfc ""
-  "memoria.aux" 1763893153.58876 2488 e4ea2a8492502053d3e96a95069c19c0 "pdflatex"
-  "memoria.out" 1763893153.58936 1657 bea4b731d739fbad9bfd1e6e2e122388 "pdflatex"
-  "memoria.tex" 1763893152.52115 28689 c0aceaf024a7c0e6b3ad6f1b70343bea ""
-  "memoria.toc" 1763893153.58951 960 f768dfcaa8fce3b355bad042e8a032b8 "pdflatex"
+  "memoria.aux" 1763894805.66074 2642 160d84e8e15908753f2880d7b4434ea5 "pdflatex"
+  "memoria.out" 1763894805.66132 1851 73fd8d3565f927f536932200de7cbb15 "pdflatex"
+  "memoria.tex" 1763894804.5903 29567 30d6abe225ef216575a1f2bb6b92b5b6 ""
+  "memoria.toc" 1763894805.66148 1073 7bf4e7957cbc885a2d1eec2b97ab2fcc "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"
