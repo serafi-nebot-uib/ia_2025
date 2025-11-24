@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763977404.81706 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763977405.92096 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763977404.61806 41731 064e116fe0302a5ec4b40d7aedd0eb1a ""
+["pdflatex"] 1763978288.1313 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763978289.24081 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763978288.06044 41054 f6b600fb0e6cab539cbc830460578202 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcbx1200.tfm" 1136768653 1536 c09172c8f235393e6235bb4758357c41 ""
@@ -227,10 +227,10 @@
   "img/train-tie-break-off.png" 1763911435.52116 23213 124c9cb721874195c58ee3501fadf22d ""
   "img/train-tie-break-on-dist.png" 1763911391.33429 46015 68f0c4a078f0fbc0cb0de34d53f0016b ""
   "img/train-tie-break-on.png" 1763911369.9219 20104 3b6c75c2baf51e6c746a7028a645748e ""
-  "memoria.aux" 1763977405.84566 3339 eb68f65eba5e9badbac5dd79da3333e4 "pdflatex"
-  "memoria.out" 1763977405.84633 2525 3ebb69b3be49209186673c181cb4668b "pdflatex"
-  "memoria.tex" 1763977404.61806 41731 064e116fe0302a5ec4b40d7aedd0eb1a ""
-  "memoria.toc" 1763977405.84649 1440 6d446bec1af81536e9d025244b9b1b2f "pdflatex"
+  "memoria.aux" 1763978289.16395 3339 eb68f65eba5e9badbac5dd79da3333e4 "pdflatex"
+  "memoria.out" 1763978289.16467 2525 3ebb69b3be49209186673c181cb4668b "pdflatex"
+  "memoria.tex" 1763978288.06044 41054 f6b600fb0e6cab539cbc830460578202 ""
+  "memoria.toc" 1763978289.16481 1440 6d446bec1af81536e9d025244b9b1b2f "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"

@@ -100,9 +100,8 @@ implementats:
   \end{itemize}
 \end{minipage}
 
-Hem analitzat com influeixen paràmetres com el factor de descompte $\mathit{dr}$ (\textit{Discount Rate},
-també conegut com $\gamma$), la taxa d'exploració $\mathit{er}$ (\textit{Exploration Rate}, també conegut com
-$\epsilon$) i el seu decaïment, la taxa d'aprenentatge $\mathit{lr}$ (\textit{Learning Rate}, també conegut com $\alpha$) i, en el cas dels algorismes evolutius,
+Hem analitzat com influeixen paràmetres com el factor de descompte $\gamma$, la taxa d'exploració $\epsilon$
+i el seu decaïment, la taxa d'aprenentatge $\alpha$ i, en el cas dels algorismes evolutius,
 la mida de la població, la pressió de selecció, la taxa de mutació i l'elitisme. També hem estudiat l'impacte
 d'una decisió de disseny aparentment menor | l'ús d'un tie-break aleatori quan diverses accions tenen el mateix
 valor Q | que ha resultat ser clau per evitar biaixos greus en l'exploració inicial.
@@ -126,7 +125,7 @@ Un aspecte clau de la nostra implementació és la selecció de l'acció en un e
 \begin{itemize}
   \item La taula $Q$ s'inicialitza a zero per a tots els parells estat-acció:
     $Q(s,a) \gets 0 \quad \forall s \in \mathcal{S},\ \forall a \in \mathcal{A}$
-  \item Durant l'entrenament: política $\epsilon$-greedy amb decaïment exponencial de $\epsilon$ i mínim
+  \item Durant l'entrenament: política $\epsilon$-\textit{greedy} amb decaïment exponencial de $\epsilon$ i mínim
     $\epsilon_{\min} = 0.01$.
   \item En cas d'empat (diverses accions amb el mateix valor $Q(s,\cdot)$ màxim), s'escull una acció
     uniformement aleatòria entre les candidates:
@@ -157,10 +156,8 @@ emprant el quintuple $(S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1})$ d'on prové el seu 
 
 on:
 \begin{itemize}
-  \item $\alpha \in (0,1]$ és la taxa d'aprenentatge, que d'aqui en endavant el renombram
-    $\mathit{lr}$ (\textit{Learning Rate}).
-  \item $\gamma \in [0,1]$ és el factor de descompte, que d'aqui en endavant el renombram
-    $\mathit{dr} $(\textit{Discount Rate}).
+  \item $\alpha \in (0,1]$ és la taxa d'aprenentatge.
+  \item $\gamma \in [0,1]$ és el factor de descompte.
   \item $A_{t+1}$ s'obté aplicant la política actual $\pi$ a l'estat $S_{t+1}$, seguint una política
     $\epsilon$-\textit{greedy}.
 \end{itemize}
@@ -336,16 +333,14 @@ Per a tota aquesta secció el nombre d'episodis d'entrenament $n = 20000$.
 
 Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els següent paràmetres:
 \begin{itemize}
-  \item $\mathit{dr} = 0.99$: \textit{Discount Rate} o \textit{gamma} als apunts, és el factor de descompte per
-    a la recompensa esperada per a cada passa del mateix episodi.
-  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o $\epsilon$ als apunts, és el factor d'exploració per a una política $\epsilon\mathit{-greedy}$.
-  \item $\mathit{er\_min} = 0.01$: \textit{Exploration Rate Minimum} és el mínim permès del valor $\mathit{er}$.
-  \item $\mathit{er\_decay} = 0.9995$: \textit{Exploration Rate Decay} és el factor de descens del paràmetre $\mathit{er}$.
-  A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
+  \item $\gamma = 0.99$: és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
+  \item $\epsilon = 1.00$: és el factor d'exploració per a una política $\epsilon\mathit{-greedy}$.
+  \item $\epsilon_{min} = 0.01$: és el mínim permès del valor $\epsilon$.
+  \item $\epsilon_{decay} = 0.9995$: és el factor de descens del paràmetre $\epsilon$.
+  A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\epsilon = \min\{\epsilon_{min}, \epsilon \cdot \epsilon_{decay} \}$.
 \end{itemize}
 
-Per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.10$ (\textit{Learning Rate} o \textit{alpha} als apunts)
-que és el factor d'apranentatge.
+Per a \textit{SARSA} i \textit{Q-learning} tenim $\alpha = 0.10$ que és el factor d'apranentatge.
 
 Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
 amb el pròxim apartat on es mostren els resultats de totes les variacions de cada un dels paràmetres:
@@ -371,7 +366,7 @@ amb el pròxim apartat on es mostren els resultats de totes les variacions de ca
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{dr} & steps & sr & steps & sr & steps & sr \\
+    $\gamma$ & steps & sr & steps & sr & steps & sr \\
     \hline
     0.10 & 15.3360 & 0.2110 & 9.2340  & 0.0620 & 9.2420  & 0.1120 \\
     0.20 & 9.2610  & 0.1030 & 8.5430  & 0.1010 & 7.3150  & 0.0470 \\
@@ -387,8 +382,8 @@ amb el pròxim apartat on es mostren els resultats de totes les variacions de ca
   \end{tabular}
 \end{table}
 
-SARSA i Q-learning es comporten de forma molt similar i prefereixen un $\mathit{dr}$ molt proper a 1,
-exceptuant el cas $\mathit{dr} = 1.00$ on Q-learning es veu molt afectat i no arriba cap vegada al destí en totes les
+SARSA i Q-learning es comporten de forma molt similar i prefereixen un $\gamma$ molt proper a 1,
+exceptuant el cas $\gamma = 1.00$ on Q-learning es veu molt afectat i no arriba cap vegada al destí en totes les
 1000 iteracions de prova.
 
 Monte Carlo, per altra banda, sembla ser molt sensible a petits canvis del paràmetre i, per aquesta prova limitada,
@@ -403,7 +398,7 @@ que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, q
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{er} & steps & sr & steps & sr & steps & sr \\
+    $\epsilon$ & steps & sr & steps & sr & steps & sr \\
     \hline
     0.10 & 24.7740  & 0.2420 & 43.8000 & 0.7430  & 46.1800 & 0.7360 \\
     0.20 & 27.6060  & 0.1950 & 45.8280 & 0.7440  & 43.3920 & 0.7630 \\
@@ -421,8 +416,8 @@ que hem triat genera resultats variats (0.30 i 0.70 de \textit{Survival Rate}, q
 
 Monte Carlo necessita una exploració major a l'inici de l'entrenament per a poder trobar una solució òptima.
 
-SARSA i Q-learning no es veuen afectats pel valor de $\mathit{er}$. Això és degut a que la nostra implementació
-d'aquests algorismes utilitza un \textit{tie-break} aleatori. Si tornam a entrenar els algorismes amb $\mathit{er} = 0.10$
+SARSA i Q-learning no es veuen afectats pel valor de $\epsilon$. Això és degut a que la nostra implementació
+d'aquests algorismes utilitza un \textit{tie-break} aleatori. Si tornam a entrenar els algorismes amb $\epsilon = 0.10$
 però activant/desactivant el \textit{tie-break} i graficam la distribució de les vegades que s'ha escollit cada acció
 durant la fase d'entrenament tenim (esquerra \textit{tie-break off}, dreta \textit{tie-break on}):
 
@@ -464,7 +459,7 @@ l'elecció de les accions està molt més distribuïda. La raó perque encara hi
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{er\_min} & steps & sr & steps & sr & steps & sr \\
+    $\epsilon_{min}$ & steps & sr & steps & sr & steps & sr \\
     \hline
     0.10 & 6.3470  & 0.0660 & 40.7290 & 0.7200 & 45.1450 & 0.7380 \\
     0.20 & 10.7840 & 0.0900 & 39.1340 & 0.7460 & 45.5910 & 0.7680 \\
@@ -480,7 +475,7 @@ l'elecció de les accions està molt més distribuïda. La raó perque encara hi
   \end{tabular}
 \end{table}
 
-Q-learning no es veu afectat en absolut i SARSA negativament per a valors alts de $\mathit{er\_min}$.
+Q-learning no es veu afectat en absolut i SARSA negativament per a valors alts de $\epsilon_{min}$.
 Per tant, una exploració alta al final de la fase d'entrenament perjudica molt a SARSA probablement degut
 a que per a calcular la correcció de la recompensa esperada SARSA utilitza l'acció realitzada i Q-learning sempre
 utilitza la millor, ignorant així el factor aleatori.
@@ -496,7 +491,7 @@ que hem triat sabem que millora encara més.
     \hline
       & \multicolumn{2}{|c|}{Monte Carlo} & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{er\_decay} & steps & sr & steps & sr & steps & sr \\
+    $\epsilon_{decay}$ & steps & sr & steps & sr & steps & sr \\
     \hline
     0.10 & 8.0950  & 0.0810 & 45.0600 & 0.7450 & 44.2680 & 0.7310 \\
     0.20 & 24.4520 & 0.2640 & 44.3870 & 0.7490 & 44.5310 & 0.7350 \\
@@ -513,9 +508,9 @@ que hem triat sabem que millora encara més.
 \end{table}
 
 Una altre vegada, Q-learning no es veu afectat en absolut i SARSA només quan es manté el factor d'exploració
-alt (el mateix per a $\mathit{er\_decay} = 1.0$) durant tot l'entrenament.
+alt (el mateix per a $\epsilon_{decay} = 1.0$) durant tot l'entrenament.
 
-En aquest cas, Monte Carlo obté molt bons resultats quan $\mathit{er\_decay}$ és molt proper a 1.0,
+En aquest cas, Monte Carlo obté molt bons resultats quan $\epsilon_{decay}$ és molt proper a 1.0,
 consistent amb els resultats que hem obtingut amb el valor per defecte.
 
 \vspace*{10pt}\hrule
@@ -526,7 +521,7 @@ consistent amb els resultats que hem obtingut amb el valor per defecte.
     \hline
       & \multicolumn{2}{|c|}{SARSA} & \multicolumn{2}{|c|}{Q-learning} \\
     \hline
-    \textit{lr} & steps & sr & steps & sr \\
+    $\alpha$ & steps & sr & steps & sr \\
     \hline
     0.10 & 44.607 & 0.74  & 44.711 & 0.721 \\
     0.20 & 44.706 & 0.644 & 45.731 & 0.745 \\
@@ -541,10 +536,10 @@ consistent amb els resultats que hem obtingut amb el valor per defecte.
     \hline
   \end{tabular}
 \end{table}
-Podem veure que SARSA és molt més sensible al \textit{Learning Rate} que Q-learning,
+Podem veure que SARSA és molt més sensible al $\alpha$ que Q-learning,
 ja que aquest darrer es manté igual al llarg de totes les combinacions.
 
-Per a valors molt grans de \textit{lr} ambdós tenen resultats molt pobres, sobretot quan
+Per a valors molt grans de $\alpha$ ambdós tenen resultats molt pobres, sobretot quan
 son molt propers a 1. Això té sentit perque significa que per a cada actualització de la política s'està
 corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
 (s'arriba a un máxim local enlloc d'un màxim global).
@@ -698,8 +693,7 @@ amb el pròxim apartat:
 
 \subsection{Programació dinámica}
 
-Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\mathit{dr} = 0.95$
-(\textit{Discount Rate} o \textit{gamma} als apunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
+Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\gamma = 0.95$ és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
 
 Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
 amb el pròxim apartat:
@@ -725,7 +719,7 @@ amb el pròxim apartat:
     \hline
       & \multicolumn{2}{|c|}{Prog. Dinámica} \\
     \hline
-    \textit{dr} & steps & sr \\
+    $\gamma$ & steps & sr \\
     \hline
     0.10 & 27.4400 & 0.4560 \\
     0.20 & 27.7030 & 0.4160 \\
@@ -743,7 +737,7 @@ amb el pròxim apartat:
 \hfill
 \begin{minipage}{0.5\textwidth}
   Els resultats es mantenen constants del 0.10 fins al 0.80 i despés milloren bastant i es saturen a partir del 0.90.
-  Un \textit{Discount Rate} major té sentit perque al estar explorant tots els estats possibles ens interessa
+  Un $\gamma$ major té sentit perque al estar explorant tots els estats possibles ens interessa
   mantenir tota la informació (sabem que el resultat és correcte perque els hem explorat tots).
 \end{minipage}
 \vspace*{10pt}\hrule
@@ -942,21 +936,21 @@ Al llarg del desenvolupament del projecte hem emprat les següents intel·ligèn
 \begin{itemize}
   \item ChatGPT-5.1
   \begin{itemize}
-    \item Validació i correcció algorismes implementats amb Python
-    \item Recomenació configuració paràmetres per a diferents algorismes
-    \item Correcció notació matemàtica utilitzada a la memòria
+    \item Validació i correcció algorismes implementats amb Python.
+    \item Recomenació configuració paràmetres per a diferents algorismes.
+    \item Correcció notació matemàtica de la memòria.
   \end{itemize}
 
   \item Grok 4.1: 
   \begin{itemize}
-    \item Validació i correcció algorismes implementats amb Python
-    \item Recomenació configuració paràmetres per a diferents algorismes
-    \item Correcció errors memòria.
+    \item Validació i correcció algorismes implementats amb Python.
+    \item Recomenació configuració paràmetres per a diferents algorismes.
+    \item Correcció errors i millores notació matemàtica de la memòria.
   \end{itemize}
 
   \item Perplexity (ChatGPT-5.1, Claude Sonnet 4.5 o Sonar):
   \begin{itemize}
-    \item Cerca documentació i exemples Python, Numpy i Matplotlib
+    \item Cerca documentació i exemples Python, Numpy i Matplotlib.
   \end{itemize}
 \end{itemize}
 
