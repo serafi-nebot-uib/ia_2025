@@ -44,7 +44,7 @@
 }
 \author{Serafí Nebot Ginard \\  Jaume Galmés Ramis \\
 \vspace{7cm}
-\\ 21722 - Intel·ligència Artificial \\ Grau d’Enginyeria Informàtica \\ Curs 2025/2026
+\\ 21722 - Intel·ligència Artificial \\ Grau d'Enginyeria Informàtica \\ Curs 2025/2026
 }
 
 \fancypagestyle{plain}{
@@ -140,80 +140,177 @@ introduïr un \textit{tie-break} aleatori.
 
 \subsection{SARSA}
 
+SARSA és un algorisme \textit{on-policy} d'aprenentatge per reforç que estima la funció valor-acció $Q(s,a)$
+seguint la mateixa política que s'està millorant.
+
+L'actualització de la taula $Q$ es realitza al final de cada pas dins d'un episodi,
+emprant el quintuple $(S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1})$ d'on prové el seu nom
+(\textit{State-Action-Reward-State-Action}):
+
 \[
-  Q(S, A) \leftarrow Q(S, A) + \alpha [R + \gamma Q(S', A') - Q(S, A)]
+  Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right]
 \]
+
+on:
+\begin{itemize}
+  \item $\alpha \in (0,1]$ és la taxa d'aprenentatge, que d'aqui en endavant el renombram
+    $\mathit{lr}$ (\textit{Learning Rate}).
+  \item $\gamma \in [0,1]$ és el factor de descompte, que d'aqui en endavant el renombram
+    $\mathit{dr} $(\textit{Discount Rate}).
+  \item $A_{t+1}$ s'obté aplicant la política actual $\pi$ a l'estat $S_{t+1}$, seguint una política
+    $\epsilon$-\textit{greedy}.
+\end{itemize}
+
+Com que l'actualització depèn de l'acció realment escollida en el següent estat ($A_{t+1}$),
+SARSA tendeix a ser més conservador.
 
 \subsection{Q-learning}
+Q-learning és un algorisme \textit{off-policy} de control que estima directament la funció valor-acció òptima
+$Q^*(s,a)$ sense necessitat de seguir la política actual durant l'aprenentatge.
+
+L'actualització es realitza després de cada transició $(S_t, A_t, R_{t+1}, S_{t+1})$ emprant el valor de la
+millor acció possible en l'estat següent:
 
 \[
-  Q(S, A) \leftarrow Q(S, A) + \alpha [R + \gamma \max_a Q(S', a) - Q(S, A)]
+Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a') - Q(S_t, A_t) \right]
 \]
+
+Amb els mateixos paràmetres $\alpha$ i $\gamma$ que en SARSA.
+La diferència clau és l'ús de $\max_{a'} Q(S_{t+1}, a')$ en lloc de $Q(S_{t+1}, A_{t+1})$, cosa que fa que
+Q-learning sigui optimista i convergeixi a la política òptima fins i tot quan la política de comportament
+(la que genera les experiències) sigui completament aleatòria'.
 
 \section{Algorismes Cerca}
 
 \subsection{Genètic}
 
+L'algorisme genètic és un mètode de cerca inspirat en l'evolució biològica que treballa directament sobre
+l'espai de polítiques $\pi: S \to A$ sense estimar cap funció valor.
+Cada individu de la població representa una política completa (un vector de 16 enters, un per cada estat del
+mapa 4$\times$4).
+
+El procés evolutiu és el següent:
+\begin{enumerate}
+  \item S'inicialitza una població de polítiques aleatòries.
+  \item S'avalua el \textit{fitness} de cada individu executant 100 episodis i calculant la taxa d'èxit.
+  \item Els millors individus passen directament a la següent generació (elitisme).
+  \item Es seleccionen els pares a partir dels millors individus (major valor \textit{fitness}) de la població.
+  \item Es generen els fills per creuament aleatori i mutació gen a gen amb probabilitat $\mathit{mutation\_rate}$.
+  \item Es repeteix el procés durant un nombre fix de generacions.
+\end{enumerate}
+
 \textbf{Individu}
 
-Hem decidit que un individu representi una política $\pi_i(S_t) \in \mathbb{A}(S_t)$ enlloc que tota una taula
-d'estat-acció $Q(S, A) \in \mathbb{R}$ perquè l'espai que ocupa i el temps d'execució son molt menors.
+Cada individu de la població representa una política completa $\pi: \mathcal{S} \to \mathcal{A}$.
 
-La població d'individus conté, per a cada generació, \textit{population\_size} individus.
-Per a la primera generació, els gens de tots els individus s'inicialitzen de forma completament aleatòria.
+Com que l'espai d'estats té només 16 elements (tauler 4$\times$4), codificam la política com un vector de 16
+enters:
+
+\[
+\pi = \bigl( a_0, a_1, \dots, a_{15} \bigr) \in \{0,1,2,3\}^{16}
+\]
+
+on cada $a_i \in \{0=\textit{left}, 1=\textit{down}, 2=\textit{right}, 3=\textit{up}\}$ indica l'acció que
+l'individu executa de manera fixa quan es troba a l'estat corresponent $s_i$.  
+
+Aquesta representació directa sobre l'espai de polítiques (en lloc de sobre taules Q) té diverses avantatges:
+\begin{itemize}
+  \item Mida de memòria mínima (16 enters per individu).
+  \item Operacions de creuament i mutació molt senzilles i ràpides.
+  \item L'avaluació del fitness es tradueix directament en la qualitat de la política final.
+\end{itemize}
+
+La població consta de $\mathit{population\_size}$ individus d'aquest tipus. La primera generació s'inicialitza amb polítiques completament aleatòries (cada gen $a_i$ s'escull uniformement entre les 4 accions).
 
 \textbf{Funció \textit{fitness}}
 
-La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'evalua la política durant 100
-episodis i es calcula el promig de vegades que s'ha arribat al destí.
-
-Pel cas particular del \textit{Frozen Lake} totes les recompenses són 0 excepte quan s'arriba al destí,
-per tant, la funció \textit{fitness} és equivalent al promig de recompenses totals obtingudes al llarg de tots
-els episodis (\textit{Success Rate}).
+El \textit{fitness} d'una política $\pi$ es defineix com la probabilitat estimada d'arribar a l'estat objectiu
+$G$ quan es segueix $\pi$ des de l'estat inicial $s_0$. Com que l'entorn és estocàstic, s'estima mitjançant
+l'èxit promig sobre $N = 100$ episodis independents:
 
 \[
-  \mathit{fitness}({\pi_i}) = \frac{1}{100} \sum\limits_{j = 1}^{100} \sum\limits_{t = 1}^{T} R_t^j
+  \mathit{fitness}(\pi) = \frac{1}{N} \sum_{k=1}^{N} \mathbf{1}\{ \text{episodi } k \text{ arriba a } G \}
 \]
 
-On $R_t^j$ és la recompensa del període $t$ de l'episodi $j$.
+on $\mathbf{1}\{\cdot\}$ és la funció indicadora.  
+Com que a \textit{Frozen Lake} l'única recompensa no nul·la és $+1$ en arribar a $G$ i $0$ en qualsevol altre cas,
+aquesta expressió és equivalent a la recompensa total promig per episodi:
+
+\[
+  \mathit{fitness}(\pi) = \mathbb{E}_{\tau \sim \pi} \left[ \sum_{t=0}^{T} R_t \right] \approx \frac{1}{N} \sum_{k=1}^{N} G^{(k)}
+\]
+
+on $G^{(k)} \in \{0,1\}$ indica si l'episodi $k$ ha acabat amb èxit.  
+A la pràctica, $\mathit{fitness}(\pi)$ coincideix amb el \textit{Success Rate} utilitzat a la resta de la memòria.
 
 \textbf{Elitisme o \textit{Culling}}
 
-Abans de generar la nova generació es seleccionen els millors individus que passen directament a la nova generació
-(la resta es descarten). La quantitat d'individus es calcula de la següent forma:
+Per garantir la preservació dels millors individus trobats al llarg de l'evolució, s'aplica una estratègia
+d'elitisme. Abans de generar la nova generació, es copien directament els
+$\lceil \mathit{culling\_rate} \cdot \mathit{population\_size} \rceil$ individus amb major \textit{fitness} de
+la generació actual a la següent.
+
+Matemàticament, si ordenam la població de la generació $g$ segons el seu \textit{fitness} de forma decreixent:
 
 \[
-  \mathit{best\_size} = \lceil \mathit{culling\_rate} \cdot \mathit{population_size} \rceil
+P^{(g)} = \bigl\{ \pi^{(g)}_1, \pi^{(g)}_2, \dots, \pi^{(g)}_{|P|} \bigr\}, \quad 
+\mathit{fitness}(\pi^{(g)}_1) \geq \mathit{fitness}(\pi^{(g)}_2) \geq \cdots \geq \mathit{fitness}(\pi^{(g)}_{|P|})
 \]
 
-On $\mathit{culling\_rate} \in [0, 1]$ és la tasa de \textit{culling}.
-Un $\mathit{culling\_rate} > 0$ ens garanteix que no es perdin els millors individus amb el pas de les generacions.
+llavors l'elit de la generació $g$ és:
+
+\[
+E^{(g)} = \bigl\{ \pi^{(g)}_1, \pi^{(g)}_2, \dots, \pi^{(g)}_{k} \bigr\}, \quad 
+k = \lceil \mathit{culling\_rate} \cdot \mathit{population\_size} \rceil
+\]
+
+Aquests $k$ individus passen inalterats a la generació $g+1$. La resta de la població es genera mitjançant
+selecció, creuament i mutació a partir dels pares seleccionats.
+
+Aquest mecanisme assegura que el millor \textit{fitness} global mai disminueixi entre generacions.
 
 \textbf{Selecció}
 
-De tots els individus de cada generació (\textit{population\_size}) només es seleccionen els \textit{parents\_size} millors:
+La selecció determina quins individus de la generació actual actuen com a pares per generar la pròxima generació.
+S'utilitza una selecció per truncament controlada pel paràmetre $\mathit{selection\_pressure} \in (0,1]$.
+
+Primer, s'ordena la població de la generació $g$ segons el seu \textit{fitness} de forma decreixent:
 
 \[
-  \mathit{parents\_size} = \lceil \mathit{selection\_pressure} \cdot \mathit{population\_size} \rceil
+P^{(g)} = \bigl\{ \pi^{(g)}_1, \pi^{(g)}_2, \dots, \pi^{(g)}_{|P|} \bigr\}, \quad 
+\mathit{fitness}(\pi^{(g)}_1) \geq \mathit{fitness}(\pi^{(g)}_2) \geq \cdots \geq \mathit{fitness}(\pi^{(g)}_{|P|})
 \]
 
-On $\mathit{selection\_pressure} \in (0, 1]$ és el paràmetre de pressió de selecció.
-D'aquesta forma, $\mathit{selection\_pressure}$, ens permet escollir quin percentatge de la millor part de la població volem
-emprar per a generar la pròxima generació.
+A continuació, es seleccionen els $\mathit{parents\_size}$ millors individus com a conjunt de pares:
+
+\[
+\mathit{parents\_size} = \lceil \mathit{selection\_pressure} \cdot \mathit{population\_size} \rceil
+\]
+
+\[
+\text{Pares}^{(g)} = \bigl\{ \pi^{(g)}_1, \pi^{(g)}_2, \dots, \pi^{(g)}_{\mathit{parents\_size}} \bigr\}
+\]
+
+Aquests pares es fan servir per generar la resta d'individus de la generació següent (excepte els que ja han
+estat reservats per elitisme).
 
 \textbf{Mutació}
 
-Després de generar cada individu hi ha una petita probabilitat $\mathit{mutation\_rate}$ de mutar cada gen de forma aleatòria.
+La mutació és l'únic operador que introdueix novetat genètica real a la població i evita la convergència
+prematura a màxims locals.
+
+Després de generar un fill mitjançant creuament, cada un dels seus 16 gens (accions) es muta de forma
+independent amb probabilitat $\mathit{mutation\_rate} \in [0,1]$.
 
 \[
-  \mathit{nou\_gen} =
-  \begin{cases}
-    \textrm{original } & \textrm{ si } p \geq \mathit{mutation\_rate} \\
-    \textrm{aleatori } & \textrm{ si } p < \mathit{mutation\_rate} \\
-  \end{cases}
+a'_i =
+\begin{cases}
+\quad \underset{a \in \mathcal{A}}{\operatorname{Uniforme}}(\mathcal{A})  & \text{si } u_i < \mathit{mutation\_rate} \\
+\quad a_i                                                  & \text{en cas contrari}
+\end{cases}
 \]
 
-On $p \in [0, 1]$ és un nombre aleatori generat per a cada gen.
+on $u_i \sim \mathcal{U}[0,1]$ és una variable aleatòria independent per a cada posició $i = 0,\dots,15$, i $\operatorname{Uniforme}(\mathcal{A})$ escull una de les 4 accions possibles amb igual probabilitat.
 
 \subsection{Programació dinámica}
 
@@ -850,6 +947,7 @@ Al llarg del desenvolupament del projecte hem emprat les següents intel·ligèn
   \begin{itemize}
     \item Validació i correcció algorismes implementats amb Python
     \item Recomenació configuració paràmetres per a diferents algorismes
+    \item Correcció errors memòria.
   \end{itemize}
 
   \item Perplexity (ChatGPT-5.1, Claude Sonnet 4.5 o Sonar):

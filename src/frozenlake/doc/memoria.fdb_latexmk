@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1763915163.92879 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763915165.01931 0
-  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763915163.73529 36325 23c89322d5fdba55deb3434ae93b9df1 ""
+["pdflatex"] 1763976660.36818 "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" "memoria.pdf" "memoria" 1763976661.45782 0
+  "/Users/hexdhog/Documents/uib/CS/Y3/IA/ia_2025/src/frozenlake/doc/memoria.tex" 1763976660.16817 41549 70ed0ddea1b09356c046169edfea5a38 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcbx1200.tfm" 1136768653 1536 c09172c8f235393e6235bb4758357c41 ""
@@ -15,6 +15,8 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1246382020 908 2921f8a10601f252058503cc6570e581 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm" 1246382020 940 228d6584342e91276bf566bcf9716b83 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm" 1136768653 1324 c910af8c371558dc20f2d7822f66fe64 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm" 1136768653 1344 8a0be4fe4d376203000810ad4dc81558 ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbx8.tfm" 1136768653 1332 1fde11373e221473104d6cc5993f046e ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmbxti10.tfm" 1136768653 1532 9162035f4e7176612125649e348e2195 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmex10.tfm" 1136768653 992 662f679a0b3d2d53c1b94050fdaa3f50 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm" 1136768653 1524 4414a8315f39513458b80dfc63bff03a ""
@@ -39,6 +41,7 @@
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb" 1248133631 32587 1788b0c1c5b39540c96f5e42ccd6dae8 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb" 1248133631 32626 4f5c1b83753b1dd3a97d1b399a005b4b ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb" 1248133631 36118 fad905eba93cff5bce1e185fe980a177 ""
   "/usr/local/texlive/2025/texmf-dist/fonts/type1/public/amsfonts/cm/cmti8.pfb" 1248133631 35660 fb24af7afbadb71801619f1415838111 ""
@@ -224,10 +227,10 @@
   "img/train-tie-break-off.png" 1763911435.52116 23213 124c9cb721874195c58ee3501fadf22d ""
   "img/train-tie-break-on-dist.png" 1763911391.33429 46015 68f0c4a078f0fbc0cb0de34d53f0016b ""
   "img/train-tie-break-on.png" 1763911369.9219 20104 3b6c75c2baf51e6c746a7028a645748e ""
-  "memoria.aux" 1763915164.947 3337 ac3aa588a9bc7d10e0e8db26c4a1d203 "pdflatex"
-  "memoria.out" 1763915164.94769 2525 3ebb69b3be49209186673c181cb4668b "pdflatex"
-  "memoria.tex" 1763915163.73529 36325 23c89322d5fdba55deb3434ae93b9df1 ""
-  "memoria.toc" 1763915164.94783 1438 60f12a73d623cd127d2cc1659be9bf48 "pdflatex"
+  "memoria.aux" 1763976661.38718 3339 eb68f65eba5e9badbac5dd79da3333e4 "pdflatex"
+  "memoria.out" 1763976661.38784 2525 3ebb69b3be49209186673c181cb4668b "pdflatex"
+  "memoria.tex" 1763976660.16817 41549 70ed0ddea1b09356c046169edfea5a38 ""
+  "memoria.toc" 1763976661.38798 1440 6d446bec1af81536e9d025244b9b1b2f "pdflatex"
   (generated)
   "memoria.aux"
   "memoria.log"
