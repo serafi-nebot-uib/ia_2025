@@ -157,7 +157,6 @@ def train_actions_history(data: dict):
   actions = ["left", "down", "right", "up"]
   ncols = 3
   nrows = math.ceil(len(data) / ncols)
-  print(nrows, ncols)
   fig, axs = plt.subplots(nrows=nrows, ncols=ncols, figsize=(5 * ncols, 5 * nrows))
 
   for (label, values), ax in zip(data.items(), axs):
