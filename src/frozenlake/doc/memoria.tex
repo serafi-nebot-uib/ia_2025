@@ -117,24 +117,28 @@ polítiques finals, observant comportaments inesperats (polítiques que semblen 
 
 \section{Algorismes Aprenentatge}
 
-Un aspecte particular de la nostra implementació d'aquest tipus d'algorismes és la forma en que es selecciona
-l'acció a realitzar donat un estat. Donada una taula d'estat-acció $Q(s, a) \in \mathbb{R}$ es genera una
-política $\pi(s) \in \mathbb{A}(s)$ de la següent forma:
+Tots els algorismes d'aprenentatge per reforç implementats són mètodes que estimen la funció valor-acció
+$Q: \mathcal{S} \times \mathcal{A} \to \mathbb{R}$ i deriven la política mitjançant una regla
+$\epsilon$-\textit{greedy} amb \textit{tie-break} aleatori.
 
-\[
-  \pi(S_t) \leftarrow \arg\max_a Q(S_t, a), \forall S_t \in \mathbb{S}
-\]
+Un aspecte clau de la nostra implementació és la selecció de l'acció en un estat $s$:
 
-El tema és que nosaltres inicialitzam la taula $Q(\cdot, \cdot) \leftarrow 0$
-el que implica que les primeres iteracions totes les accions tenen el mateix valor. Això és un problema perque
-la implementació de $\arg\max$ de Numpy sempre retornara el primer element màxim. En el nostre cas les accions
-estan prioritzades en el següent ordre $\{\mathrm{left}, \mathrm{down}, \mathrm{right}, \mathrm{up}\}$.
-Per preocupació de que aquesta preferencia pugui provocar un biaix en les polítiques resultants hem decidit
-introduïr un \textit{tie-break} aleatori.
+\begin{itemize}
+  \item La taula $Q$ s'inicialitza a zero per a tots els parells estat-acció:
+    $Q(s,a) \gets 0 \quad \forall s \in \mathcal{S},\ \forall a \in \mathcal{A}$
+  \item Durant l'entrenament: política $\epsilon$-greedy amb decaïment exponencial de $\epsilon$ i mínim
+    $\epsilon_{\min} = 0.01$.
+  \item En cas d'empat (diverses accions amb el mateix valor $Q(s,\cdot)$ màxim), s'escull una acció
+    uniformement aleatòria entre les candidates:
 
-\[
-\pi(S_t) \sim \operatorname{Unif}\!\left(\arg\max_a Q(S_t, a) \right), \forall S_t \in \mathbb{S}
-\]
+  \[
+  \pi(s) \sim \operatorname{Unif}\!\bigl(\arg\max_{a} Q(s,a)\bigr)
+  \]
+
+  Aquest \textit{tie-break} aleatori elimina el biaix sistemàtic que produeix $\arg\max$ de NumPy
+  (sempre retorna el primer índex màxim) i, com es mostra a la secció d'anàlisi de paràmetres, resulta crític
+  per aconseguir una exploració equilibrada en les primeres fases de l'entrenament.
+\end{itemize}
 
 \subsection{Monte Carlo}
 
@@ -148,7 +152,7 @@ emprant el quintuple $(S_t, A_t, R_{t+1}, S_{t+1}, A_{t+1})$ d'on prové el seu 
 (\textit{State-Action-Reward-State-Action}):
 
 \[
-  Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right]
+  Q(S_t, A_t) \gets Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma Q(S_{t+1}, A_{t+1}) - Q(S_t, A_t) \right]
 \]
 
 on:
@@ -172,7 +176,7 @@ L'actualització es realitza després de cada transició $(S_t, A_t, R_{t+1}, S_
 millor acció possible en l'estat següent:
 
 \[
-Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a') - Q(S_t, A_t) \right]
+Q(S_t, A_t) \gets Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_{a'} Q(S_{t+1}, a') - Q(S_t, A_t) \right]
 \]
 
 Amb els mateixos paràmetres $\alpha$ i $\gamma$ que en SARSA.
