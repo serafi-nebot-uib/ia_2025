@@ -77,8 +77,8 @@ En aquesta pràctica hem explorat i implementat diversos algorismes d'aprenentat
 l'entorn de \textit{Frozen Lake} de Gymnasium amb l'opció \textit{slippery} activada.
 
 A n'aquest entorn un agent ha de travessar un llac gelat evitant forats per arribar a una
-meta. L'opció \textit{slippery} afegeix un problema estocàstic que provoca que les accions tenen només un
-33 \% de probabilitat d'executar-se correctament i la resta fan lliscar l'agent en direccions paral·leles.
+meta. L'opció \textit{slippery} afegeix un problema estocàstic que provoca que les accions tenguin només un
+33 \% de probabilitat d'executar-se correctament i la resta facin lliscar a l'agent en direccions paral·leles.
 
 L'objectiu principal ha estat comparar el comportament i la sensibilitat als paràmetres dels algorismes
 implementats:
@@ -98,11 +98,11 @@ implementats:
     \item Programació Dinàmica
     \item Genètic
   \end{itemize}
-\end{minipage}
+\end{minipage}\\
 
 Hem analitzat com influeixen paràmetres com el factor de descompte $\mathit{dr}$ (\textit{Discount Rate},
 també conegut com $\gamma$), la taxa d'exploració $\mathit{er}$ (\textit{Exploration Rate}, també conegut com
-$\epsilon$) i el seu decaïment, la taxa d'aprenentatge $\mathit{lr}$ (\textit{Learning Rate}, també conegut com $\alpha$) i, en el cas dels algorismes evolutius,
+$\varepsilon$) i el seu decaïment, la taxa d'aprenentatge $\mathit{lr}$ (\textit{Learning Rate}, també conegut com $\alpha$) i, en el cas dels algorismes evolutius,
 la mida de la població, la pressió de selecció, la taxa de mutació i l'elitisme. També hem estudiat l'impacte
 d'una decisió de disseny aparentment menor | l'ús d'un tie-break aleatori quan diverses accions tenen el mateix
 valor Q | que ha resultat ser clau per evitar biaixos greus en l'exploració inicial.
@@ -126,17 +126,65 @@ política $\pi(s) \in \mathbb{A}(s)$ de la següent forma:
 \]
 
 El tema és que nosaltres inicialitzam la taula $Q(\cdot, \cdot) \leftarrow 0$
-el que implica que les primeres iteracions totes les accions tenen el mateix valor. Això és un problema perque
-la implementació de $\arg\max$ de Numpy sempre retornara el primer element màxim. En el nostre cas les accions
+el que implica que a les primeres iteracions totes les accions tenen el mateix valor. Això és un problema perquè
+la implementació de $\arg\max$ de Numpy sempre retornarà el primer element màxim. En el nostre cas les accions
 estan prioritzades en el següent ordre $\{\mathrm{left}, \mathrm{down}, \mathrm{right}, \mathrm{up}\}$.
-Per preocupació de que aquesta preferencia pugui provocar un biaix en les polítiques resultants hem decidit
+Per preocupació de que aquesta preferència pugui provocar un biaix en les polítiques resultants hem decidit
 introduïr un \textit{tie-break} aleatori.
 
 \[
 \pi(S_t) \sim \operatorname{Unif}\!\left(\arg\max_a Q(S_t, a) \right), \forall S_t \in \mathbb{S}
 \]
 
+\newpage
 \subsection{Monte Carlo}
+
+L'algorisme de Monte Carlo és un mètode d'aprenentatge per reforç basat en episodis, útil quan es poden generar seqüències completes fins a l'estat terminal.
+A diferència d'altres mètodes, estima directament els retorns observats per aprendre valors i polítiques sense necessitat de conèixer la dinàmica de l'entorn.
+
+\textbf{Estructura d'un episodi}
+
+Un episodi comença en un estat inicial $S_0$ i finalitza en un estat terminal $S_T$, amb la següent estructura general:
+$(S_0, A_0, R_1), (S_1, A_1, R_2), \dots, (S_{T-1}, A_{T-1}, R_T), S_T$, on $S_t$ és l'estat de l'agent al pas $t$, $A_t$ 
+és l'acció presa en aquest estat i $R_{t+1}$ és la recompensa obtinguda després de realitzar l'acció $A_t$.
+
+Un cop generat l'episodi es recorr la seqüència començant per l'estat terminal, aqui és on obtenim la
+funció acció-valor i conseguentment la nova política.
+
+\textbf{Funció de recompensa acumulada}
+
+Cada episodi té una recompensa acumulada que anomenam G. La funció de retorn d'un episodi a partir de la passa $t$ es calcula com:
+
+\begin{equation*}
+G_t = \sum_{k=0}^{T - t - 1} \gamma^{k} R_{t+k+1}
+\end{equation*}
+
+on $\gamma \in [0,1]$ és el factor de descompte, $R_{t+k+1}$ és la recompensa al pas $t+k+1$,
+$T$ és l’últim pas de l’episodi i $k$ recorre les recompenses futures des del pas $t$ fins a $T-1$.
+
+\textbf{Funció d'acció-valor i política}
+
+La funció acció-valor es calcula com la mitja dels retorns obtinguts a l'estat-acció en qüestió, és a dir:
+\vspace*{0.5cm}
+\begin{equation*}
+Q(s,a) = \frac{1}{N(s,a)} \sum_{i=1}^{N(s,a)} G_i(s,a)
+\end{equation*}
+
+on $N(s,a)$ és el nombre de vegades que s'ha visitat la parella $(s,a)$, i $G_i(s,a)$ és el retorn de l'i-è
+episodi on es va visitar $(s,a)$.
+
+La política és $\varepsilon$-greedy per tant compta amb el factor d'exploració, la podem definir com:
+
+\begin{equation*}
+\pi(s)=
+\begin{cases}
+\arg\max_{a} Q(s,a), & \text{amb probabilitat } 1-\varepsilon, \\[6pt]
+\text{random}(a \in \mathcal{A}(s)), & \text{amb probabilitat } \varepsilon.
+\end{cases}
+\end{equation*}
+
+on $\text{random}(a \in \mathcal{A}(s))$ indica que l'acció $a$ s'escull uniformement entre totes les accions.
+
 
 \subsection{SARSA}
 
@@ -156,7 +204,7 @@ introduïr un \textit{tie-break} aleatori.
 
 \textbf{Individu}
 
-Hem decidit que un individu representi una política $\pi_i(S_t) \in \mathbb{A}(S_t)$ enlloc que tota una taula
+Hem decidit que un individu representi una política $\pi_i(S_t) \in \mathbb{A}(S_t)$ enlloc de tota una taula
 d'estat-acció $Q(S, A) \in \mathbb{R}$ perquè l'espai que ocupa i el temps d'execució son molt menors.
 
 La població d'individus conté, per a cada generació, \textit{population\_size} individus.
@@ -164,7 +212,7 @@ Per a la primera generació, els gens de tots els individus s'inicialitzen de fo
 
 \textbf{Funció \textit{fitness}}
 
-La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'evalua la política durant 100
+La funció fitness és la tasa d'èxit de l'individu. Al ser un entorn estocàstic s'avalua la política durant 100
 episodis i es calcula el promig de vegades que s'ha arribat al destí.
 
 Pel cas particular del \textit{Frozen Lake} totes les recompenses són 0 excepte quan s'arriba al destí,
@@ -215,7 +263,48 @@ Després de generar cada individu hi ha una petita probabilitat $\mathit{mutatio
 
 On $p \in [0, 1]$ és un nombre aleatori generat per a cada gen.
 
-\subsection{Programació dinámica}
+\newpage
+\subsection{Programació dinàmica}
+
+L'algorisme de Programació Dinàmica (DP) actua com un mètode de cerca sobre un model completament conegut de l'entorn.
+DP no requereix exploració ni aprenentatge a partir de l'experiència, ja que les decisions són sempre greedys respecte al model.
+
+En concret, l'algorisme implementat és el de Value Iteration, aquest calcula de manera iterativa la funció de valor òptima $V^*(s)$
+per a cada estat, i a partir d’aquesta s’extreu la política òptima. La nostra implementació itera fins arribar a un límit establert.
+
+\textbf{Dinàmica de l'entorn: el diccionari \texttt{P}}
+
+El model de l'entorn proporcionat per Gymnasium s’identifica com \texttt{P}.
+Aquest diccionari defineix completament el procés de decisió de Markov (MDP) i té l'estructura:
+\[
+P[s][a] = \{ (p, s', r, d) \}
+\]
+on cada tupla conté la probabilitat $p$, el nou estat $s'$,
+la recompensa $r$ i si l’episodi finalitza $d$. Així, per a cada estat i acció, \texttt{P}
+especifica totes les transicions possibles i les seves probabilitats.
+
+Degut a la naturalesa de l'entorn de FrozenLake amb $slippery$, la matriu \texttt{P} principalment compta amb tres tuples per
+cada parell (estat, acció), la probabilitat d'anar cap a la direcció desitjada més les d'anar cap als costats.
+
+\textbf{Funció de valor}
+
+Inicialment, els valors dels estats s'inicialitzen a zero, i després s'actualitzen repetidament aplicant la funció de valor òptima:
+
+        \[
+        V(s) \gets \max_a \sum_{s'} P(s'|s,a) \left[ R(s,a,s') + \gamma V(s') \right]
+        \]
+
+on $P(s'\mid s, a)$ és la probabilitat de passar a l'estat $s'$ duent a terme l'acció $a$ a l'estat $s$; $R(s,a,s')$ la recompensa
+de dur a terme la transició en qüestió i $V(s')$ el valor de l'estat següent ponderat pel factor de descompte $\gamma \in [0,1]$.
+
+\textbf{Política òptima}
+
+Com a mètode model-based, Value Iteration garanteix obtenir una política òptima en MDPs sempre i quan el factor de descompte $\gamma < 1$.
+Un cop convergeixen els valors, la política òptima s'obté triant per a cada estat l'acció que maximitza la recompensa esperada.
+
+    \[
+    \pi^*(s) = \arg\max_a \sum_{s'} P(s'|s,a) \left[ R(s,a,s') + \gamma V^*(s') \right]
+    \]
 
 % ==========================
 \chapter{Estudi dels paràmetres}
@@ -223,8 +312,8 @@ On $p \in [0, 1]$ és un nombre aleatori generat per a cada gen.
 
 A continuació es mostra com diferents variacions dels paràmetres de cada un dels models afecta als resultats.
 
-Per a cada configuració dels paràmetres, cada un dels algorismes primer passa per a la fase d'entranament de
-$n$ iteracions i després s'evalua la política resultant amb 1000 episodis per a contrarestar el factor estocàstic de l'entorn.
+Per a cada configuració dels paràmetres, cada un dels algorismes primer passa per la fase d'entrenament de
+$n$ iteracions i després s'avalua la política resultant amb 1000 episodis, per a contrarestar el factor estocàstic de l'entorn.
 
 Per a mantenir el document breu, les úniques métriques que comparam són el nombre promig de passes (\textit{steps}) que es tarda per a cada episodi
 i el promig de vegades que s'ha arribat al destí, anomenat \textit{sr} (\textit{Success Rate}).
@@ -237,14 +326,14 @@ Per a \textit{Monte Carlo}, \textit{SARSA} i \textit{Q-learning} tenim els segü
 \begin{itemize}
   \item $\mathit{dr} = 0.99$: \textit{Discount Rate} o \textit{gamma} als apunts, és el factor de descompte per
     a la recompensa esperada per a cada passa del mateix episodi.
-  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o $\epsilon$ als apunts, és el factor d'exploració per a una política $\epsilon\mathit{-greedy}$.
+  \item $\mathit{er} = 1.00$: \textit{Exploration Rate} o $\varepsilon$ als apunts, és el factor d'exploració per a una política $\varepsilon\mathit{-greedy}$.
   \item $\mathit{er\_min} = 0.01$: \textit{Exploration Rate Minimum} és el mínim permès del valor $\mathit{er}$.
   \item $\mathit{er\_decay} = 0.9995$: \textit{Exploration Rate Decay} és el factor de descens del paràmetre $\mathit{er}$.
   A cada iteració del bucle d'entrenament es decrementa el factor d'exploració: $\mathit{er} = \min\{\mathit{er\_min}, \mathit{er} \cdot \mathit{er\_decay} \}$.
 \end{itemize}
 
 Per a \textit{SARSA} i \textit{Q-learning} tenim $\mathit{lr} = 0.10$ (\textit{Learning Rate} o \textit{alpha} als apunts)
-que és el factor d'apranentatge.
+que és el factor d'aprenentatge.
 
 Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
 amb el pròxim apartat on es mostren els resultats de totes les variacions de cada un dels paràmetres:
@@ -352,7 +441,7 @@ i el segon amb \textit{tie-break on}):
 
 A simple vista es veu que hi ha una diferència abismal. Quan el \textit{tie-break} està desactivat i l'exploració
 és molt baixa l'acció \textit{left} esta desproporcionadament afavorida. Quan el \textit{tie-break} està activat
-l'elecció de les accions està molt més distribuïda. La raó perque encara hi ha una preferència sobre les accions \textit{left} i
+l'elecció de les accions està molt més distribuïda. La raó perquè encara hi ha una preferència sobre les accions \textit{left} i
 \textit{up} es discuteix a l'apartat d'Anàlisi de les polítiques.
 
 \vspace*{10pt}\hrule
@@ -444,15 +533,15 @@ Podem veure que SARSA és molt més sensible al \textit{Learning Rate} que Q-lea
 ja que aquest darrer es manté igual al llarg de totes les combinacions.
 
 Per a valors molt grans de \textit{lr} ambdós tenen resultats molt pobres, sobretot quan
-son molt propers a 1. Això té sentit perque significa que per a cada actualització de la política s'està
-corregint un 100\% de l'error, es a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
+son molt propers a 1. Això té sentit perquè significa que per a cada actualització de la política s'està
+corregint un 100\% de l'error, és a dir, s'estàn fent salts molt grans i no s'arriba a la solució òptima
 (s'arriba a un máxim local enlloc d'un màxim global).
 
 \section{Algorismes de cerca}
 
 \subsection{Genètic}
 
-Per a l'agorisme Genètic tenim els següent paràmetres:
+Per a l'agorisme Genètic tenim els següents paràmetres:
 \begin{itemize}
   \item $\mathit{population\_size} = 100$: Nombre total d'individus a la població per a cada generació.
   \item $\mathit{selection\_pressure} = 0.50$: Percentatge de la població que es selecciona per a generar
@@ -561,8 +650,8 @@ amb el pròxim apartat:
 \end{minipage}
 \hfill
 \begin{minipage}{0.5\textwidth}
-  Resultats molt millors per a un $\mathit{mutation\_rate}$ menor. Té sentit perquè com major sigui aquest 
-  valor més s'atraca a ser una cerca aleatoria.
+  Resultats molt millors per a un $\mathit{mutation\_rate}$ menor. Té sentit perquè com més gran
+  és aquest valor més s'atraca a ser una cerca aleatòria.
 \end{minipage}
 
 \vspace*{10pt}\hrule
@@ -592,12 +681,12 @@ amb el pròxim apartat:
 \hfill
 \begin{minipage}{0.5\textwidth}
   Resultats básicament constants. Al igual que la mida de la població i la pressió de selecció, aquest és un
-  entorn massa senzill i amb algún de més complexe potser es vegessin els canvis.
+  entorn massa senzill i amb un altre una mica més complexe potser es vegessin els canvis.
 \end{minipage}
 
-\subsection{Programació dinámica}
+\subsection{Programació dinàmica}
 
-Per a l'agorisme de Programació Dinámica només tenim el paràmetre $\mathit{dr} = 0.95$
+Per a l'agorisme de Programació Dinàmica només tenim el paràmetre $\mathit{dr} = 0.95$
 (\textit{Discount Rate} o \textit{gamma} als apunts) és el factor de descompte per a la recompensa esperada per a cada passa del mateix episodi.
 
 Amb aquests valors per defecte dels paràmetres obtenim els següents resultats que ens serviran per a comparar
@@ -607,7 +696,7 @@ amb el pròxim apartat:
   \centering
   \begin{tabular}{| c c |}
     \hline
-    \multicolumn{2}{|c|}{Prog. Dinámica} \\
+    \multicolumn{2}{|c|}{Prog. Dinàmica} \\
     \hline
     steps & sr \\
     \hline
@@ -622,7 +711,7 @@ amb el pròxim apartat:
   \centering
   \begin{tabular}{| c | c c |}
     \hline
-      & \multicolumn{2}{|c|}{Prog. Dinámica} \\
+      & \multicolumn{2}{|c|}{Prog. Dinàmica} \\
     \hline
     \textit{dr} & steps & sr \\
     \hline
@@ -642,8 +731,8 @@ amb el pròxim apartat:
 \hfill
 \begin{minipage}{0.5\textwidth}
   Els resultats es mantenen constants del 0.10 fins al 0.80 i despés milloren bastant i es saturen a partir del 0.90.
-  Un \textit{Discount Rate} major té sentit perque al estar explorant tots els estats possibles ens interessa
-  mantenir tota la informació (sabem que el resultat és correcte perque els hem explorat tots).
+  Un \textit{Discount Rate} major té sentit perquè al estar explorant tots els estats possibles ens interessa
+  mantenir tota la informació (sabem que el resultat és correcte perquè els hem explorat tots).
 \end{minipage}
 \vspace*{10pt}\hrule
 
@@ -651,20 +740,20 @@ amb el pròxim apartat:
 \chapter{Anàlisi rendiment}
 \label{ch:results}
 
-Com que els a els algorismes d'aprenentatge necessiten una quantitat molt elevada d'episodis per a la fase
+Com que els algorismes d'aprenentatge necessiten una quantitat molt elevada d'episodis per a la fase
 d'entrenament i els de cerca en necessiten molt menys (en l'ordre de 1000x menys) es separen aquestes dues categories
 amb dues gràfiques diferents.
 
-A més, el algorismes d'aprenentatge al necessitar moltes iteracions cal realitzar qualque tipus d'agregació
+A més, els algorismes d'aprenentatge al necessitar moltes iteracions, cal realitzar qualque tipus d'agregació
 dels valors per a poder obtenir una senyal interpretable.
-Hem decidit utilitzar una mitjana mòvil dels darrers 1000 valors. En els casos on s'utilitzi s'indica al títol
+Hem decidit utilitzar una mitjana mòbil dels darrers 1000 valors. En els casos on s'utilitzi s'indica al títol
 del gràfic amb l'acrònim SMA (\textit{Simple Moving Average}) seguit del valor de la finestra.
 
 Primer de tot, anem a analitzar l'evolució del rendiment de la política durant el procés d'entrenament.
 Per fer-ho, utilitzam el \textit{Success Rate} que és el nombre promig de vegades que s'arriba al destí
 al llarg d'uns quants episodis. Pels algorismes d'aprenentatge s'utilitza el promig de vegades que s'ha arribat
-al destí dintre la finestra i pels algorismes de cerca s'evalua la política 100 vegades després de cada iteració
-d'entrenament (ambdós utilitzan una política $\epsilon\mathit{-greedy}$; excepte per l'algorisme genètic).
+al destí dintre la finestra i pels algorismes de cerca s'avalua la política 100 vegades després de cada iteració
+d'entrenament (ambdós utilitzen una política $\varepsilon\mathit{-greedy}$; excepte per l'algorisme genètic).
 
 \begin{figure}[H]
   \noindent
@@ -675,15 +764,15 @@ d'entrenament (ambdós utilitzan una política $\epsilon\mathit{-greedy}$; excep
 \end{figure}
 
 Podem veure com tots els algorismes començen amb un \textit{Success Rate} molt baix degut a que la seva política
-és completament aleatoria i no aconsegueixen arribar al destí, milloren molt ràpidament i arriben a un punt de
+és completament aleatòria i no aconsegueixen arribar al destí, milloren molt ràpidament i arriben a un punt de
 saturació a partir d'un cert nombre d'iteracions a partir del qual ja no milloren més. En el cas particular de
-la programació dinámica inclús es podria especular que la millor és lineal, però tampoc ho podem afirmar
-perque la quantitat de punts de dades és molt baix.
+la programació dinàmica inclús es podria especular que la millora és lineal, però tampoc ho podem afirmar
+perquè la quantitat de punts de dades és molt baix.
 
-A partir de les provem que hem anat realitzant durant el desenvolupament sabem que el punt de saturació
-de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}. Això depenèn
-de la inicialització de la llavor del generador de nombres aleatoris i no sabem molt bé com, o si es pot,
-evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent resultat.
+A partir de les proves que hem anat realitzant durant el desenvolupament sabem que el punt de saturació
+de l'algorisme Monte Carlo oscila entre els 0.10 i 0.70 de \textit{Success Rate}.
+Això depèn de la inicialització de la llavor del generador de nombres aleatoris i no sabem molt bé com o si es pot
+evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent resultat:
 
 \begin{figure}[H]
   \noindent
@@ -694,7 +783,7 @@ evitar. Si realitzam l'entrenament de l'algorisme 5 vegades obtenim el següent 
 
 Una altra mètrica a mirar és el temps de cada iteració del bucle d'entrenament, que està directament relacionat
 amb el nombre de passes que es realitzen a cada episodi. Com que al principi de l'entrenament la política és
-aleatòria els episodis acaben molt aviat perque quan es cau a un forat aquest acaba. Així com l'algorisme millora
+aleatòria els episodis acaben molt aviat perquè quan es cau a un forat aquest acaba. Així com l'algorisme millora
 la política i s'evita caure als forats es permeten fer més passes i allargar l'episodi. Per tant, aquestes dues
 mètriques també estan vinculades al \textit{Success Rate} que hem vist abans.
 
@@ -706,7 +795,7 @@ mètriques també estan vinculades al \textit{Success Rate} que hem vist abans.
   }
 \end{figure}
 
-Pel cas de la Programació Dinámica el temps d'execució de cada iteració d'entrenament és despreciable i es manté
+Pel cas de la Programació Dinàmica el temps d'execució de cada iteració d'entrenament és despreciable i es manté
 constant a uns $65 \mu s$. Això és degut a que aquest algorisme no crida a l'entorn de \textit{Frozen Lake} de
 Gymnasium ja que només necessita la matriu de probabilitats de transició per a cada estat.
 
@@ -722,7 +811,7 @@ Gymnasium ja que només necessita la matriu de probabilitats de transició per a
 \chapter{Anàlisi polítiques}
 \label{ch:policy}
 
-A continuació es mostren les polítiques per a cada un dels algorismes representada amb dos gràfics.
+A continuació es mostren les polítiques per a cada un dels algorismes representades amb dues gràfiques.
 El gràfic de l'esquerra mostra la taula Q.
 El color de cada cel·la representa el valor de la recompensa esperada per a aquell estat (blau més fort implica una recompensa major) i les fletxes
 representen les accions amb la seva llargària proporcional al seu valor (una fletxa més llarga té una recompensa 
@@ -750,12 +839,12 @@ A primera vista, el que ressalta més és la distribució dels valors sobre el m
   \item Monte Carlo sembla prioritzar un camí molt més que l'altre (primer moviment per avall enlloc de la dreta).
   \item SARSA té la mateix preferència que Monte Carlo però menys exagerada.
   \item Q-learning té les recompenses molt repartides, producte de la seva naturalesa optimista.
-  \item Programació Dinámica les recompenses són més altes a prop del destí i decreixen ràpidament a m'esura que s'allunya.
+  \item A Programació Dinàmica les recompenses són més altes a prop del destí i decreixen ràpidament a mesura que s'allunya.
   % TODO: perquè prog. dinamica fa això?
 \end{itemize}
 
 El que pot semblar poc intuïtiu és la millor acció que trien els algorismes. Per exemple, no n'hi ha cap que
-per a l'estat anterior del final (el que està marcat amb més valor; abaix a la dreta) indiqui l'accio que duu directament cap
+per a l'estat anterior del final (el que està marcat amb més valor; abaix a la dreta) indiqui l'acció que duu directament cap
 al destí com a la millor.
 
 Això és degut a que hi ha major probabilitat de lliscar que fer l'acció escollida:
@@ -767,8 +856,8 @@ Això és degut a que hi ha major probabilitat de lliscar que fer l'acció escol
 Exactament el mateix passa amb els estats adjacents a forats, ja que alguns models trien l'opció que duu
 directament al forat com a la millor.
 
-Per a profunditzar un poc més sobre aques fenòmen anem a analitzar la quantitat de vegades que l'algorisme
-tria una determinada acció durant la fase de l'entrenament (només es mostren els algorismes d'aprenentatge perque
+Per a profunditzar un poc més sobre aquest fenòmen anem a analitzar la quantitat de vegades que l'algorisme
+tria una determinada acció durant la fase de l'entrenament (només es mostren els algorismes d'aprenentatge perquè
 dels altres és impossible saber aquesta dada).
 
 \begin{figure}[H]
@@ -779,12 +868,12 @@ dels altres és impossible saber aquesta dada).
 \end{figure}
 
 Es veu clarament que per a tots els algorismes hi ha una preferència sobre l'acció \textit{left} seguit de l'acció
-\textit{up}. Si ho raonam, té sentit que sigui així perque l'episodi sempre comença a d'alt de tot a l'esquerra
+\textit{up}. Si ho raonam, té sentit que sigui així perquè l'episodi sempre comença dalt de tot a l'esquerra
 i tots els forats estan abaix a la dreta i com que sortir-se del tauler no provoca el fi de l'episodi és preferible
 anar cap a defora (\textit{left} o \textit{up}) i així evitar caure a un forat en el cas de que es llisqui.
 
 El darrer algorisme, el Genètic, al calcular directament la política i no calcular els valors d'estat-acció
-només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un análisi tant detallat. Però és
+només es poden mostrar les fletxes (accions) i, per tant, no es pot fer un anàlisi tan detallat. Però és
 interessant veure com, sense calcular els valors d'estat-acció i només utilitzant la ``força bruta'', s'arriba
 a una política pràcticament idèntica a molts dels altres algorismes.
 
@@ -795,8 +884,8 @@ a una política pràcticament idèntica a molts dels altres algorismes.
 
 També pot ser interessant analitzar la quantitat de passes realitzades per a cada algorisme al llarg de 100 episodis.
 Es mostren dues versions per tal de mostrar com afecta la qualitat de la política amb el nombre de passes per episodi.
-El gràfic de l'esquerra perntany a una execució on totes les polítiques aconsegueixen un \textit{Success Rate}
-del 0.70 i a la dreta on Monte Carlo només ha aconseguit un 0.10 i la resta es mantenen igual.
+El gràfic de l'esquerra pertany a una execució on totes les polítiques aconsegueixen un \textit{Success Rate}
+del 0.70, i a la dreta on Monte Carlo només ha aconseguit un 0.10 i la resta es mantenen igual.
 
 \begin{figure}[H]
   \noindent
@@ -817,20 +906,20 @@ alerta a caure).
 L'entorn \textit{Frozen Lake} de Gymnasium tot i ser un entorn molt simple hem vist com el problema es complica molt
 quan s'activa l'opció \textit{slippery} (passam d'un entorn completament determinista a un que no ho és).
 Hem posat a prova tots els algorismes vists a teoria, hem pogut veure les forçes i febleses de cada un d'ells
-i l'imporància de cada un dels seus paràmetres.
+i l'importància de cada un dels seus paràmetres.
 
 En particular hem vist que Monte Carlo és molt inconsistent amb els resultats que proporciona. Potser això es pugui
 solucionar amb diferentes combinacions dels paràmetres però no hem tengut el temps per a investigar-ho.
 
-Hem pogut profunditzar bastant en el funcionament dels algorismes i hem vist com la decisió originalment
+Hem pogut profunditzar bastant en el funcionament dels algorismes i hem vist el gran impacte de la decisió originalment
 ``preventiva'' del \textit{tie-break} aleatori a l'anàlisi dels paràmetres, cosa que no ens esperavem.
 
-Interessant, també, veure com les polítiques resultants poden ser contraintuïtives (la millor opicó anar directament
-cap a un forat) i com hi ha accions molt més preferibles que altres.
+Interessant, també, veure com les polítiques resultants poden ser contraintuïtives (considerar anar directament
+cap a un forat com la millor opció) i com hi ha accions molt més preferibles que altres.
 
 Com a opinió personal, podem dir que és un projecte que ha posat a prova el que sabem i ens ha forçat
 a repassar i expandir conceptes que hem vists a teoria, cosa molt important a l'hora d'assolir coneixements.
-A la part d'análisi haguessim pogut profunditzar o complicar més però amb el que hem fet ja hem anat molt justs de temps.
+A la part d'anàlisi haguessim pogut profunditzar o complicar més però amb el que hem fet ja hem anat molt justs de temps.
 
 % ==========================
 \chapter{Intel·ligències Artificials Generatives}
@@ -841,20 +930,20 @@ Al llarg del desenvolupament del projecte hem emprat les següents intel·ligèn
 \begin{itemize}
   \item ChatGPT-5.1
   \begin{itemize}
-    \item Validació i correcció algorismes implementats amb Python
-    \item Recomenació configuració paràmetres per a diferents algorismes
-    \item Correcció notació matemàtica utilitzada a la memòria
+    \item Validació i correcció dels algorismes implementats amb Python
+    \item Recomanació de la configuració de paràmetres per a diferents algorismes
+    \item Correcció de la notació matemàtica utilitzada a la memòria
   \end{itemize}
 
   \item Grok 4.1: 
   \begin{itemize}
-    \item Validació i correcció algorismes implementats amb Python
-    \item Recomenació configuració paràmetres per a diferents algorismes
+    \item Validació i correcció dels algorismes implementats amb Python
+    \item Recomanació de la configuració de paràmetres per a diferents algorismes
   \end{itemize}
 
   \item Perplexity (ChatGPT-5.1, Claude Sonnet 4.5 o Sonar):
   \begin{itemize}
-    \item Cerca documentació i exemples Python, Numpy i Matplotlib
+    \item Cerca de documentació i exemples de Python, Numpy i Matplotlib
   \end{itemize}
 \end{itemize}
 
