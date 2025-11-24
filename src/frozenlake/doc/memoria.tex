@@ -225,7 +225,7 @@ Q(S_t, A_t) \gets Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_{a'} Q(S_{t+
 Amb els mateixos paràmetres $\alpha$ i $\gamma$ que en SARSA.
 La diferència clau és l'ús de $\max_{a'} Q(S_{t+1}, a')$ en lloc de $Q(S_{t+1}, A_{t+1})$, cosa que fa que
 Q-learning sigui optimista i convergeixi a la política òptima fins i tot quan la política de comportament
-(la que genera les experiències) sigui completament aleatòria'.
+(la que genera les experiències) sigui completament aleatòria.
 
 \section{Algorismes Cerca}
 
